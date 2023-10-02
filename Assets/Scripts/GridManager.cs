@@ -46,8 +46,11 @@ public class GridManager : MonoBehaviour
         {
             if (!_selectionMode && _cursorTile._occupied)
             {
-                _selectedTile = _cursorTile;
-                _selectionMode = true;
+                if (_cursorTile._unit.CompareTag("Player"))
+                {
+                    _selectedTile = _cursorTile;
+                    _selectionMode = true;
+                }
             }
             else if(_selectionMode)
             {
@@ -107,18 +110,6 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public Tile GetHighlightedTile()
-    {
-        foreach (var member in _tiles)
-        {
-            Tile tile = member.Value;
-            if (tile.isHighlighted)
-            {
-                return tile;
-            }
-        }
-        return null;
-    }
     private Tile MoveCursor(Tile cursorTile)
     {
         float x = cursorTile.transform.position.x;
