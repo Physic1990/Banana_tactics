@@ -13,8 +13,11 @@ public class GridManager : MonoBehaviour
 
     private Dictionary<Vector2, Tile> _tiles;
     private Tile _cursorTile;
+    private Tile _selectedTile;
+    private Tile _moveToTile;
 
     private int _cursorTimer;
+    public bool _selectionMode = false;
     private void Start()
     {
         _cursorTimer = 0;
@@ -30,6 +33,10 @@ public class GridManager : MonoBehaviour
         {
             Tile temp = _cursorTile;
             _cursorTile = MoveCursor(temp);
+            if (_selectionMode && _selectedTile != null)
+            {
+                _selectedTile.HighlightNoCursor();
+            }
             if(_cursorTile != temp)
             {
                 _cursorTimer = 0;
@@ -37,7 +44,31 @@ public class GridManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
+            if (!_selectionMode && _cursorTile._occupied)
+            {
+                _selectedTile = _cursorTile;
+                _selectionMode = true;
+            }
+            else if(_selectionMode)
+            {
+                _moveToTile = _cursorTile;
+                if (!_moveToTile._occupied)
+                {
+                    _moveToTile.AssignUnit(_selectedTile._unit);
+                    _selectedTile.RemoveUnit();
+                    _selectionMode = false;
+                    _selectedTile.TurnOffHighlight();
+                }
+                
+            }
+
+
             Debug.Log(_cursorTile.name);
+        }
+        if(Input.GetKeyUp(KeyCode.V)) 
+        {
+            _selectedTile.TurnOffHighlight();
+            _selectionMode = false; 
         }
 
     }
@@ -50,7 +81,14 @@ public class GridManager : MonoBehaviour
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x,y,0), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
-
+                if(x == 0 && y == 0)
+                {
+                    spawnedTile.SpawnUnit("Player");
+                }
+                if(x == _width-1 && y == _height-1)
+                {
+                    spawnedTile.SpawnUnit("Enemy");
+                }
                 bool isOffset = ((x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0));
                 spawnedTile.Init(isOffset);
                 _tiles[new Vector2 (x,y)] = spawnedTile;
@@ -101,7 +139,7 @@ public class GridManager : MonoBehaviour
         {
             y++;
         }
-        Tile temp = GetTileAtPosition(new Vector2(x, y));
+        Tile temp = GetTileAtPosition(new Vector2(x, y));  
         if(temp != null && temp != cursorTile)
         {
             cursorTile.TurnOffHighlight();
@@ -112,5 +150,6 @@ public class GridManager : MonoBehaviour
         {
             return cursorTile;
         }
+        
 ;    }
 }

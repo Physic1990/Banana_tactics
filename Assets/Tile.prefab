@@ -188,6 +188,8 @@ MonoBehaviour:
   _offsetColor: {r: 0.3269565, g: 0.6603774, b: 0.32022074, a: 1}
   _highlight: {fileID: 1734481025046549229}
   _cursorHand: {fileID: 3493521015749958410}
+  _unit: {fileID: 0}
+  _occupied: 0
   isHighlighted: 0
   isOccupied: 0
 --- !u!61 &6462455909922243419
