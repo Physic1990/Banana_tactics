@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Transform _cam;
     [SerializeField] private int _cursorDelay;
 
+    AudioManager audioManager;
     private Dictionary<Vector2, Tile> _tiles;
     private Tile _cursorTile;
     private Tile _selectedTile;
@@ -18,6 +19,12 @@ public class GridManager : MonoBehaviour
 
     private int _cursorTimer;
     public bool _selectionMode = false;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     private void Start()
     {
         _cursorTimer = 0;
@@ -39,6 +46,7 @@ public class GridManager : MonoBehaviour
             }
             if(_cursorTile != temp)
             {
+                audioManager.PlaySFX(audioManager.cursorMove);
                 _cursorTimer = 0;
             }
         }
@@ -49,6 +57,7 @@ public class GridManager : MonoBehaviour
                 if (_cursorTile._unit.CompareTag("Player"))
                 {
                     _selectedTile = _cursorTile;
+                    audioManager.PlaySFX(audioManager.select);
                     _selectionMode = true;
                 }
             }
@@ -58,9 +67,14 @@ public class GridManager : MonoBehaviour
                 if (!_moveToTile._occupied)
                 {
                     _moveToTile.AssignUnit(_selectedTile._unit);
+                    audioManager.PlaySFX(audioManager.placed);
                     _selectedTile.RemoveUnit();
                     _selectionMode = false;
                     _selectedTile.TurnOffHighlight();
+                }
+                else
+                {
+                    audioManager.PlaySFX(audioManager.error);
                 }
                 
             }
@@ -71,7 +85,8 @@ public class GridManager : MonoBehaviour
         if(Input.GetKeyUp(KeyCode.V)) 
         {
             _selectedTile.TurnOffHighlight();
-            _selectionMode = false; 
+            _selectionMode = false;
+            audioManager.PlaySFX(audioManager.back);
         }
 
     }
@@ -130,8 +145,12 @@ public class GridManager : MonoBehaviour
         {
             y++;
         }
-        Tile temp = GetTileAtPosition(new Vector2(x, y));  
-        if(temp != null && temp != cursorTile)
+        Tile temp = GetTileAtPosition(new Vector2(x, y));
+        if ((x < 0 || y < 0 || x >= _width || y >= _height) && !audioManager.SFXisPlaying())
+        {
+            audioManager.PlaySFX(audioManager.error);
+        }
+        if (temp != null && temp != cursorTile)
         {
             cursorTile.TurnOffHighlight();
             temp.TurnOnHighlight();
