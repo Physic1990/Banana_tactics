@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
-//using System;
-//using Random=UnityEngine.Random;
+
 
 public class actionEvent
 {
@@ -58,8 +55,7 @@ public class actionEvent
    
    // initialize 
    public actionEvent(){
-    status = true;
-    eventType = 0;
+   
    }
 
    public int getPlayerHealth(){
