@@ -108,5 +108,5 @@ public class UnitAttributes : MonoBehaviour
         Debug.Log(attackHitChance);
         Debug.Log(attackDamage);
         Debug.Log(attackDamageCrit);
-}
+    }
 }
