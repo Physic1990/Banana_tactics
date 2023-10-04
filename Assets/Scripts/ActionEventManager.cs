@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class actionEvent : MonoBehaviour
 {
+   UnitAttributes unitAttributes;
+   public GameObject unit;
+
+   void Awake()
+   {
+      unitAttributes = unit.GetComponent<UnitAttributes>();
+   }
+
    // event running status
    private bool status;
    // the type of event 
@@ -84,3 +92,4 @@ public class actionEvent : MonoBehaviour
       return enemy.health;
    }
 }
+
