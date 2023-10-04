@@ -10,25 +10,37 @@ public class actionEvent
    // the type of event 
    private int eventType;
    //private int playerHealth;
+   private int terrain;
    private playerAttributes player = new playerAttributes();
    private enemyAttributes  enemy = new enemyAttributes();
 
    //player attributes
    private class playerAttributes{
       public int health;
-      public int attack;
+      public int attackDamage;
+      public double attackRange;
+      public double attackCritChance;
+      public double attackHitChance;
+      public double attackDamageCrit;
+      
       public playerAttributes(){
          health = 100;
-         attack = 50;
+         attackDamage = 50;
       }
-      }
+   }
+
    // enemy attributes
    private class enemyAttributes{
       public int health;
-      public int attack;
+      public int attackDamage;
+      public double attackRange;
+      public double attackCritChance;
+      public double attackHitChance;
+      public double attackDamageCrit;
+
       public enemyAttributes(){
          health = 100;
-         attack = 50;
+         attackDamage = 50;
       }
    }
 
@@ -38,31 +50,37 @@ public class actionEvent
    // will update the health with the corresponding damage yielde from a battle
    // basic weapon attack of 20 hp for a hit at a random attack of 60 perecent accuracy
 
-   public void attackBattle (ref int playerHP, ref int enemyHP){
-   // damage from attack
-   int playerAttackDamage=20;
-   int enemyAttackDamge=20;
-
+   public void attackBattle (){
    // player was hit
    if(Random.Range(0, 100) < 60){
-         playerHP=playerHP-enemyAttackDamge;
+         player.health=player.health-enemy.attackDamage;
    }
       // enemy was hit
    if(Random.Range(0, 100) < 60){
-         enemyHP=enemyHP-playerAttackDamage;
+         enemy.health=enemy.health-player.attackDamage;
    }
-}
+   }
+
+   // Purpose-  will deliver damage to a player on movement by terrain
+   // will update the health with the corresponding damage yielded from terrain
+
+   private void doNothingTurn (){
+      // player was hit
+      if(Random.Range(0, 100) < 50){
+         player.health=player.health-terrain;
+      }
+   }
    
    // initialize 
    public actionEvent(){
-   
+      terrain = 50;
    }
 
-   public int getPlayerHealth(){
+   public int getUpdatePlayerHealth(){
       return player.health;
    }
 
-   public int getEnemyHealth(){
+   public int getUpdateEnemyHealth(){
       return enemy.health;
    }
 }
