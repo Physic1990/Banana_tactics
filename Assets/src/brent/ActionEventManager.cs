@@ -55,8 +55,8 @@ public class actionEvent
    
    // initialize 
    public actionEvent(){
-    status = true;
-    eventType = 0;
+    //status = true;
+    //eventType = 0;
    }
 
    public int getPlayerHealth(){
