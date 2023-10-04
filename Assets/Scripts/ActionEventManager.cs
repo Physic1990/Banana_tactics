@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class actionEvent
+public class actionEvent : MonoBehaviour
 {
    // event running status
    private bool status;
