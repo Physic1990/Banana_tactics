@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class actionEvent
+public class ActionEventManager : MonoBehaviour
 {
    // event running status
    private bool status;
@@ -30,6 +30,40 @@ public class actionEvent
          health = 100;
          attack = 50;
       }
-    }
+   }
 
+   // Purpose-  will deliver damage of a player and enemy battle
+   // arguments- playerHP - health of the player
+   //            enemyHP - health of the enemy
+   // will update the health with the corresponding damage yielde from a battle
+   // basic weapon attack of 20 hp for a hit at a random attack of 60 perecent accuracy
+
+   public void attackBattle (ref int playerHP, ref int enemyHP){
+   // damage from attack
+   int playerAttackDamage=20;
+   int enemyAttackDamge=20;
+
+   // player was hit
+   if(Random.Range(0, 100) < 60){
+         playerHP=playerHP-enemyAttackDamge;
+   }
+      // enemy was hit
+   if(Random.Range(0, 100) < 60){
+         enemyHP=enemyHP-playerAttackDamage;
+   }
+}
+   // initialize 
+   public ActionEventManager(){
+    
+    
+   }
+
+   public int getPlayerHealth(){
+      return player.health;
+   }
+
+   public int getEnemyHealth(){
+      return enemy.health;
+    }
+   
 }
