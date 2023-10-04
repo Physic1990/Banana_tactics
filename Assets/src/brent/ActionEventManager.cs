@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class actionEvent
+public class ActionEventManager : MonoBehaviour
 {
    // event running status
    private bool status;
@@ -21,7 +21,7 @@ public class actionEvent
          health = 100;
          attack = 50;
       }
-      }
+   }
    // enemy attributes
    private class enemyAttributes{
       public int health;
@@ -52,11 +52,10 @@ public class actionEvent
          enemyHP=enemyHP-playerAttackDamage;
    }
 }
-   
    // initialize 
-   public actionEvent(){
-    //status = true;
-    //eventType = 0;
+   public ActionEventManager(){
+    
+    
    }
 
    public int getPlayerHealth(){
@@ -65,5 +64,6 @@ public class actionEvent
 
    public int getEnemyHealth(){
       return enemy.health;
-   }
+    }
+   
 }
