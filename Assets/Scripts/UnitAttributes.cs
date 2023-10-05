@@ -6,9 +6,12 @@ using UnityEngine;
 public class UnitAttributes : MonoBehaviour
 {
     public string whatClass = "Warrior";
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
 
     public bool IsPlayer = true;
     public bool IsEnemy = false;
+    public bool hasActed = false;
 
     int health;
     private int movement;
@@ -74,16 +77,35 @@ public class UnitAttributes : MonoBehaviour
 
     public void Sethealth(int changeHealthAmount)
     {
-        health += changeHealthAmount;
+        health = changeHealthAmount;
     }
 
     public int GetHealth()
     {
         return health;
     }
+
     public int GetMovement()
     {
         return movement;
+    }
+
+    public void SetActed(bool status)
+    {
+        hasActed = status;
+        if (status)
+        {
+            GrayOut();
+        }
+        if(!status)
+        {
+            RevertToOriginalColor();
+        }
+    }
+    public bool HasActed()
+    {
+        return hasActed;
+
     }
     public string GetAttackName()
     {
@@ -98,6 +120,20 @@ public class UnitAttributes : MonoBehaviour
         attackValues[4] = attackDamageCrit;
         return attackValues;
     }
+
+    private void GrayOut()
+    {
+        // Get's gray color
+        Color grayColor = new Color(0.5f, 0.5f, 0.5f, spriteRenderer.color.a);
+        // Apply the grayscale color to the sprite
+        spriteRenderer.color = grayColor;
+    }
+
+    private void RevertToOriginalColor()
+    {
+        spriteRenderer.color = originalColor; // Revert to the original color
+    }
+
     void Start()
     {
         SetClassStats();
@@ -108,5 +144,8 @@ public class UnitAttributes : MonoBehaviour
         Debug.Log(attackHitChance);
         Debug.Log(attackDamage);
         Debug.Log(attackDamageCrit);
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 }

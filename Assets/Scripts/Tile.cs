@@ -47,12 +47,16 @@ public class Tile : MonoBehaviour
         return temp;
     }
 
-    public void SpawnUnit(string tag)
+    public void SpawnUnit(string tag, List<GameObject> unitLog)
     {
         _occupied = true;
         _unit = GameObject.FindWithTag(tag);
         _unit.SetActive(true);
         _unit.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+        if(tag == "Player")
+        {
+            unitLog.Add(_unit);
+        }
     }
 
     public void TurnOnHighlight()
