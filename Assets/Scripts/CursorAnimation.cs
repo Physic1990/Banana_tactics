@@ -20,7 +20,6 @@ public class CursorAnimation : MonoBehaviour
         if (!(animationComponent.IsPlaying("Cursor")))
         {
             animationComponent.Play("Cursor");
-            Debug.Log("Hello");
         }
     }
 }

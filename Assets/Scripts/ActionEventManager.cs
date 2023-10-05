@@ -6,11 +6,11 @@ using UnityEngine;
 public class actionEvent : MonoBehaviour
 {
    UnitAttributes unitAttributes;
-   public GameObject unit;
+   public GameObject attckingUnit;
 
    void Awake()
    {
-      unitAttributes = unit.GetComponent<UnitAttributes>();
+      //unitAttributes = unit.GetComponent<UnitAttributes>();
    }
 
    // event running status
