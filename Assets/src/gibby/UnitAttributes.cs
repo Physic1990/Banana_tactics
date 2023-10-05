@@ -20,7 +20,7 @@ public class UnitAttributes : MonoBehaviour
     private double attackHitChance;
     private int attackDamage;
     private int attackDamageCrit;
-    
+
     string attack1 = "Punch";
 
     double[] attackValues = new double[5];
@@ -28,16 +28,22 @@ public class UnitAttributes : MonoBehaviour
     ArrayList stats = new ArrayList(8);
     void SetClassStats()
     {
+        //checks what class unit has been set too
         if (whatClass == "Warrior")
         {
             SetWarrior();
-        } else if (whatClass == "Gunslinger")
+        }
+        else if (whatClass == "Gunslinger")
         {
             SetGunSlinger();
-        } else {
+        }
+        else
+        {
+            //defult is warrior if wrong string or none had been entered
             SetWarrior();
         }
     }
+
     void SetWarrior()
     {
         health = 50;
@@ -45,6 +51,7 @@ public class UnitAttributes : MonoBehaviour
         attack1 = "Punch";
         SetAttacks();
     }
+
     void SetGunSlinger()
     {
         health = 40;
@@ -63,13 +70,17 @@ public class UnitAttributes : MonoBehaviour
             attackDamage = 5;
             attackDamageCrit = attackDamage * 2;
 
-        } else if (attack1 == "Shoot") {
+        }
+        else if (attack1 == "Shoot")
+        {
             attackCritChance = 0.1;
             attackHitChance = 0.7;
             attackRange = 2;
             attackDamage = 6;
             attackDamageCrit = attackDamage * 2;
-        } else {
+        }
+        else
+        {
             attack1 = "Punch";
             SetAttacks();
         }
@@ -77,16 +88,19 @@ public class UnitAttributes : MonoBehaviour
 
     public void Sethealth(int changeHealthAmount)
     {
+        //changes health to new health value
         health = changeHealthAmount;
     }
 
     public int GetHealth()
     {
+        //current health 
         return health;
     }
 
     public int GetMovement()
     {
+        //give how many tiles the unit can move
         return movement;
     }
 
@@ -95,24 +109,32 @@ public class UnitAttributes : MonoBehaviour
         hasActed = status;
         if (status)
         {
+            //makes sprite gray
             GrayOut();
         }
-        if(!status)
+        if (!status)
         {
+            //reverts back to og sprite color
             RevertToOriginalColor();
         }
     }
+
     public bool HasActed()
     {
+        //says if action has been done
         return hasActed;
 
     }
+
     public string GetAttackName()
     {
+        //return attack name
         return attack1;
     }
+
     public double[] GetAttackStats()
     {
+        //order in which you get the stats
         attackValues[0] = attackDamage;
         attackValues[1] = attackRange;
         attackValues[2] = attackHitChance;
@@ -123,27 +145,28 @@ public class UnitAttributes : MonoBehaviour
 
     private void GrayOut()
     {
-        // Get's gray color
+        //get color
         Color grayColor = new Color(0.5f, 0.5f, 0.5f, spriteRenderer.color.a);
-        // Apply the grayscale color to the sprite
+        //make color gray
         spriteRenderer.color = grayColor;
     }
 
     private void RevertToOriginalColor()
     {
-        spriteRenderer.color = originalColor; // Revert to the original color
+        //normal color set       
+        spriteRenderer.color = originalColor;
     }
 
     void Start()
     {
         SetClassStats();
-        Debug.Log(health);
-        Debug.Log(movement);
-        Debug.Log(attackRange);
-        Debug.Log(attackCritChance);
-        Debug.Log(attackHitChance);
-        Debug.Log(attackDamage);
-        Debug.Log(attackDamageCrit);
+        //Debug.Log(health);
+        //Debug.Log(movement);
+        //Debug.Log(attackRange);
+        //Debug.Log(attackCritChance);
+        //Debug.Log(attackHitChance);
+        //Debug.Log(attackDamage);
+        //Debug.Log(attackDamageCrit);
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
