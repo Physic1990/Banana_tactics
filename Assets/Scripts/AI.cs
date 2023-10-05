@@ -7,7 +7,7 @@ public class AI : MonoBehaviour
  
     public void AITurn(bool IsPlayerTurn)
     {
-        debug.Log("AI takes its turn");
+        Debug.Log("AI takes its turn");
         IsPlayerTurn = false;
     }
 
