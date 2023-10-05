@@ -16,6 +16,7 @@ public class GridManager : MonoBehaviour
     //Scripts
     AudioManager audioManager;
     AI aiManager;
+    ActionEventManager actionEvent;
 
     private Dictionary<Vector2, Tile> _tiles;
     private List<GameObject> _playerUnits = new List<GameObject>();
@@ -27,11 +28,14 @@ public class GridManager : MonoBehaviour
     private int _cursorTimer;
     public bool _selectionMode = false;
     private int _Delay;
+    private bool playerTurnOver;
 
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         aiManager = GameObject.FindGameObjectWithTag("Ai").GetComponent<AI>();
+        actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
+        playerTurnOver = false;
     }
 
     private void Start()
@@ -45,21 +49,10 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
-        bool isOver = CheckPlayerTurn();
-        if (isOver)
+        playerTurnOver = CheckPlayerTurn();
+        if (playerTurnOver)
         {
-            if(_Delay == 400)
-            {
-                aiManager.AITurn(isOver);
-            }
-            
-            _Delay--;
-            if( _Delay < 0 )
-            {
-                isOver = false;
-                _Delay = 400;
-                ReactivatePlayerUnits();
-            }
+            EnemyTurn();
         }
         else
         {
@@ -144,9 +137,24 @@ public class GridManager : MonoBehaviour
             return cursorTile;
         }
         
-;    }
+;   }
 
-    void CursorControl()
+    private void EnemyTurn()
+    {
+        if (_Delay == 400)
+        {
+            aiManager.AITurn(true);
+        }
+
+        _Delay--;
+        if (_Delay < 0)
+        {
+            playerTurnOver = false;
+            _Delay = 400;
+            ReactivatePlayerUnits();
+        }
+    }
+    private void CursorControl()
     {
         _cursorTimer++;
         if (_cursorTimer > _cursorDelay)
@@ -183,11 +191,16 @@ public class GridManager : MonoBehaviour
                 {
                     //Move the Player Unit
                     _moveToTile.AssignUnit(_selectedTile._unit);
-                    audioManager.PlaySFX(audioManager.placed);
-                    UpdateActed(_selectedTile._unit, true);
                     _selectedTile.RemoveUnit();
                     _selectionMode = false;
                     _selectedTile.TurnOffHighlight();
+                    audioManager.PlaySFX(audioManager.placed);
+
+                    //Take Unit Action
+
+                    actionEvent.doNothingTurn(_moveToTile._unit);
+                    UpdateActed(_moveToTile._unit, true);
+
                 }
                 else
                 {

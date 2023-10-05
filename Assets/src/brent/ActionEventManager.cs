@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class actionEvent : MonoBehaviour
+public class ActionEventManager : MonoBehaviour
 {
    UnitAttributes unitAttributes;
-   public GameObject attckingUnit;
+   //public GameObject attckingUnit;
 
    void Awake()
    {
@@ -72,17 +72,18 @@ public class actionEvent : MonoBehaviour
    // Purpose-  will deliver damage to a player on movement by terrain
    // will update the health with the corresponding damage yielded from terrain
 
-   private void doNothingTurn (){
-      // player was hit
-      if(Random.Range(0, 100) < 50){
+   public void doNothingTurn (GameObject unit){
+        // player was hit
+        Debug.Log("No Action taken");
+      /*if(Random.Range(0, 100) < 50){
          player.health=player.health-terrain;
-      }
+      } */
    }
    
    // initialize 
-   public actionEvent(){
+   /*public actionEvent(){
       terrain = 50;
-   }
+   } */
 
    public int getUpdatePlayerHealth(){
       return player.health;
