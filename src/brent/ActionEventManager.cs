@@ -92,11 +92,5 @@ public class ActionEventManager : MonoBehaviour
    public int getUpdateEnemyHealth(){
       return enemy.health;
    }
-      public void setPlayerHealth(int hp){
-      player.health = hp;
-   }
-   public void setEnemyHealth(int hp){
-      enemy.health = hp;
-   }
 }
 
