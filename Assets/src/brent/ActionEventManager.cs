@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ActionEventManager : MonoBehaviour
 {
-   UnitAttributes unitAttributes;
+   //UnitAttributes unitAttributes;
    //public GameObject attckingUnit;
 
    void Awake()
