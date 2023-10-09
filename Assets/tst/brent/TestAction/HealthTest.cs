@@ -4,22 +4,26 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class HealthTest
+public class NewTestScript
 {
     // A Test behaves as an ordinary method
     [Test]
-    public void HealthTestSimplePasses()
+    public void Unit_Has_No_Health()
     {
-        // Use the Assert class to test conditions
+        ActionEventManager lowerBound = new ActionEventManager();
+        lowerBound.setPlayerHealth(1);
+      
+       Assert.IsTrue(lowerBound.getUpdatePlayerHealth()>0, "Health is at lower bounds, greater than 0");
+      
     }
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator HealthTestWithEnumeratorPasses()
+    [Test]
+    public void Unit_Health_Is_In_Boundary()
     {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
+        ActionEventManager lowerBound = new ActionEventManager();
+        lowerBound.setPlayerHealth(0);
+
+        Assert.IsTrue(lowerBound.getUpdateEnemyHealth()>0, "Health is not in bounds, less than or equal to 0");
     }
 }
+
