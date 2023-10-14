@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour
     AudioManager audioManager;
     AI aiManager;
     ActionEventManager actionEvent;
+    CursorController cursor;
 
     private Dictionary<Vector2, Tile> _tiles;
     private List<GameObject> _playerUnits = new List<GameObject>();
@@ -35,6 +36,7 @@ public class GridManager : MonoBehaviour
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         aiManager = GameObject.FindGameObjectWithTag("Ai").GetComponent<AI>();
         actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
+        cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorController>();
         playerTurnOver = false;
     }
 
@@ -45,6 +47,7 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
         _cursorTile = GetTileAtPosition(new Vector2(0, 0));
         _cursorTile.TurnOnHighlight();
+        cursor.MoveCursor(new Vector2(0, 1));
     }
 
     private void Update()
@@ -57,6 +60,7 @@ public class GridManager : MonoBehaviour
         else
         {
             CursorControl();
+            cursor.MoveCursor(new Vector2 (_cursorTile.transform.position.x, _cursorTile.transform.position.y));
         }
         
     }
@@ -180,7 +184,6 @@ public class GridManager : MonoBehaviour
                 {
                     _selectedTile = _cursorTile;
                     audioManager.PlaySFX(audioManager.select);
-                    Debug.Log(_cursorTile._unit.name);
                     _selectionMode = true;
                 }
             }

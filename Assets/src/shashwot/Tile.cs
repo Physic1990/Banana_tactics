@@ -6,7 +6,6 @@ public class Tile : MonoBehaviour
 {
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private GameObject _highlight;
-    [SerializeField] private GameObject _cursorHand;
     [SerializeField] public GameObject _unit;
 
     public bool _occupied = false;
@@ -62,7 +61,6 @@ public class Tile : MonoBehaviour
     public void TurnOnHighlight()
     {
         _highlight.SetActive(true);
-        _cursorHand.SetActive(true);
         isHighlighted = true;
     }
 
@@ -74,7 +72,6 @@ public class Tile : MonoBehaviour
     public void TurnOffHighlight()
     {
         _highlight?.SetActive(false);
-        _cursorHand.SetActive(false);
         isHighlighted = false;
     }
 }
