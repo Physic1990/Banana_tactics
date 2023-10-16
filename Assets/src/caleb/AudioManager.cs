@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!sfxSource.isPlaying) 
+        if (!sfxSource.isPlaying)
         {
             pauseMusic = false;
         }
@@ -63,3 +63,4 @@ public class AudioManager : MonoBehaviour
         return sfxSource.isPlaying;
     }
 }
+

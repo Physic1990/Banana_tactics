@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
-
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private int _width, _height;
@@ -60,30 +58,30 @@ public class GridManager : MonoBehaviour
         else
         {
             CursorControl();
-            cursor.MoveCursor(new Vector2 (_cursorTile.transform.position.x, _cursorTile.transform.position.y));
+            cursor.MoveCursor(new Vector2(_cursorTile.transform.position.x, _cursorTile.transform.position.y));
         }
-        
+
     }
     void GenerateGrid()
     {
         _tiles = new Dictionary<Vector2, Tile>();
-        for(int x = 0; x < _width; x++)
+        for (int x = 0; x < _width; x++)
         {
-            for(int y = 0; y < _height; y++)
+            for (int y = 0; y < _height; y++)
             {
-                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x,y,0), Quaternion.identity);
+                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y, 0), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
-                if(x == 0 && y == 0)
+                if (x == 0 && y == 0)
                 {
                     spawnedTile.SpawnUnit("Player", _playerUnits);
                 }
-                if(x == _width-1 && y == _height-1)
+                if (x == _width - 1 && y == _height - 1)
                 {
                     spawnedTile.SpawnUnit("Enemy", _enemyUnits);
                 }
                 bool isOffset = ((x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0));
                 spawnedTile.Init(isOffset);
-                _tiles[new Vector2 (x,y)] = spawnedTile;
+                _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
 
@@ -92,7 +90,7 @@ public class GridManager : MonoBehaviour
 
     public Tile GetTileAtPosition(Vector2 pos)
     {
-        if(_tiles.TryGetValue(pos, out var tile))
+        if (_tiles.TryGetValue(pos, out var tile))
         {
             return tile;
         }
@@ -140,8 +138,9 @@ public class GridManager : MonoBehaviour
         {
             return cursorTile;
         }
-        
-;   }
+
+;
+    }
 
     private void EnemyTurn()
     {
@@ -265,3 +264,4 @@ public class GridManager : MonoBehaviour
         return true;
     }
 }
+

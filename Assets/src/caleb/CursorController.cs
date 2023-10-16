@@ -14,3 +14,4 @@ public class CursorController : MonoBehaviour
         Debug.Log(_cursor.transform.position);
     }
 }
+

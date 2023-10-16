@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CursorAnimation : MonoBehaviour
 {
     private Animation animationComponent;
@@ -23,3 +24,4 @@ public class CursorAnimation : MonoBehaviour
         }
     }
 }
+
