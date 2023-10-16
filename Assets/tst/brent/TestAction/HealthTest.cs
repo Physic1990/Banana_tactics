@@ -8,7 +8,7 @@ public class NewTestScript
 {
     // A Test behaves as an ordinary method
     [Test]
-    public void Unit_Has_No_Health()
+    public void Unit_Health_IsAlive()
     {
       var lowerBound = new GameObject().AddComponent<ActionEventManager>();
       lowerBound.setPlayerHealth(1);
@@ -17,7 +17,7 @@ public class NewTestScript
     }
 
     [Test]
-    public void Unit_Health_Is_In_Boundary()
+    public void Unit_Health_IsNotAlive()
     {
       var lowerBound = new GameObject().AddComponent<ActionEventManager>();
       lowerBound.setPlayerHealth(0);
