@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
     private Dictionary<Vector2, Tile> _tiles;
     private List<GameObject> _playerUnits = new List<GameObject>();
     private List<GameObject> _enemyUnits = new List<GameObject>();
-    private Tile _cursorTile;
+    public Tile _cursorTile;
     private Tile _selectedTile;
     private Tile _moveToTile;
 
@@ -29,17 +29,25 @@ public class GridManager : MonoBehaviour
     private int _Delay;
     private bool playerTurnOver;
 
-    private void Awake()
+    // Functions to allow access the private variables
+    public int Height
+    {
+        get { return _height; }
+    }
+
+    public int Width
+    {
+        get { return _width; }
+    }
+
+    //Regular Functions
+    private void Start()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         aiManager = GameObject.FindGameObjectWithTag("Ai").GetComponent<AI>();
         actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
         cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorController>();
         playerTurnOver = false;
-    }
-
-    private void Start()
-    {
         _cursorTimer = 0;
         _Delay = 400;
         GenerateGrid();
@@ -60,8 +68,8 @@ public class GridManager : MonoBehaviour
             CursorControl();
             cursor.MoveCursor(new Vector2(_cursorTile.transform.position.x, _cursorTile.transform.position.y));
         }
-
     }
+
     void GenerateGrid()
     {
         _tiles = new Dictionary<Vector2, Tile>();
@@ -103,10 +111,10 @@ public class GridManager : MonoBehaviour
         return unit;
     }
 
-    private Tile MoveCursor(Tile cursorTile)
+    private Tile TakePlayerInput()
     {
-        float x = cursorTile.transform.position.x;
-        float y = cursorTile.transform.position.y;
+        float x = _cursorTile.transform.position.x;
+        float y = _cursorTile.transform.position.y;
         if (Input.GetKey(KeyCode.RightArrow))
         {
             x++;
@@ -123,23 +131,26 @@ public class GridManager : MonoBehaviour
         {
             y++;
         }
-        Tile temp = GetTileAtPosition(new Vector2(x, y));
-        if ((x < 0 || y < 0 || x >= _width || y >= _height) && !audioManager.SFXisPlaying())
+        return MoveCursor(new Vector2(x, y));
+    }
+
+    public Tile MoveCursor(Vector2 pos)
+    {
+        Tile temp = GetTileAtPosition(pos);
+        if ((pos.x < 0 || pos.y < 0 || pos.x >= _width || pos.y >= _height) && !audioManager.SFXisPlaying())
         {
             audioManager.PlaySFX(audioManager.error);
         }
-        if (temp != null && temp != cursorTile)
+        if (temp != null && temp != _cursorTile)
         {
-            cursorTile.TurnOffHighlight();
+            _cursorTile.TurnOffHighlight();
             temp.TurnOnHighlight();
             return temp;
         }
         else
         {
-            return cursorTile;
+            return _cursorTile;
         }
-
-;
     }
 
     private void EnemyTurn()
@@ -163,7 +174,7 @@ public class GridManager : MonoBehaviour
         if (_cursorTimer > _cursorDelay)
         {
             Tile temp = _cursorTile;
-            _cursorTile = MoveCursor(temp);
+            _cursorTile = TakePlayerInput();
             if (_selectionMode && _selectedTile != null)
             {
                 _selectedTile.HighlightNoCursor();
@@ -211,9 +222,6 @@ public class GridManager : MonoBehaviour
                 }
 
             }
-
-
-            Debug.Log(_playerUnits);
         }
         if (Input.GetKeyUp(KeyCode.V))
         {
@@ -223,6 +231,7 @@ public class GridManager : MonoBehaviour
         }
 
     }
+
 
     public void UpdateActed(GameObject unit, bool acted)
     {
@@ -252,6 +261,7 @@ public class GridManager : MonoBehaviour
             UpdateActed(obj, false);
         }
     }
+
     public bool CheckPlayerTurn()
     {
         foreach (GameObject obj in _playerUnits)

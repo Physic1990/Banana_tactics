@@ -11,7 +11,7 @@ public class CursorController : MonoBehaviour
     {
         Vector3 newPosition = new Vector3(pos.x, pos.y, this.transform.position.z);
         this.transform.position = newPosition;
-        Debug.Log(_cursor.transform.position);
+        //Debug.Log(_cursor.transform.position);
     }
 }
 

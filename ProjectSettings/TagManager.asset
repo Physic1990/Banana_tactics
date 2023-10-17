@@ -9,6 +9,7 @@ TagManager:
   - Ai
   - ActionEvent
   - Cursor
+  - Grid
   layers:
   - Default
   - TransparentFX

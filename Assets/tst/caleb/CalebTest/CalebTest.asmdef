@@ -4,7 +4,15 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "CalebScripts"
+        "CalebScripts",
+        "Unity.InputSystem",
+        "Unity.InputSystem.TestFramework",
+        "action",
+        "BenReference",
+        "ClaireReference",
+        "DamianReference",
+        "GibbyReference",
+        "ShashwotReference"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
