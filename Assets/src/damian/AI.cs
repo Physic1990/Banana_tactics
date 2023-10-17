@@ -6,12 +6,7 @@ using System;
 public class AI : MonoBehaviour
 {
  
-<<<<<<< Updated upstream
-    public void AITurn(bool IsPlayerTurn)
-    {
-        Debug.Log("AI takes its turn");
-        IsPlayerTurn = false;
-=======
+
     public void AITurn(List<GameObject> PlayerUnits, List<GameObject> EnemyUnits)
     {
         for (int i = 0; i < EnemyUnits.Count; i++)
@@ -19,7 +14,7 @@ public class AI : MonoBehaviour
             FindClosestUnit(PlayerUnits, EnemyUnits[i]);
         }
 
->>>>>>> Stashed changes
+
     }
 
     private int FindClosestUnit(List<GameObject> PlayerUnits, GameObject EnemyUnit)
@@ -40,9 +35,8 @@ public class AI : MonoBehaviour
             }
             return closestUnit;
 
-<<<<<<< Updated upstream
-=======
+
     }
->>>>>>> Stashed changes
+
 
 }
