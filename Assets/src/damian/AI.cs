@@ -5,11 +5,17 @@ using UnityEngine;
 public class AI : MonoBehaviour
 {
  
-    public void AITurn(bool IsPlayerTurn)
+    public void AITurn( List<GameObject> PlayerUnits, List<GameObject> EnemyUnits)
     {
-        Debug.Log("AI takes its turn");
-        IsPlayerTurn = false;
+
+        for (int i = 0; i < EnemyUnits.Count; i++)
+        {
+            Debug.Log(EnemyUnits[i]);
+        }
     }
+
+
+
 
 
 
