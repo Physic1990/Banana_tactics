@@ -17,7 +17,8 @@ public class CursorTest
 
         yield return null; // Wait for a frame to let any potential Start methods execute
     }
-    
+
+    //Tests that cursor moves in the anticipated direction
     [UnityTest]
     public IEnumerator CursorMovesRight()
     {
@@ -38,6 +39,7 @@ public class CursorTest
         // Check if the cursor has moved one unit to the right
         Assert.AreEqual(MoveRight, updatedPosition);
     }
+    //Tests that cursor moves in the anticipated direction
 
     [UnityTest]
     public IEnumerator CursorMovesLeft()
@@ -58,7 +60,7 @@ public class CursorTest
         Assert.AreEqual(moveLeft, updatedPosition);
     }
 
-
+    //Tests that cursor moves in the anticipated direction
     [UnityTest]
     public IEnumerator CursorMovesUp()
     {
@@ -78,6 +80,7 @@ public class CursorTest
         Assert.AreEqual(moveUp, updatedPosition);
     }
 
+    //Tests that cursor moves in the anticipated direction
     [UnityTest]
     public IEnumerator CursorMovesDown()
     {
