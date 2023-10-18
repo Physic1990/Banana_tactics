@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Audio
+  - Ai
+  - ActionEvent
+  - Cursor
+  - Grid
   layers:
   - Default
   - TransparentFX
@@ -47,4 +52,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Cursor
+    uniqueID: 2849044923
     locked: 0
