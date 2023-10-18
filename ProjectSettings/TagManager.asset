@@ -10,6 +10,10 @@ TagManager:
   - ActionEvent
   - Cursor
   - Grid
+  - Wall
+  - ball1000
+  - UIManager
+  - UnitSelectionMenu
   layers:
   - Default
   - TransparentFX
