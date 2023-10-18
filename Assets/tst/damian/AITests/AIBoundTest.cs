@@ -8,20 +8,21 @@ public class AIBoundTest
 {
     private List<GameObject> playerUnits = new List<GameObject>();
     private List<GameObject> enemyUnits = new List<GameObject>();
-    AI EnemyAI;
+    AI EnemyAI = new AI();
 
-    GameObject unit = new GameObject();
-    
+    GameObject unit = GameObject.FindWithTag("Enemy");
+    GameObject unit2 = GameObject.FindWithTag("Player");
+
     // A Test behaves as an ordinary method
     [Test]
     public void AIClostestUnitFound()
     {
-        unit.transform.position = new Vector2(12f, 12f);
-        enemyUnits.Add(unit);
         unit.transform.position = new Vector2(10f, 10f);
-        playerUnits.Add(unit);
-
-        Assert.AreEqual(EnemyAI.FindClosestUnit(playerUnits, enemyUnits[0]), 0);
+        enemyUnits.Add(unit);
+        unit2.transform.position = new Vector2(12f, 12f);
+        playerUnits.Add(unit2);
+        int target = EnemyAI.FindClosestUnit(playerUnits, enemyUnits[0]);
+        Assert.AreEqual(0, target);
         
     }
 
@@ -31,7 +32,7 @@ public class AIBoundTest
         unit.transform.position = new Vector2(12f, 12f);
         enemyUnits.Add(unit);
 
-        Assert.AreEqual(EnemyAI.FindClosestUnit(playerUnits, enemyUnits[0]), -1);
+        Assert.AreEqual(-1, EnemyAI.FindClosestUnit(playerUnits, enemyUnits[0]));
 
     }
 

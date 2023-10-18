@@ -157,7 +157,7 @@ public class GridManager : MonoBehaviour
     {
         if (_Delay == 400)
         {
-            aiManager.AITurn(true);
+            aiManager.AITurn(_playerUnits, _enemyUnits);
         }
 
         _Delay--;
