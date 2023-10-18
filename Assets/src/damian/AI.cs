@@ -22,8 +22,8 @@ public class AI : MonoBehaviour
         int j = 0;
         float Mindistance = Mathf.Infinity;
         float distance = 0f;
-        int closestUnit = -1;
         Debug.Log(PlayerUnits.Count);
+        int closestUnit = -1;
         for (j = 0; j < PlayerUnits.Count; j++)
         {
             distance = (Math.Abs(EnemyUnit.transform.position.x - PlayerUnits[j].transform.position.x) + Math.Abs(EnemyUnit.transform.position.y - PlayerUnits[j].transform.position.y));
