@@ -1,4 +1,4 @@
-1. Brief summary of all 3 tests (purpose, rational and how it relates to the game): My Stress Test creates a unit every frame until the framerate falls below 60 frames to see how many units could be created at once.
+1. Brief summary of all 3 tests (purpose, rational and how it relates to the game): My Stress Test creates a unit every frame until the framerate falls below 60 frames to see how many units could be created at once. My first Boundry test see if someoe can set a unit health above 100 which they shoudnt be able to and any value over should be set to 100. The second boundry test is the same idea but for any value below zero.
 
 
 2. Brief summary of work done on the game in the last 10 days (can I show it in the demo, are you on schedule?): I added more changes to varibalies and cahnged things about calsses none of that work is done but it is in progress.
