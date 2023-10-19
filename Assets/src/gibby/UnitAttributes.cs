@@ -14,12 +14,15 @@ public class UnitAttributes : MonoBehaviour
     public bool hasActed = false;
 
     int health;
+    private int minHealth = 0;
+    private int maxHealth = 100;
     private int movement;
     private int attackRange;
     private double attackCritChance;
     private double attackHitChance;
     private int attackDamage;
     private int attackDamageCrit;
+
 
     string attack1 = "Punch";
 
@@ -32,9 +35,13 @@ public class UnitAttributes : MonoBehaviour
         if (whatClass == "Warrior")
         {
             SetWarrior();
-        } else if (whatClass == "Gunslinger") {
+        } 
+        else if (whatClass == "Gunslinger") 
+        {
             SetGunSlinger();
-        } else {
+        } 
+        else 
+        {
             //defult is warrior if wrong string or none had been entered
             SetWarrior();
         }
@@ -42,7 +49,7 @@ public class UnitAttributes : MonoBehaviour
 
     void SetWarrior()
     {
-        health = 50;
+        health = 100;
         movement = 2;
         attack1 = "Punch";
         SetAttacks();
@@ -50,7 +57,7 @@ public class UnitAttributes : MonoBehaviour
 
     void SetGunSlinger()
     {
-        health = 40;
+        health = 100;
         movement = 3;
         attack1 = "Shoot";
         SetAttacks();
@@ -66,13 +73,17 @@ public class UnitAttributes : MonoBehaviour
             attackDamage = 5;
             attackDamageCrit = attackDamage * 2;
 
-        } else if (attack1 == "Shoot") {
+        } 
+        else if (attack1 == "Shoot") 
+        {
             attackCritChance = 0.1;
             attackHitChance = 0.7;
             attackRange = 2;
             attackDamage = 6;
             attackDamageCrit = attackDamage * 2;
-        } else {
+        } 
+        else 
+        {
             attack1 = "Punch";
             SetAttacks();
         }
@@ -83,22 +94,45 @@ public class UnitAttributes : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void Sethealth(int changeHealthAmount)
+    public void SetHealth(int changeHealthAmount)
     {
         //changes health to new health value
+        if(changeHealthAmount < 0)
+        {
+            changeHealthAmount = minHealth;
+        }
+        else if (changeHealthAmount > 0)
+        {
+            changeHealthAmount = maxHealth;
+        }
+
         health = changeHealthAmount;
     }
 
     public void DealDamage(int changeHealthAmount)
     {
         //subtract value from health
-        health -= changeHealthAmount;
+        if ((health -= changeHealthAmount) < minHealth)
+        {
+            health = minHealth;
+        }
+        else
+        {
+            health -= changeHealthAmount;
+        }
     }
 
     public void GainHealth(int changeHealthAmount)
     {
         //add value to health
-        health += changeHealthAmount;
+        if ((health += changeHealthAmount) > maxHealth)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health += changeHealthAmount;
+        }
     }
 
     public int GetHealth()
@@ -120,7 +154,9 @@ public class UnitAttributes : MonoBehaviour
         {
             //makes sprite gray
             GrayOut();
-        } if (!status) {
+        } 
+        if (!status) 
+        {
             //reverts back to og sprite color
             RevertToOriginalColor();
         }
