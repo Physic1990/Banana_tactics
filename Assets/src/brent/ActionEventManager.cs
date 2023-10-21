@@ -7,7 +7,7 @@ public class ActionEventManager : MonoBehaviour
 {
 
    [SerializeField] UnitAttributes unitAttributes;
-   //audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+   [SerializeField] UnitAttributes enemyUnitAttributes;
 
    void Awake()
    {
@@ -59,15 +59,25 @@ public class ActionEventManager : MonoBehaviour
    // will update the health with the corresponding damage yielde from a battle
    // basic weapon attack of 20 hp for a hit at a random attack of 60 perecent accuracy
 
-   public void attackBattle (){
+   public void attackBattle (GameObject unit, GameObject enemyUnit){
+
+   unitAttributes = unit.GetComponent<UnitAttributes>();
+   enemyUnitAttributes = enemyUnit.GetComponent<UnitAttributes>();
+
+   double [] playerAtt = unitAttributes.GetAttackStats();
+   double [] enemyAtt = enemyUnitAttributes.GetAttackStats();
+
    // player was hit
    if(Random.Range(0, 100) < 60){
-         player.health=player.health-enemy.attackDamage;
+         unitAttributes.DealDamage((int)enemyAtt[0]);
    }
       // enemy was hit
    if(Random.Range(0, 100) < 60){
-         enemy.health=enemy.health-player.attackDamage;
+         enemyUnitAttributes.DealDamage((int)playerAtt[0]);
    }
+   Debug.Log("Battle");
+   Debug.Log(unitAttributes.GetHealth());
+   Debug.Log(enemyUnitAttributes.GetHealth());
    }
 
    // Purpose-  will deliver damage to a player on movement by terrain
@@ -77,15 +87,11 @@ public class ActionEventManager : MonoBehaviour
       int terrain=5;
        //GameObject current = unit.GetComponent<UnitAttributes>;
        unitAttributes = unit.GetComponent<UnitAttributes>();
-        //Debug.Log(unit.GetHealth);
-        //GameObject unit = tile._unit;
-       
         // player was hit 
        if(Random.Range(0, 100) < 100){
-
-         unitAttributes.DealDamage(terrain);
-         
+         unitAttributes.DealDamage(terrain);  
       } 
+
       Debug.Log(unitAttributes.GetHealth());
    }
 
