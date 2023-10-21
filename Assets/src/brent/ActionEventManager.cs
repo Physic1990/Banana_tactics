@@ -74,14 +74,14 @@ public class ActionEventManager : MonoBehaviour
    // will update the health with the corresponding damage yielded from terrain
 
    public void doNothingTurn (GameObject unit){
-      int terrain=1;
+      int terrain=5;
        //GameObject current = unit.GetComponent<UnitAttributes>;
        unitAttributes = unit.GetComponent<UnitAttributes>();
         //Debug.Log(unit.GetHealth);
         //GameObject unit = tile._unit;
        
         // player was hit 
-       if(Random.Range(0, 100) < 50){
+       if(Random.Range(0, 100) < 100){
 
          unitAttributes.DealDamage(terrain);
          
