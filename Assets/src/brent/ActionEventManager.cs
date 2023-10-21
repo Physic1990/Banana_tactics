@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class ActionEventManager : MonoBehaviour
 {
-   //UnitAttributes unitAttributes;
-   //public GameObject attckingUnit;
+
+   [SerializeField] UnitAttributes unitAttributes;
+   //audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
    void Awake()
    {
-      //unitAttributes = unit.GetComponent<UnitAttributes>();
-   }
+      
+   } 
 
    // event running status
    private bool status;
@@ -73,17 +74,20 @@ public class ActionEventManager : MonoBehaviour
    // will update the health with the corresponding damage yielded from terrain
 
    public void doNothingTurn (GameObject unit){
-        // player was hit
-        Debug.Log("No Action taken");
-      /*if(Random.Range(0, 100) < 50){
-         player.health=player.health-terrain;
-      } */
+      int terrain=1;
+       //GameObject current = unit.GetComponent<UnitAttributes>;
+       unitAttributes = unit.GetComponent<UnitAttributes>();
+        //Debug.Log(unit.GetHealth);
+        //GameObject unit = tile._unit;
+       
+        // player was hit 
+       if(Random.Range(0, 100) < 50){
+
+         unitAttributes.DealDamage(terrain);
+         
+      } 
+      Debug.Log(unitAttributes.GetHealth());
    }
-   
-   // initialize 
-   /*public actionEvent(){
-      terrain = 50;
-   } */
 
    public int getUpdatePlayerHealth(){
       return player.health;
