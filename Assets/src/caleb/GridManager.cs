@@ -170,6 +170,35 @@ public class GridManager : MonoBehaviour
         return unit;
     }
 
+    //Gets all the adjacent game objects from adjancent tiles
+    public List<GameObject> GetAdjancentObjects(Tile tile)
+    {
+        float x = tile.transform.position.x;
+        float y = tile.transform.position.y;
+        List<GameObject> Units = new List<GameObject>();
+        Tile temp = GetTileAtPosition(new Vector2(x, y + 1));
+        BuildAdjList(Units, temp);
+        temp = GetTileAtPosition(new Vector2(x + 1, y));
+        BuildAdjList(Units, temp);
+        temp = GetTileAtPosition(new Vector2(x, y - 1));
+        BuildAdjList(Units, temp);
+        temp = GetTileAtPosition(new Vector2(x - 1, y));
+        BuildAdjList(Units, temp);
+        return Units;
+    }
+
+    //Used to build the list of adjacent units
+    public void BuildAdjList(List<GameObject> Units, Tile tile)
+    {
+        if (tile != null)
+        {
+            if (tile._occupied)
+            {
+                Units.Add(tile._unit);
+            }
+        }
+    }
+
     //These two functions allow for other scripts to access the private _height and _width variables of grid manager
     public int Height
     {
@@ -185,15 +214,13 @@ public class GridManager : MonoBehaviour
                        Cursor and Player Input Functions
     ************************************************************************/
 
-    //This function is the lifeblood of the cursor and handles all aspects and function calls related to the cursor (both moving ad selection)
+    //This function is the lifeblood of the cursor and handles all aspects and function calls related to the cursor (both moving and selection)
     private void CursorControl()
     {
         //increments the time which will allow the cursor to act
         _cursorTimer++;
-        //if the cursor can act (meaning enough frames have passed since the last action
         if (_cursorTimer > _cursorDelay)
         {
-            //create a temporary tile to store the current _cursorTile's information
             Tile temp = _cursorTile;
             //Updates the cursorTile's position according to the player's inputs
             _cursorTile = TakePlayerInput();
@@ -206,7 +233,6 @@ public class GridManager : MonoBehaviour
             if (_cursorTile != temp)
             {
                 audioManager.PlaySFX(audioManager.cursorMove);
-                //resets timer on when player action can be taken again
                 _cursorTimer = 0;
             }
         }
@@ -291,7 +317,7 @@ public class GridManager : MonoBehaviour
             {
                 _moveToTile = _cursorTile;
                 //checks that there's not already an object on the tile
-                if (!_moveToTile._occupied)
+                if (!_moveToTile._occupied && ValidMove())
                 {
                     //Assigns player unit to new tile and removes them from the old tile. Dehighlight all non-cursor tiles
                     _moveToTile.AssignUnit(_selectedTile._unit);
@@ -300,8 +326,16 @@ public class GridManager : MonoBehaviour
                     _selectedTile.TurnOffHighlight();
                     audioManager.PlaySFX(audioManager.placed);
 
-                    //Allows the Player to take an action in this new spot
-                    actionEvent.doNothingTurn(_moveToTile._unit);
+                    //Allows the Player to take an action in this new spot (ACTION EVENT MANAGER)
+                    List<GameObject> adjUnits = GetAdjancentObjects(_moveToTile);
+                    if(adjUnits.Count > 0)
+                    {
+                        actionEvent.attackBattle(_moveToTile._unit, adjUnits[0]);
+                    }
+                    else
+                    {
+                        actionEvent.doNothingTurn(_moveToTile._unit);
+                    }
                     UpdateActed(_moveToTile._unit, true);
 
                 }
@@ -323,8 +357,24 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public bool ValidMove()
+    {
+        float fromX = _selectedTile.transform.position.x;
+        float fromY = _selectedTile.transform.position.y;
+        float toX = _moveToTile.transform.position.x;
+        float toY = _moveToTile.transform.position.y;
+        float distance = (Math.Abs(fromX-toX) + Math.Abs(fromY-toY));
+        //Gets the movement state of the selected unit
+        float movement = _selectedTile._unit.GetComponent<UnitAttributes>().GetMovement();
+        if(distance <= movement)
+        {
+            return true;
+        }
+        return false;
+    }
+
     /*************************************************************************
-                         Turn and Action Control Functions
+                         Turn and Acted Control Functions
     ************************************************************************/
 
     //Checks to see if all Player units have acted or not
