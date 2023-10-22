@@ -118,7 +118,7 @@ public class ActionEventManager : MonoBehaviour
    // units action type: when they do not want to do nothing but move, will suffer terrain damage
    public void doNothingTurn (GameObject unit){
       // temporay terrain damage, must later update with a tile
-      int terrain=0;
+      int terrain=5;
       //get units data
       unitAttributes = unit.GetComponent<UnitAttributes>();
       // units get terrain damage
