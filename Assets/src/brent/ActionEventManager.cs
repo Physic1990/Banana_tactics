@@ -79,47 +79,53 @@ public class ActionEventManager : MonoBehaviour
       player.attackRange=(int)playerAtt[1];
       enemy.attackRange=(int)enemyAtt[1];
       // intialize attributes for 1st attack hit chance probability
-      player.attackHitChance=(int)playerAtt[2];
-      enemy.attackHitChance=(int)enemyAtt[2];
+      player.attackHitChance=(int)(playerAtt[2]*100);
+      enemy.attackHitChance=(int)(enemyAtt[2]*100);
       // intialize attributes for probality of bonus critical attack
-      player.attackCritChance=(int)playerAtt[3];
-      enemy.attackCritChance=(int)enemyAtt[3];
+      player.attackCritChance=(int)(playerAtt[3]*100);
+      enemy.attackCritChance=(int)(enemyAtt[3]*100);
       // intialize attributes for damage of critical hit attack
-      player.attackDamageCrit=(int)playerAtt[4];
-      enemy.attackDamageCrit=(int)enemyAtt[4];
+      player.attackDamageCrit=(int)(playerAtt[4]);
+      enemy.attackDamageCrit=(int)(enemyAtt[4]);
 
 
       // player was hit
-      if(Random.Range(0, 100) < (enemy.attackHitChance*100)){
+      if(Random.Range(0, 100) < enemy.attackHitChance){
          unitAttributes.DealDamage(enemy.attackDamage);
          // critical hit 
-         if(Random.Range(0, 100) < (enemy.attackCritChance*100)){
+         if(Random.Range(0, 100) < (enemy.attackCritChance)){
+            Debug.Log("enemy hit critical");
          unitAttributes.DealDamage(enemy.attackDamageCrit);
          }
       }
       // enemy was hit
-      if(Random.Range(0, 100) < (player.attackHitChance*100)){
+      if(Random.Range(0, 80) < player.attackHitChance){
          enemyUnitAttributes.DealDamage(player.attackDamage);
-         // critical hit 
-         if(Random.Range(0, 100) < (player.attackCritChance*100)){
-         unitAttributes.DealDamage(player.attackDamageCrit);
+         // critical hit
+         if(Random.Range(0, 80) < (player.attackCritChance)){
+            enemyUnitAttributes.DealDamage(player.attackDamageCrit);
+            Debug.Log("player hit critical");
          }
       }
-      Debug.Log("Battle");
+      Debug.Log("Player: After Battle");
       Debug.Log(unitAttributes.GetHealth());
+      Debug.Log("Enemy: After Battle");
       Debug.Log(enemyUnitAttributes.GetHealth());
+      Debug.Log(enemy.attackHitChance);
+      Debug.Log(enemy.attackCritChance);
    }
 
    // units action type: when they do not want to do nothing but move, will suffer terrain damage
    public void doNothingTurn (GameObject unit){
       // temporay terrain damage, must later update with a tile
-      int terrain=5;
+      int terrain=0;
       //get units data
       unitAttributes = unit.GetComponent<UnitAttributes>();
       // units get terrain damage
       if(Random.Range(0, 100) < 100){
          unitAttributes.DealDamage(terrain);  
       } 
+      Debug.Log("Move");
       Debug.Log(unitAttributes.GetHealth());
    }
 
