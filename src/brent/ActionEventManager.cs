@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class ActionEventManager : MonoBehaviour
 {
-   //UnitAttributes unitAttributes;
-   //public GameObject attckingUnit;
+   // unit's data
+   [SerializeField] UnitAttributes unitAttributes;
+   [SerializeField] UnitAttributes enemyUnitAttributes;
 
    void Awake()
    {
-      //unitAttributes = unit.GetComponent<UnitAttributes>();
-   }
+      
+   } 
 
    // event running status
    private bool status;
@@ -26,14 +26,18 @@ public class ActionEventManager : MonoBehaviour
    private class playerAttributes{
       public int health;
       public int attackDamage;
-      public double attackRange;
-      public double attackCritChance;
-      public double attackHitChance;
-      public double attackDamageCrit;
-      
+      public int attackRange;
+      public int attackCritChance;
+      public int attackHitChance;
+      public int attackDamageCrit;
+      // default attributes
       public playerAttributes(){
          health = 100;
-         attackDamage = 50;
+         attackDamage = 0;
+         attackRange = 0;
+         attackCritChance = 0;
+         attackHitChance = 0;
+         attackDamageCrit = 0;
       }
    }
 
@@ -41,56 +45,112 @@ public class ActionEventManager : MonoBehaviour
    private class enemyAttributes{
       public int health;
       public int attackDamage;
-      public double attackRange;
-      public double attackCritChance;
-      public double attackHitChance;
-      public double attackDamageCrit;
-
+      public int attackRange;
+      public int attackCritChance;
+      public int attackHitChance;
+      public int attackDamageCrit;
+      // default attributes
       public enemyAttributes(){
          health = 100;
-         attackDamage = 50;
+         attackDamage = 0;
+         attackRange = 0;
+         attackCritChance = 0;
+         attackHitChance = 0;
+         attackDamageCrit = 0;
       }
    }
 
-   // Purpose-  will deliver damage of a player and enemy battle
-   // arguments- playerHP - health of the player
-   //            enemyHP - health of the enemy
-   // will update the health with the corresponding damage yielde from a battle
-   // basic weapon attack of 20 hp for a hit at a random attack of 60 perecent accuracy
+   // units action type: when they engage an enemy for battle
+   public void attackBattle (GameObject unit, GameObject enemyUnit){
+      // get players data
+      unitAttributes = unit.GetComponent<UnitAttributes>();
+      // get enemy data
+      enemyUnitAttributes = enemyUnit.GetComponent<UnitAttributes>();
+      // get unit's attributes
+      double [] playerAtt = unitAttributes.GetAttackStats();
+      double [] enemyAtt = enemyUnitAttributes.GetAttackStats();
+      // intialize attributes health
+      player.health=unitAttributes.GetHealth();
+      enemy.health=enemyUnitAttributes.GetHealth();
+      // intialize attributes for damage of attack
+      player.attackDamage=(int)playerAtt[0];
+      enemy.attackDamage=(int)enemyAtt[0];
+      // intialize attributes for damage of attack
+      player.attackRange=(int)playerAtt[1];
+      enemy.attackRange=(int)enemyAtt[1];
+      // intialize attributes for 1st attack hit chance probability
+      player.attackHitChance=(int)playerAtt[2];
+      enemy.attackHitChance=(int)enemyAtt[2];
+      // intialize attributes for probality of bonus critical attack
+      player.attackCritChance=(int)playerAtt[3];
+      enemy.attackCritChance=(int)enemyAtt[3];
+      // intialize attributes for damage of critical hit attack
+      player.attackDamageCrit=(int)playerAtt[4];
+      enemy.attackDamageCrit=(int)enemyAtt[4];
 
-   public void attackBattle (){
-   // player was hit
-   if(Random.Range(0, 100) < 60){
-         player.health=player.health-enemy.attackDamage;
-   }
+
+      // player was hit
+      if(Random.Range(0, 100) < (enemy.attackHitChance*100)){
+         unitAttributes.DealDamage(enemy.attackDamage);
+         // critical hit 
+         if(Random.Range(0, 100) < (enemy.attackCritChance*100)){
+         unitAttributes.DealDamage(enemy.attackDamageCrit);
+         }
+      }
       // enemy was hit
-   if(Random.Range(0, 100) < 60){
-         enemy.health=enemy.health-player.attackDamage;
-   }
+      if(Random.Range(0, 100) < (player.attackHitChance*100)){
+         enemyUnitAttributes.DealDamage(player.attackDamage);
+         // critical hit 
+         if(Random.Range(0, 100) < (player.attackCritChance*100)){
+         unitAttributes.DealDamage(player.attackDamageCrit);
+         }
+      }
+      Debug.Log("Battle");
+      Debug.Log(unitAttributes.GetHealth());
+      Debug.Log(enemyUnitAttributes.GetHealth());
    }
 
-   // Purpose-  will deliver damage to a player on movement by terrain
-   // will update the health with the corresponding damage yielded from terrain
-
+   // units action type: when they do not want to do nothing but move, will suffer terrain damage
    public void doNothingTurn (GameObject unit){
-        // player was hit
-        Debug.Log("No Action taken");
-      /*if(Random.Range(0, 100) < 50){
-         player.health=player.health-terrain;
-      } */
-   }
-   
-   // initialize 
-   /*public actionEvent(){
-      terrain = 50;
-   } */
-
-   public int getUpdatePlayerHealth(){
-      return player.health;
+      // temporay terrain damage, must later update with a tile
+      int terrain=5;
+      //get units data
+      unitAttributes = unit.GetComponent<UnitAttributes>();
+      // units get terrain damage
+      if(Random.Range(0, 100) < 100){
+         unitAttributes.DealDamage(terrain);  
+      } 
+      Debug.Log(unitAttributes.GetHealth());
    }
 
-   public int getUpdateEnemyHealth(){
-      return enemy.health;
+   // Caleb use to eliminate a Unit from the game
+   // get the current update of any unit health on the game board
+   public int getUpdateUnitHealth(GameObject unit){
+      // get current unit attributes
+      unitAttributes = unit.GetComponent<UnitAttributes>();
+      return unitAttributes.GetHealth();
+   }
+
+   // do not use
+   // used for testing: player health during the event, health of internal data structure
+   public int getPlayerEventHealth(){
+      return(player.health);
+   }
+
+   // do not use
+   // used for testing: enemy health during the event, health of internal data structure
+   public int getEnemyEventHealth(){
+      return(enemy.health);
+   }
+
+   // set a temporary data structure for player health
+   public void setPlayerHealth(int hp){
+      player.health = hp;
+   }
+
+   // set a temporary data structure for enemy health
+   public void setEnemyHealth(int hp){
+      enemy.health = hp;
    }
 }
 
