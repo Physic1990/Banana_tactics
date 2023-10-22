@@ -7,6 +7,7 @@ public class ActionEventManager : MonoBehaviour
    // unit's data
    [SerializeField] UnitAttributes unitAttributes;
    [SerializeField] UnitAttributes enemyUnitAttributes;
+   [SerializeField] UnitAttributes allyUnitAttributes;
 
    void Awake()
    {
@@ -21,6 +22,7 @@ public class ActionEventManager : MonoBehaviour
    private int terrain;
    private playerAttributes player = new playerAttributes();
    private enemyAttributes  enemy = new enemyAttributes();
+   private allyAttributes  ally = new allyAttributes();
 
    //player attributes
    private class playerAttributes{
@@ -30,6 +32,7 @@ public class ActionEventManager : MonoBehaviour
       public int attackCritChance;
       public int attackHitChance;
       public int attackDamageCrit;
+      public int healIncrease;
       // default attributes
       public playerAttributes(){
          health = 100;
@@ -38,6 +41,8 @@ public class ActionEventManager : MonoBehaviour
          attackCritChance = 0;
          attackHitChance = 0;
          attackDamageCrit = 0;
+         healIncrease = 0;
+         healIncrease = 0;
       }
    }
 
@@ -49,6 +54,7 @@ public class ActionEventManager : MonoBehaviour
       public int attackCritChance;
       public int attackHitChance;
       public int attackDamageCrit;
+      public int healIncrease;
       // default attributes
       public enemyAttributes(){
          health = 100;
@@ -57,6 +63,28 @@ public class ActionEventManager : MonoBehaviour
          attackCritChance = 0;
          attackHitChance = 0;
          attackDamageCrit = 0;
+         healIncrease = 0;
+      }
+   }
+
+      //ally attributes
+   private class allyAttributes{
+      public int health;
+      public int attackDamage;
+      public int attackRange;
+      public int attackCritChance;
+      public int attackHitChance;
+      public int attackDamageCrit;
+      public int healIncrease;
+      // default attributes
+      public allyAttributes(){
+         health = 100;
+         attackDamage = 0;
+         attackRange = 0;
+         attackCritChance = 0;
+         attackHitChance = 0;
+         attackDamageCrit = 0;
+         healIncrease = 0;
       }
    }
 
@@ -115,10 +143,30 @@ public class ActionEventManager : MonoBehaviour
       Debug.Log(enemy.attackCritChance);
    }
 
+
+   // Action Event: heals a hurt unit on players turn
+   // unit - is the player that will heal a unit
+   // hurtUnit - is the unit that needs to be healed
+   public void healAlly (GameObject unit, GameObject hurtUnit){
+      // get players data
+      unitAttributes = unit.GetComponent<UnitAttributes>();
+      // get ally data
+      allyUnitAttributes = hurtUnit.GetComponent<UnitAttributes>();
+      // get unit's attributes
+      double [] playerAtt = unitAttributes.GetAttackStats();
+      double [] allyAtt = allyUnitAttributes.GetAttackStats();
+
+      // dummy variable for healling 
+      player.healIncrease = 15; // must change from Gibbys data
+      // heal ally
+      allyUnitAttributes.GainHealth(player.healIncrease);
+   }
+
+
    // units action type: when they do not want to do nothing but move, will suffer terrain damage
    public void doNothingTurn (GameObject unit){
       // temporay terrain damage, must later update with a tile
-      int terrain=5;
+      int terrain=0;
       //get units data
       unitAttributes = unit.GetComponent<UnitAttributes>();
       // units get terrain damage
