@@ -2953,7 +2953,6 @@ GameObject:
   - component: {fileID: 1573880848}
   - component: {fileID: 1573880847}
   - component: {fileID: 1573880849}
-  - component: {fileID: 1573880850}
   m_Layer: 0
   m_Name: Roy
   m_TagString: Player
@@ -3044,20 +3043,6 @@ MonoBehaviour:
   IsPlayer: 1
   IsEnemy: 0
   hasActed: 0
---- !u!114 &1573880850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1573880846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53d132192cf48d4db8ab3ac3ee940d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killUnit: 0
-  flame: {fileID: 0}
 --- !u!1 &1667519113
 GameObject:
   m_ObjectHideFlags: 0
