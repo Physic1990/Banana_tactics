@@ -23,10 +23,11 @@ public class UnitAttributes : MonoBehaviour
     private int attackDamage;
     private int attackDamageCrit;
 
-
     string attack1 = "Punch";
+    string attack2 = "Punch";
 
-    double[] attackValues = new double[5];
+    double[] attackValuesOne = new double[5];
+    double[] attackValuesTwo = new double[5];
 
     ArrayList stats = new ArrayList(8);
     void SetClassStats()
@@ -52,7 +53,8 @@ public class UnitAttributes : MonoBehaviour
         health = 100;
         movement = 2;
         attack1 = "Punch";
-        SetAttacks();
+        attack2 = "Punch";
+        //SetAttacks();
     }
 
     void SetGunSlinger()
@@ -60,12 +62,13 @@ public class UnitAttributes : MonoBehaviour
         health = 100;
         movement = 3;
         attack1 = "Shoot";
-        SetAttacks();
+        attack2 = "Shoot";
+        //SetAttacks();
     }
 
-    void SetAttacks()
+    void SetAttacks(string attack)
     {
-        if (attack1 == "Punch")
+        if (attack == "Punch")
         {
             attackCritChance = 0.2;
             attackHitChance = 0.8;
@@ -74,7 +77,7 @@ public class UnitAttributes : MonoBehaviour
             attackDamageCrit = attackDamage * 2;
 
         } 
-        else if (attack1 == "Shoot") 
+        else if (attack == "Shoot") 
         {
             attackCritChance = 0.1;
             attackHitChance = 0.7;
@@ -84,7 +87,7 @@ public class UnitAttributes : MonoBehaviour
         } 
         else 
         {
-            attack1 = "Punch";
+            attack = "Punch";
             SetAttacks();
         }
     }
@@ -175,15 +178,28 @@ public class UnitAttributes : MonoBehaviour
         return attack1;
     }
 
-    public double[] GetAttackStats()
+    public double[] GetAttackOneStats()
     {
+        SetAttacks(attack1); //Sets the current value based on which one you are asking for
         //order in which you get the stats
-        attackValues[0] = attackDamage;
-        attackValues[1] = attackRange;
-        attackValues[2] = attackHitChance;
-        attackValues[3] = attackCritChance;
-        attackValues[4] = attackDamageCrit;
-        return attackValues;
+        attackValuesOne[0] = attackDamage;
+        attackValuesOne[1] = attackRange;
+        attackValuesOne[2] = attackHitChance;
+        attackValuesOne[3] = attackCritChance;
+        attackValuesOne[4] = attackDamageCrit;
+        return attackValuesOne;
+    }
+
+    public double[] GetAttackTwoStats()
+    {
+        SetAttacks(attack2); //Sets the current value based on which one you are asking for
+        //order in which you get the stats
+        attackValuesTwo[0] = attackDamage;
+        attackValuesTwo[1] = attackRange;
+        attackValuesTwo[2] = attackHitChance;
+        attackValuesTwo[3] = attackCritChance;
+        attackValuesTwo[4] = attackDamageCrit;
+        return attackValuesTwo;
     }
 
     private void GrayOut()
