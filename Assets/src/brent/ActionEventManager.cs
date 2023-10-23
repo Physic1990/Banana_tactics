@@ -8,6 +8,9 @@ public class ActionEventManager : MonoBehaviour
    [SerializeField] UnitAttributes unitAttributes;
    [SerializeField] UnitAttributes enemyUnitAttributes;
    [SerializeField] UnitAttributes allyUnitAttributes;
+   [SerializeField] DeathAnimation deathAnimationUnit;
+   [SerializeField] DeathAnimation deathAnimationEnemy;
+   
 
    void Awake()
    {
@@ -88,12 +91,18 @@ public class ActionEventManager : MonoBehaviour
       }
    }
 
+
+
    // units action type: when they engage an enemy for battle
    public void attackBattle (GameObject unit, GameObject enemyUnit){
       // get players data
       unitAttributes = unit.GetComponent<UnitAttributes>();
+      deathAnimationUnit = unit.GetComponent<DeathAnimation>();
       // get enemy data
       enemyUnitAttributes = enemyUnit.GetComponent<UnitAttributes>();
+      deathAnimationEnemy = unit.GetComponent<DeathAnimation>();
+
+
       // get unit's attributes
       double [] playerAtt = unitAttributes.GetAttackStats();
       double [] enemyAtt = enemyUnitAttributes.GetAttackStats();
@@ -142,6 +151,7 @@ public class ActionEventManager : MonoBehaviour
       Debug.Log("Enemy attack chance and crit chance");
       Debug.Log(enemy.attackHitChance);
       Debug.Log(enemy.attackCritChance);
+      
    }
 
 
@@ -183,6 +193,10 @@ public class ActionEventManager : MonoBehaviour
    public int getUpdateUnitHealth(GameObject unit){
       // get current unit attributes
       unitAttributes = unit.GetComponent<UnitAttributes>();
+      // Animation Unit Death
+      if(unitAttributes.GetHealth()<=0){
+         deathAnimationUnit.killAnimation();
+      }
       return unitAttributes.GetHealth();
    }
 
