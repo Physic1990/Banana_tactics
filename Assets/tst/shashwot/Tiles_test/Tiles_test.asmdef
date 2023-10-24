@@ -1,0 +1,6 @@
+{
+    "name": "Tiles_test",
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}
