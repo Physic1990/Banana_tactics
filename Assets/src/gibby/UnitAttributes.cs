@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnitAttributes : MonoBehaviour
 {
-    public string whatClass = "Warrior";
+    public string whatClass;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
@@ -28,8 +28,8 @@ public class UnitAttributes : MonoBehaviour
 
     double[] attackValuesOne = new double[5];
     double[] attackValuesTwo = new double[5];
+    string[] attackNames = new string[2];
 
-    ArrayList stats = new ArrayList(8);
     void SetClassStats()
     {
         //checks what class unit has been set too
@@ -52,8 +52,8 @@ public class UnitAttributes : MonoBehaviour
     {
         health = 100;
         movement = 2;
-        attack1 = "Punch";
-        attack2 = "Punch";
+        attack1 = "Banana Slam";
+        attack2 = "Banana Slam";
         //SetAttacks();
     }
 
@@ -68,7 +68,7 @@ public class UnitAttributes : MonoBehaviour
 
     void SetAttacks(string attack)
     {
-        if (attack == "Punch")
+        if (attack == "Banana Slam")
         {
             attackCritChance = 0.2;
             attackHitChance = 0.8;
@@ -87,7 +87,7 @@ public class UnitAttributes : MonoBehaviour
         } 
         else 
         {
-            attack = "Punch";
+            attack = "Banana Slam";
             SetAttacks();
         }
     }
@@ -200,6 +200,14 @@ public class UnitAttributes : MonoBehaviour
         attackValuesTwo[3] = attackCritChance;
         attackValuesTwo[4] = attackDamageCrit;
         return attackValuesTwo;
+    }
+
+    public string[] GetAttackNames()
+    {
+        //sets attacks string names in order
+        attackNames[0] = attack1;
+        attackNames[1] = attack2;
+        return attackNames;
     }
 
     private void GrayOut()
