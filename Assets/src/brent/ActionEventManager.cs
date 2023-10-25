@@ -11,11 +11,32 @@ public class ActionEventManager : MonoBehaviour
    [SerializeField] DeathAnimation deathAnimationUnit;
    [SerializeField] DeathAnimation deathAnimationEnemy;
    
+   // Singleton Template
+   private static ActionEventManager instance; // = new ActionEventManager();
+   private static readonly object padlock = new object();
+
+   private ActionEventManager(){}
+   public static ActionEventManager Instance
+   {
+      get{return instance;}
+   }
 
    void Awake()
    {
+     
+         lock(padlock)
+         {
+            if(instance == null){
+               instance=this;
+            }
+         }
       
    } 
+
+   void Update(){
+   }
+
+
 
    // event running status
    private bool status;
@@ -136,21 +157,25 @@ public class ActionEventManager : MonoBehaviour
          }
       }
       // enemy was hit
-      if(Random.Range(0, 80) < player.attackHitChance){
+      if(Random.Range(0, 100) < player.attackHitChance){
          enemyUnitAttributes.DealDamage(player.attackDamage);
          // critical hit
-         if(Random.Range(0, 80) < (player.attackCritChance)){
+         if(Random.Range(0, 100) < (player.attackCritChance)){
             enemyUnitAttributes.DealDamage(player.attackDamageCrit);
             Debug.Log("player hit critical");
          }
       }
       Debug.Log("Player: After Battle");
       Debug.Log(unitAttributes.GetHealth());
-      Debug.Log("Enemy: After Battle");
-      Debug.Log(enemyUnitAttributes.GetHealth());
-      Debug.Log("Enemy attack chance and crit chance");
-      Debug.Log(enemy.attackHitChance);
-      Debug.Log(enemy.attackCritChance);
+      //Debug.Log("Enemy: After Battle");
+      //Debug.Log(enemyUnitAttributes.GetHealth());
+      //Debug.Log("Enemy attack chance and crit chance");
+      //Debug.Log(enemy.attackHitChance);
+      //Debug.Log(enemy.attackCritChance);
+
+      if(unitAttributes.GetHealth()<=0){
+         deathAnimationUnit.killAnimation();
+      }
       
    }
 
@@ -180,12 +205,17 @@ public class ActionEventManager : MonoBehaviour
       int terrain=5;
       //get units data
       unitAttributes = unit.GetComponent<UnitAttributes>();
+      deathAnimationUnit = unit.GetComponent<DeathAnimation>();
       // units get terrain damage
       if(Random.Range(0, 100) < 100){
          unitAttributes.DealDamage(terrain);  
       } 
       Debug.Log("Move");
       Debug.Log(unitAttributes.GetHealth());
+      // animate death
+      if(unitAttributes.GetHealth()<=0){
+         deathAnimationUnit.killAnimation();
+      }
    }
 
    // Caleb use to eliminate a Unit from the game
@@ -222,4 +252,3 @@ public class ActionEventManager : MonoBehaviour
       enemy.health = hp;
    }
 }
-
