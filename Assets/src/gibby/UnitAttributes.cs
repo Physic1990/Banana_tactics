@@ -88,7 +88,7 @@ public class UnitAttributes : MonoBehaviour
         else 
         {
             attack = "Banana Slam";
-            SetAttacks();
+            SetAttacks(attack);
         }
     }
 
@@ -176,6 +176,11 @@ public class UnitAttributes : MonoBehaviour
     {
         //return attack name
         return attack1;
+    }
+
+    public double[] GetAttackStats()
+    {
+        return GetAttackStats(attack1);
     }
 
     public double[] GetAttackOneStats()
