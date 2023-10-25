@@ -180,7 +180,7 @@ public class UnitAttributes : MonoBehaviour
 
     public double[] GetAttackStats()
     {
-        return GetAttackStats(attack1);
+        return GetAttackOneStats();
     }
 
     public double[] GetAttackOneStats()
