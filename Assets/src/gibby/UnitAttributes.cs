@@ -180,7 +180,12 @@ public class UnitAttributes : MonoBehaviour
 
     public double[] GetAttackStats()
     {
-        return GetAttackOneStats();
+        attackValuesOne[0] = 0;
+        attackValuesOne[1] = 0;
+        attackValuesOne[2] = 0;
+        attackValuesOne[3] = 0;
+        attackValuesOne[4] = 0;
+        return attackValuesOne;
     }
 
     public double[] GetAttackOneStats()
