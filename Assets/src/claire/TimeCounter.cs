@@ -7,15 +7,13 @@ using System;
 public class TimeCounter : MonoBehaviour
 {
     bool timeActive = false;
+    public bool countUp = true;
     public int startMinutes;
-    float currentTime; 
+    public float currentTime; 
     public Text currentTimeText;
 
     void Start()
     {
-        // Initializes the time.
-        currentTime = startMinutes * 60;
-
         // Starts the time when the game opens. 
         StartTime();
     }
@@ -25,23 +23,9 @@ public class TimeCounter : MonoBehaviour
         if (timeActive == true) 
         {
             // Increments the time up, can be switched to a countdown by changing the + to a -.
-            currentTime = currentTime - Time.deltaTime;
-
-            // If using a timer, it won't go to zero.
-            if (currentTime <= 0) 
-            {
-                timeActive = false; 
-                Start();
-                Debug.Log("Timer Finished!");
-            }
-
-            if (currentTime >= 5999) 
-            {
-                timeActive = false;
-                Start();
-                Debug.Log("Stopwatch exceeded maximum of 99:59");
-            }
+            IncrementTime();
         }
+
         // Formats the time into 00:00.
         TimeSpan time = TimeSpan.FromSeconds(currentTime);
         currentTimeText.text = time.ToString(@"mm\:ss");
@@ -50,6 +34,7 @@ public class TimeCounter : MonoBehaviour
     // Method to start the time.
     public void StartTime() 
     {
+        currentTime = startMinutes * 60;
         timeActive = true;
     }
 
@@ -58,4 +43,31 @@ public class TimeCounter : MonoBehaviour
     {
         timeActive = false;
     }
+
+    public void IncrementTime() 
+    {
+        if (countUp == true) 
+        {
+            currentTime = currentTime + Time.deltaTime;
+        } 
+        else 
+        {
+            currentTime = currentTime - Time.deltaTime;
+        }
+
+        if (currentTime >= 5999) 
+            {
+                timeActive = false;
+                startMinutes = 0;
+                StartTime();
+                Debug.Log("Stopwatch exceeded maximum of 99:59");
+            }
+        if (currentTime <= 0) 
+            {
+                timeActive = false; 
+                StartTime();
+                Debug.Log("Timer Finished!");
+            }
+    }
+
 }
