@@ -125,8 +125,8 @@ public class ActionEventManager : MonoBehaviour
 
 
       // get unit's attributes
-      double [] playerAtt = unitAttributes.GetAttackStats();
-      double [] enemyAtt = enemyUnitAttributes.GetAttackStats();
+      double [] playerAtt = unitAttributes.GetAttackOnetats();
+      double [] enemyAtt = enemyUnitAttributes.GetAttackOneStats();
       // intialize attributes health
       player.health=unitAttributes.GetHealth();
       enemy.health=enemyUnitAttributes.GetHealth();
@@ -189,8 +189,8 @@ public class ActionEventManager : MonoBehaviour
       // get ally data
       allyUnitAttributes = hurtUnit.GetComponent<UnitAttributes>();
       // get unit's attributes
-      double [] playerAtt = unitAttributes.GetAttackStats();
-      double [] allyAtt = allyUnitAttributes.GetAttackStats();
+      double [] playerAtt = unitAttributes.GetAttackOneStats();
+      double [] allyAtt = allyUnitAttributes.GetAttackOneStats();
 
       // dummy variable for healling 
       player.healIncrease = 15; // must change from Gibbys data
