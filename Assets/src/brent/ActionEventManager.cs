@@ -125,7 +125,7 @@ public class ActionEventManager : MonoBehaviour
 
 
       // get unit's attributes
-      double [] playerAtt = unitAttributes.GetAttackOnetats();
+      double [] playerAtt = unitAttributes.GetAttackOneStats();
       double [] enemyAtt = enemyUnitAttributes.GetAttackOneStats();
       // intialize attributes health
       player.health=unitAttributes.GetHealth();
