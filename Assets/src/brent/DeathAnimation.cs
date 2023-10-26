@@ -5,9 +5,19 @@ using UnityEngine;
 public class DeathAnimation : MonoBehaviour
 {
     
-   [SerializeField] bool killUnit = false;
+    bool killUnit = false;
 
     public Animator flame;
+    // subscribe to event
+    private void OnEnable()
+    {
+        ActionEventManager.OnDeath +=killAnimation;
+    }
+    // unsubscribe to an event
+    private void OnDisable()
+    {
+        ActionEventManager.OnDeath -=killAnimation;
+    }
 
     void Awake()
     {
@@ -27,6 +37,8 @@ public class DeathAnimation : MonoBehaviour
             flame.enabled = true;
         }
     }
+
+
 
     public void killAnimation(){
         killUnit=true;

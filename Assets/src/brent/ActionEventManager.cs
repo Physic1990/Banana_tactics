@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random=UnityEngine.Random;
 
 public class ActionEventManager : MonoBehaviour
 {
+   public static event Action OnDeath;
+
    // unit's data
    [SerializeField] UnitAttributes unitAttributes;
    [SerializeField] UnitAttributes enemyUnitAttributes;
@@ -174,7 +178,7 @@ public class ActionEventManager : MonoBehaviour
       //Debug.Log(enemy.attackCritChance);
 
       if(unitAttributes.GetHealth()<=0){
-         deathAnimationUnit.killAnimation();
+         OnDeath?.Invoke();
       }
       
    }
@@ -214,7 +218,7 @@ public class ActionEventManager : MonoBehaviour
       Debug.Log(unitAttributes.GetHealth());
       // animate death
       if(unitAttributes.GetHealth()<=0){
-         deathAnimationUnit.killAnimation();
+         OnDeath?.Invoke();
       }
    }
 
@@ -225,7 +229,7 @@ public class ActionEventManager : MonoBehaviour
       unitAttributes = unit.GetComponent<UnitAttributes>();
       // Animation Unit Death
       if(unitAttributes.GetHealth()<=0){
-         deathAnimationUnit.killAnimation();
+         OnDeath?.Invoke();
       }
       return unitAttributes.GetHealth();
    }
