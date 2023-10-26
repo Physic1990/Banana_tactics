@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-public class TileTests : Tile
+public class TileTests 
 {
     [Test]
     public void AssignUnit_SetsOccupied()
