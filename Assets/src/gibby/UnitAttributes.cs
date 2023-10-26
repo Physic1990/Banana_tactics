@@ -35,7 +35,7 @@ public class UnitAttributes : MonoBehaviour
         //checks what class unit has been set too
         if (whatClass == "Warrior")
         {
-            SetWarrior();
+            SetWarrior(); //calls these functions to set varibles to class specific traits
         } 
         else if (whatClass == "Gunslinger") 
         {
@@ -48,6 +48,7 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
+    //sets specofoc varibalies
     void SetWarrior()
     {
         health = 100;
@@ -57,6 +58,7 @@ public class UnitAttributes : MonoBehaviour
         //SetAttacks();
     }
 
+    //sets specofoc varibalies
     void SetGunSlinger()
     {
         health = 100;
@@ -66,6 +68,7 @@ public class UnitAttributes : MonoBehaviour
         //SetAttacks();
     }
 
+    //when called it will set all attacks stats based on what attack you are refrencing (in code it is called when people want the stats)
     void SetAttacks(string attack)
     {
         if (attack == "Banana Slam")
@@ -92,11 +95,13 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
+    //can be called to destroy the game object attached
     public void DestroyUnit()
     {
         Destroy(this.gameObject);
     }
 
+    //sets the healt values to a value between 0 and 100
     public void SetHealth(int changeHealthAmount)
     {
         //changes health to new health value
@@ -112,9 +117,10 @@ public class UnitAttributes : MonoBehaviour
         health = changeHealthAmount;
     }
 
+    //subtracts a value from health
     public void DealDamage(int changeHealthAmount)
     {
-        //subtract value from health
+        //subtract value from health making sure it cant go below min health
         if ((health -= changeHealthAmount) < minHealth)
         {
             health = minHealth;
@@ -125,9 +131,10 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
+    //adds value to health
     public void GainHealth(int changeHealthAmount)
     {
-        //add value to health
+        //add value to health making sure it cant go ove rthe max health
         if ((health += changeHealthAmount) > maxHealth)
         {
             health = maxHealth;
@@ -138,46 +145,21 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
+    //returns curret health value
     public int GetHealth()
     {
         //current health 
         return health;
     }
 
+    //returns how much the unit can move
     public int GetMovement()
     {
         //give how many tiles the unit can move
         return movement;
     }
 
-    public void SetActed(bool status)
-    {
-        hasActed = status;
-        if (status)
-        {
-            //makes sprite gray
-            GrayOut();
-        } 
-        if (!status) 
-        {
-            //reverts back to og sprite color
-            RevertToOriginalColor();
-        }
-    }
-
-    public bool HasActed()
-    {
-        //says if action has been done
-        return hasActed;
-
-    }
-
-    public string GetAttackName()
-    {
-        //return attack name
-        return attack1;
-    }
-
+    //Dummy Holder So Peoples Code does not return errors
     public double[] GetAttackStats()
     {
         attackValuesOne[0] = 0;
@@ -188,6 +170,7 @@ public class UnitAttributes : MonoBehaviour
         return attackValuesOne;
     }
 
+    //get the fist attack stats
     public double[] GetAttackOneStats()
     {
         SetAttacks(attack1); //Sets the current value based on which one you are asking for
@@ -200,6 +183,7 @@ public class UnitAttributes : MonoBehaviour
         return attackValuesOne;
     }
 
+    //get the second attack stats
     public double[] GetAttackTwoStats()
     {
         SetAttacks(attack2); //Sets the current value based on which one you are asking for
@@ -212,6 +196,7 @@ public class UnitAttributes : MonoBehaviour
         return attackValuesTwo;
     }
 
+    //gives both names in order in a string array
     public string[] GetAttackNames()
     {
         //sets attacks string names in order
@@ -220,6 +205,29 @@ public class UnitAttributes : MonoBehaviour
         return attackNames;
     }
 
+    //will set if the unit has taken theri attack action
+    public void SetActed(bool status)
+    {
+        hasActed = status;
+        if (status) //makes visual style that the unit has moved
+        {
+            //makes sprite gray
+            GrayOut();
+        }
+        if (!status)
+        {
+            //reverts back to og sprite color
+            RevertToOriginalColor();
+        }
+    }
+
+    //says if action has been done
+    public bool HasActed()
+    {
+        return hasActed;
+    }
+
+    //can gray out units
     private void GrayOut()
     {
         //get color
@@ -228,6 +236,7 @@ public class UnitAttributes : MonoBehaviour
         spriteRenderer.color = grayColor;
     }
 
+    //if grayed out this returns it to normal color
     private void RevertToOriginalColor()
     {
         //normal color set       
