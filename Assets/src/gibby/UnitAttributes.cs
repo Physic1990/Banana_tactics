@@ -35,13 +35,19 @@ public class UnitAttributes : MonoBehaviour
         //checks what class unit has been set too
         if (whatClass == "Warrior")
         {
+<<<<<<< HEAD
             SetWarrior(); //calls these functions to set varibles to class specific traits
         } 
         else if (whatClass == "Gunslinger") 
+=======
+            SetWarrior();
+        }
+        else if (whatClass == "Gunslinger")
+>>>>>>> ui-lofi
         {
             SetGunSlinger();
-        } 
-        else 
+        }
+        else
         {
             //defult is warrior if wrong string or none had been entered
             SetWarrior();
@@ -79,18 +85,22 @@ public class UnitAttributes : MonoBehaviour
             attackDamage = 5;
             attackDamageCrit = attackDamage * 2;
 
-        } 
-        else if (attack == "Shoot") 
+        }
+        else if (attack == "Shoot")
         {
             attackCritChance = 0.1;
             attackHitChance = 0.7;
             attackRange = 2;
             attackDamage = 6;
             attackDamageCrit = attackDamage * 2;
-        } 
-        else 
+        }
+        else
         {
+<<<<<<< HEAD
             attack = "Banana Slam";
+=======
+            attack = "Punch";
+>>>>>>> ui-lofi
             SetAttacks(attack);
         }
     }
@@ -105,7 +115,7 @@ public class UnitAttributes : MonoBehaviour
     public void SetHealth(int changeHealthAmount)
     {
         //changes health to new health value
-        if(changeHealthAmount < 0)
+        if (changeHealthAmount < 0)
         {
             changeHealthAmount = minHealth;
         }
@@ -162,12 +172,39 @@ public class UnitAttributes : MonoBehaviour
     //Dummy Holder So Peoples Code does not return errors
     public double[] GetAttackStats()
     {
+<<<<<<< HEAD
         attackValuesOne[0] = 0;
         attackValuesOne[1] = 0;
         attackValuesOne[2] = 0;
         attackValuesOne[3] = 0;
         attackValuesOne[4] = 0;
         return attackValuesOne;
+=======
+        hasActed = status;
+        if (status)
+        {
+            //makes sprite gray
+            GrayOut();
+        }
+        if (!status)
+        {
+            //reverts back to og sprite color
+            RevertToOriginalColor();
+        }
+    }
+
+    public bool HasActed()
+    {
+        //says if action has been done
+        return hasActed;
+
+    }
+
+    public string GetAttackName()
+    {
+        //return attack name
+        return attack1;
+>>>>>>> ui-lofi
     }
 
     //get the fist attack stats

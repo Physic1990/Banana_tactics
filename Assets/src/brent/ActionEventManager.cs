@@ -50,11 +50,12 @@ public class ActionEventManager : MonoBehaviour
    //private int playerHealth;
    private int terrain;
    private playerAttributes player = new playerAttributes();
-   private enemyAttributes  enemy = new enemyAttributes();
-   private allyAttributes  ally = new allyAttributes();
+   private enemyAttributes enemy = new enemyAttributes();
+   private allyAttributes ally = new allyAttributes();
 
    //player attributes
-   private class playerAttributes{
+   private class playerAttributes
+   {
       public int health;
       public int attackDamage;
       public int attackRange;
@@ -63,7 +64,8 @@ public class ActionEventManager : MonoBehaviour
       public int attackDamageCrit;
       public int healIncrease;
       // default attributes
-      public playerAttributes(){
+      public playerAttributes()
+      {
          health = 100;
          attackDamage = 0;
          attackRange = 0;
@@ -76,7 +78,8 @@ public class ActionEventManager : MonoBehaviour
    }
 
    // enemy attributes
-   private class enemyAttributes{
+   private class enemyAttributes
+   {
       public int health;
       public int attackDamage;
       public int attackRange;
@@ -85,7 +88,8 @@ public class ActionEventManager : MonoBehaviour
       public int attackDamageCrit;
       public int healIncrease;
       // default attributes
-      public enemyAttributes(){
+      public enemyAttributes()
+      {
          health = 100;
          attackDamage = 0;
          attackRange = 0;
@@ -96,8 +100,9 @@ public class ActionEventManager : MonoBehaviour
       }
    }
 
-      //ally attributes
-   private class allyAttributes{
+   //ally attributes
+   private class allyAttributes
+   {
       public int health;
       public int attackDamage;
       public int attackRange;
@@ -106,7 +111,8 @@ public class ActionEventManager : MonoBehaviour
       public int attackDamageCrit;
       public int healIncrease;
       // default attributes
-      public allyAttributes(){
+      public allyAttributes()
+      {
          health = 100;
          attackDamage = 0;
          attackRange = 0;
@@ -120,7 +126,8 @@ public class ActionEventManager : MonoBehaviour
 
 
    // units action type: when they engage an enemy for battle
-   public void attackBattle (GameObject unit, GameObject enemyUnit){
+   public void attackBattle(GameObject unit, GameObject enemyUnit)
+   {
       // get players data
       unitAttributes = unit.GetComponent<UnitAttributes>();
       deathAnimationUnit = unit.GetComponent<DeathAnimation>();
@@ -133,32 +140,34 @@ public class ActionEventManager : MonoBehaviour
       double [] playerAtt = unitAttributes.GetAttackOneStats();
       double [] enemyAtt = enemyUnitAttributes.GetAttackOneStats();
       // intialize attributes health
-      player.health=unitAttributes.GetHealth();
-      enemy.health=enemyUnitAttributes.GetHealth();
+      player.health = unitAttributes.GetHealth();
+      enemy.health = enemyUnitAttributes.GetHealth();
       // intialize attributes for damage of attack
-      player.attackDamage=(int)playerAtt[0];
-      enemy.attackDamage=(int)enemyAtt[0];
+      player.attackDamage = (int)playerAtt[0];
+      enemy.attackDamage = (int)enemyAtt[0];
       // intialize attributes for damage of attack
-      player.attackRange=(int)playerAtt[1];
-      enemy.attackRange=(int)enemyAtt[1];
+      player.attackRange = (int)playerAtt[1];
+      enemy.attackRange = (int)enemyAtt[1];
       // intialize attributes for 1st attack hit chance probability
-      player.attackHitChance=(int)(playerAtt[2]*100);
-      enemy.attackHitChance=(int)(enemyAtt[2]*100);
+      player.attackHitChance = (int)(playerAtt[2] * 100);
+      enemy.attackHitChance = (int)(enemyAtt[2] * 100);
       // intialize attributes for probality of bonus critical attack
-      player.attackCritChance=(int)(playerAtt[3]*100);
-      enemy.attackCritChance=(int)(enemyAtt[3]*100);
+      player.attackCritChance = (int)(playerAtt[3] * 100);
+      enemy.attackCritChance = (int)(enemyAtt[3] * 100);
       // intialize attributes for damage of critical hit attack
-      player.attackDamageCrit=(int)(playerAtt[4]);
-      enemy.attackDamageCrit=(int)(enemyAtt[4]);
+      player.attackDamageCrit = (int)(playerAtt[4]);
+      enemy.attackDamageCrit = (int)(enemyAtt[4]);
 
 
       // player was hit
-      if(Random.Range(0, 100) < enemy.attackHitChance){
+      if (Random.Range(0, 100) < enemy.attackHitChance)
+      {
          unitAttributes.DealDamage(enemy.attackDamage);
          // critical hit 
-         if(Random.Range(0, 100) < (enemy.attackCritChance)){
+         if (Random.Range(0, 100) < (enemy.attackCritChance))
+         {
             Debug.Log("enemy hit critical");
-         unitAttributes.DealDamage(enemy.attackDamageCrit);
+            unitAttributes.DealDamage(enemy.attackDamageCrit);
          }
       }
       // enemy was hit
@@ -191,7 +200,8 @@ public class ActionEventManager : MonoBehaviour
    // Action Event: heals a hurt unit on players turn
    // unit - is the player that will heal a unit
    // hurtUnit - is the unit that needs to be healed
-   public void healAlly (GameObject unit, GameObject hurtUnit){
+   public void healAlly(GameObject unit, GameObject hurtUnit)
+   {
       // get players data
       unitAttributes = unit.GetComponent<UnitAttributes>();
       // get ally data
@@ -208,16 +218,18 @@ public class ActionEventManager : MonoBehaviour
 
 
    // units action type: when they do not want to do nothing but move, will suffer terrain damage
-   public void doNothingTurn (GameObject unit){
+   public void doNothingTurn(GameObject unit)
+   {
       // temporay terrain damage, must later update with a tile
-      int terrain=5;
+      int terrain = 5;
       //get units data
       unitAttributes = unit.GetComponent<UnitAttributes>();
       deathAnimationUnit = unit.GetComponent<DeathAnimation>();
       // units get terrain damage
-      if(Random.Range(0, 100) < 100){
-         unitAttributes.DealDamage(terrain);  
-      } 
+      if (Random.Range(0, 100) < 100)
+      {
+         unitAttributes.DealDamage(terrain);
+      }
       Debug.Log("Move");
       Debug.Log(unitAttributes.GetHealth());
       // animate death
@@ -228,7 +240,8 @@ public class ActionEventManager : MonoBehaviour
 
    // Caleb use to eliminate a Unit from the game
    // get the current update of any unit health on the game board
-   public int getUpdateUnitHealth(GameObject unit){
+   public int getUpdateUnitHealth(GameObject unit)
+   {
       // get current unit attributes
       unitAttributes = unit.GetComponent<UnitAttributes>();
       // Animation Unit Death
@@ -240,23 +253,27 @@ public class ActionEventManager : MonoBehaviour
 
    // do not use
    // used for testing: player health during the event, health of internal data structure
-   public int getPlayerEventHealth(){
-      return(player.health);
+   public int getPlayerEventHealth()
+   {
+      return (player.health);
    }
 
    // do not use
    // used for testing: enemy health during the event, health of internal data structure
-   public int getEnemyEventHealth(){
-      return(enemy.health);
+   public int getEnemyEventHealth()
+   {
+      return (enemy.health);
    }
 
    // set a temporary data structure for player health
-   public void setPlayerHealth(int hp){
+   public void setPlayerHealth(int hp)
+   {
       player.health = hp;
    }
 
    // set a temporary data structure for enemy health
-   public void setEnemyHealth(int hp){
+   public void setEnemyHealth(int hp)
+   {
       enemy.health = hp;
    }
 }

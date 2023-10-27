@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/src/ben/UI/USS/MainMenuStyles.uss?fileID=7433441132597879392&amp;guid=64e50ecd9c1638b4ca1e2dbf968592fd&amp;type=3#MainMenuStyles" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgb(53, 53, 53); align-items: center; justify-content: center; height: auto; padding-top: 48px; padding-bottom: 48px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+        <ui:VisualElement name="Header" style="flex-grow: 0; height: auto; width: auto; align-items: center; justify-content: center; padding-bottom: 24px;">
+            <ui:Label tabindex="-1" text="Banana Tactics" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TitleText" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 104px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-center; height: auto; width: 417px; color: rgb(255, 255, 255);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Buttons" style="flex-grow: 1; align-items: stretch; justify-content: space-between; width: 33%;">
+            <ui:Button text="Play" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayButton" class="main-menu-button" />
+            <ui:Button text="Help" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HelpButton" class="main-menu-button" />
+            <ui:Button text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsButton" class="main-menu-button" />
+            <ui:Button text="Quit" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" class="main-menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
