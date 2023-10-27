@@ -7,6 +7,7 @@ using Random=UnityEngine.Random;
 public class ActionEventManager : MonoBehaviour
 {
    public static event Action OnDeath;
+   public static event Action OnEnemyDeath;
 
    // unit's data
    [SerializeField] UnitAttributes unitAttributes;
@@ -181,6 +182,9 @@ public class ActionEventManager : MonoBehaviour
          OnDeath?.Invoke();
       }
       
+      if(enemyUnitAttributes.GetHealth()<=100){
+         OnEnemyDeath?.Invoke();
+      }
    }
 
 

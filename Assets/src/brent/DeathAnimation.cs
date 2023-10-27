@@ -5,7 +5,7 @@ using UnityEngine;
 public class DeathAnimation : MonoBehaviour
 {
     
-    bool killUnit = false;
+    protected bool killUnit = false;
 
     public Animator flame;
     // subscribe to event
@@ -31,7 +31,7 @@ public class DeathAnimation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         if(killUnit == true){
             flame.enabled = true;
@@ -40,7 +40,7 @@ public class DeathAnimation : MonoBehaviour
 
 
 
-    public void killAnimation(){
+    public virtual void killAnimation(){
         killUnit=true;
     }
 }

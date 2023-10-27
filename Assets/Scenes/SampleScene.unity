@@ -508,8 +508,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 353.13385, y: 0}
-  m_SizeDelta: {x: 98.26772, y: 0}
+  m_AnchoredPosition: {x: 356.31973, y: 0}
+  m_SizeDelta: {x: 104.63946, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &386455175
 MonoBehaviour:
@@ -623,8 +623,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 331.13385, y: 0}
-  m_SizeDelta: {x: 534.2677, y: 0}
+  m_AnchoredPosition: {x: 334.31973, y: 0}
+  m_SizeDelta: {x: 540.63947, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &387164975
 MonoBehaviour:
@@ -2278,8 +2278,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 307.13385, y: 0}
-  m_SizeDelta: {x: 614.2677, y: 0}
+  m_AnchoredPosition: {x: 310.31973, y: 0}
+  m_SizeDelta: {x: 620.63947, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1166870850
 MonoBehaviour:
@@ -2813,7 +2813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 333.13385, y: 0}
+  m_AnchoredPosition: {x: 336.31973, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1433627334
@@ -3192,7 +3192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7bf938d68018643bb8af15ebc4afdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killUnit: 0
   flame: {fileID: 0}
 --- !u!95 &1573880851
 Animator:
@@ -3356,7 +3355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 307.13385, y: 0}
+  m_AnchoredPosition: {x: 310.31973, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1794977238
@@ -3608,6 +3607,8 @@ GameObject:
   - component: {fileID: 1973877400}
   - component: {fileID: 1973877399}
   - component: {fileID: 1973877401}
+  - component: {fileID: 1973877404}
+  - component: {fileID: 1973877405}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -3698,6 +3699,42 @@ MonoBehaviour:
   IsPlayer: 0
   IsEnemy: 1
   hasActed: 0
+--- !u!114 &1973877404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973877398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9f50a7158bb6f4ebac1c6974c7d7e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flame: {fileID: 1573880851}
+  killEnemyUnit: 0
+  deathAnimation: {fileID: 1973877404}
+--- !u!95 &1973877405
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973877398}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 29b9584b12ab61e4ca8a9447989cf669, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1989021639
 GameObject:
   m_ObjectHideFlags: 0
@@ -3816,7 +3853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 331.13385, y: 0}
+  m_AnchoredPosition: {x: 334.31973, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2054968480
