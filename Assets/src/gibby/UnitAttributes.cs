@@ -36,12 +36,12 @@ public class UnitAttributes : MonoBehaviour
         if (whatClass == "Warrior")
         {
             SetWarrior();
-        } 
-        else if (whatClass == "Gunslinger") 
+        }
+        else if (whatClass == "Gunslinger")
         {
             SetGunSlinger();
-        } 
-        else 
+        }
+        else
         {
             //defult is warrior if wrong string or none had been entered
             SetWarrior();
@@ -76,19 +76,19 @@ public class UnitAttributes : MonoBehaviour
             attackDamage = 5;
             attackDamageCrit = attackDamage * 2;
 
-        } 
-        else if (attack == "Shoot") 
+        }
+        else if (attack == "Shoot")
         {
             attackCritChance = 0.1;
             attackHitChance = 0.7;
             attackRange = 2;
             attackDamage = 6;
             attackDamageCrit = attackDamage * 2;
-        } 
-        else 
+        }
+        else
         {
             attack = "Punch";
-            SetAttacks();
+            SetAttacks(attack);
         }
     }
 
@@ -100,7 +100,7 @@ public class UnitAttributes : MonoBehaviour
     public void SetHealth(int changeHealthAmount)
     {
         //changes health to new health value
-        if(changeHealthAmount < 0)
+        if (changeHealthAmount < 0)
         {
             changeHealthAmount = minHealth;
         }
@@ -157,8 +157,8 @@ public class UnitAttributes : MonoBehaviour
         {
             //makes sprite gray
             GrayOut();
-        } 
-        if (!status) 
+        }
+        if (!status)
         {
             //reverts back to og sprite color
             RevertToOriginalColor();

@@ -1,0 +1,67 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="WinMenu" src="project://database/Assets/src/ben/UI/UXML/WinMenu.uxml?fileID=9197481963319205126&amp;guid=69bfc065774c8814388be96f8589ed07&amp;type=3#WinMenu" />
+    <ui:Template name="LoseMenu" src="project://database/Assets/src/ben/UI/UXML/GameOverMenu.uxml?fileID=9197481963319205126&amp;guid=83eab66bc60252e4589a5d6eaea534fb&amp;type=3#GameOverMenu" />
+    <ui:Template name="PauseMenu" src="project://database/Assets/src/ben/UI/UXML/PauseMenu.uxml?fileID=9197481963319205126&amp;guid=b52b24e30edaa8c4593aa4eeb027201f&amp;type=3#PauseMenu" />
+    <Style src="project://database/Assets/src/ben/UI/USS/GameUIStyles.uss?fileID=7433441132597879392&amp;guid=c58db1c7bcea77e458cca63e3ce601eb&amp;type=3#GameUIStyles" />
+    <Style src="project://database/Assets/src/ben/UI/USS/GameMenuStyles.uss?fileID=7433441132597879392&amp;guid=77742b6f6e5ba4f4b9afeecce09ae67e&amp;type=3#GameMenuStyles" />
+    <ui:VisualElement name="UnitMenu" style="flex-grow: 0; width: 40%; height: auto; background-color: rgba(255, 0, 0, 0); -unity-background-image-tint-color: rgba(255, 255, 255, 0); flex-shrink: 1; min-width: auto; flex-direction: row; flex-basis: auto; justify-content: space-between; align-items: flex-end; align-self: flex-end; -unity-background-scale-mode: stretch-to-fill; position: absolute; padding-top: 0; top: auto; bottom: 24px; margin-right: 0; right: 24px; display: flex;">
+        <ui:VisualElement name="UnitInfo" style="flex-grow: 1; flex-basis: auto; width: auto; height: 100%; padding-top: 16px; background-color: rgba(255, 255, 255, 0); margin-top: 0; justify-content: flex-end; margin-right: 80px; padding-right: 0; border-bottom-left-radius: 0; overflow: hidden; border-top-left-radius: 0;">
+            <ui:VisualElement name="Actions" style="flex-grow: 1; flex-direction: row; padding-right: 88px; justify-content: flex-end;">
+                <ui:Button text="A" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitAttackButton" class="unit-action-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+                <ui:Button text="W" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitWaitButton" class="unit-action-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 16px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+                <ui:Button text="C" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitCancelAttackButton" class="unit-action-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 16px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; display: none;" />
+                <ui:Button text="A" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitConfirmAttackButton" class="unit-action-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 16px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; display: none;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Info" style="flex-grow: 0; background-color: rgb(103, 103, 103); margin-bottom: 0; margin-top: 0; margin-right: 0; padding-bottom: 16px; padding-top: 16px; padding-right: 88px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                <ui:VisualElement name="UnitName" style="flex-grow: 0; flex-direction: row; justify-content: flex-end; align-items: center; padding-top: 0; padding-right: 0; padding-bottom: 16px;">
+                    <ui:Label tabindex="-1" text="Warrior Monkey" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Name" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-font: initial; font-size: 20px; -unity-font-style: bold;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="UnitStats" style="flex-grow: 0; flex-direction: row; justify-content: flex-end; align-items: center; margin-left: 24px; margin-bottom: 0;">
+                    <ui:VisualElement name="Attributes" style="flex-grow: 0; flex-direction: row; margin-right: 16px;">
+                        <ui:VisualElement name="AttackPower" class="unit-attribute" />
+                        <ui:VisualElement name="Defense" class="unit-attribute" style="flex-grow: 0; margin-left: 8px; margin-right: 0;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="HP" style="flex-grow: 1; height: auto; flex-direction: row; align-items: center;">
+                        <ui:VisualElement name="HPBar" style="flex-grow: 1; width: 100%; height: 16px; -unity-text-outline-color: rgba(0, 0, 0, 0); background-color: rgb(255, 0, 0); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;" />
+                        <ui:Label tabindex="-1" text="100/100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HPText" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 8px; font-size: 16px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="UnitImage" style="flex-grow: 0; width: 160px; height: 160px; background-color: rgb(65, 65, 65); flex-shrink: 0; border-top-right-radius: 9999px; border-bottom-right-radius: 9999px; border-top-left-radius: 9999px; border-bottom-left-radius: 9999px; position: absolute; right: 0;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="EnemyUnitMenu" style="flex-grow: 1; width: 40%; height: auto; background-color: rgba(255, 0, 0, 0); -unity-background-image-tint-color: rgba(255, 255, 255, 0); flex-shrink: 1; min-width: auto; flex-direction: row; flex-basis: auto; justify-content: space-between; align-items: flex-end; align-self: flex-end; -unity-background-scale-mode: stretch-to-fill; position: absolute; padding-top: 0; top: auto; bottom: 24px; margin-right: 0; right: auto; left: 24px; display: flex; visibility: visible; opacity: 1;">
+        <ui:VisualElement name="UnitInfo" style="flex-grow: 1; flex-basis: auto; width: auto; height: 100%; padding-top: 16px; background-color: rgba(255, 255, 255, 0); margin-top: 0; justify-content: flex-end; margin-right: 0; padding-right: 0; border-bottom-left-radius: 0; overflow: hidden; margin-left: 80px; border-bottom-right-radius: 8px;">
+            <ui:VisualElement name="Actions" style="flex-grow: 0; flex-direction: row-reverse; padding-right: 0; padding-left: 88px; display: none;">
+                <ui:VisualElement name="LeftActions" style="flex-grow: 1; flex-direction: row-reverse; align-items: center; justify-content: flex-start;">
+                    <ui:VisualElement name="Attack" class="unit-action-button" style="flex-grow: 0; width: 24px; height: 24px; align-items: auto; background-color: rgb(0, 0, 0);" />
+                </ui:VisualElement>
+                <ui:VisualElement name="RightActions" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: flex-end;">
+                    <ui:VisualElement name="Attack" class="unit-action-button" />
+                    <ui:VisualElement name="Wait" style="flex-grow: 0; width: 24px; height: 24px; align-items: auto; background-color: rgb(0, 0, 0); padding-left: 0; margin-left: 16px; margin-right: 0; border-top-left-radius: 8px; border-top-right-radius: 8px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Info" style="flex-grow: 0; background-color: rgb(103, 103, 103); margin-bottom: 0; margin-top: 0; margin-right: 0; padding-bottom: 16px; padding-top: 16px; padding-right: 0; padding-left: 88px; border-top-right-radius: 8px;">
+                <ui:VisualElement name="UnitName" style="flex-grow: 0; flex-direction: row-reverse; justify-content: flex-end; align-items: center; padding-top: 0; padding-right: 0; padding-bottom: 16px;">
+                    <ui:Label tabindex="-1" text="Enemy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Name" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-font: initial; font-size: 20px; -unity-font-style: bold;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="UnitStats" style="flex-grow: 0; flex-direction: row-reverse; justify-content: flex-end; align-items: center; margin-left: 0; margin-bottom: 0; margin-right: 24px;">
+                    <ui:VisualElement name="Attributes" style="flex-grow: 0; flex-direction: row; margin-right: 0; margin-left: 16px;">
+                        <ui:VisualElement name="AttackPower" class="unit-attribute" />
+                        <ui:VisualElement name="Defense" class="unit-attribute" style="flex-grow: 0; margin-left: 8px; margin-right: 0;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="HP" style="flex-grow: 1; height: auto; flex-direction: row; align-items: center;">
+                        <ui:VisualElement name="HPBar" style="flex-grow: 1; width: 100%; height: 16px; -unity-text-outline-color: rgba(0, 0, 0, 0); background-color: rgb(255, 0, 0); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;" />
+                        <ui:Label tabindex="-1" text="100/100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HPText" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 8px; font-size: 16px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="UnitImage" style="flex-grow: 0; width: 160px; height: 160px; background-color: rgb(65, 65, 65); flex-shrink: 0; border-top-right-radius: 9999px; border-bottom-right-radius: 9999px; border-top-left-radius: 9999px; border-bottom-left-radius: 9999px; position: absolute; right: auto;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="GameMenus" style="flex-grow: 1; align-items: center; justify-content: center; display: flex; visibility: visible;">
+        <ui:Instance template="WinMenu" name="WinMenu" style="position: relative; display: none;" />
+        <ui:Instance template="LoseMenu" name="GameOverMenu" style="display: none;" />
+        <ui:Instance template="PauseMenu" name="PauseMenu" style="display: none;" />
+    </ui:VisualElement>
+</ui:UXML>

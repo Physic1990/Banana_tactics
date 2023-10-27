@@ -13,7 +13,7 @@ TagManager:
   - Wall
   - ball1000
   - UIManager
-  - UnitSelectionMenu
+  - GameUIDocument
   layers:
   - Default
   - TransparentFX

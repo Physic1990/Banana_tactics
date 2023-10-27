@@ -1,0 +1,61 @@
+.game-menu-button {
+    flex-grow: 0;
+    min-width: auto;
+    min-height: auto;
+    padding-top: 16px;
+    padding-right: 0;
+    padding-bottom: 16px;
+    padding-left: 0;
+    background-color: rgb(152, 152, 152);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    width: 45%;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+.game-menu {
+    flex-grow: 0;
+    background-color: rgb(46, 46, 46);
+    max-width: none;
+    max-height: none;
+    position: relative;
+    align-self: auto;
+    justify-content: flex-start;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
+    -unity-text-outline-color: rgba(111, 111, 111, 0);
+    width: 640px;
+    left: auto;
+    right: auto;
+    top: auto;
+    padding-top: 72px;
+    padding-bottom: 72px;
+    padding-right: 48px;
+    padding-left: 48px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+.game-menu-header-text {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 64px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgb(202, 202, 202);
+}
