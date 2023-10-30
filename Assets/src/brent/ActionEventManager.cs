@@ -3,18 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random=UnityEngine.Random;
+using UnityEngine.Events;
 
 public class ActionEventManager : MonoBehaviour
 {
    public static event Action OnDeath;
    public static event Action OnEnemyDeath;
+   public static event Action OnAttack;
 
    // unit's data
-   [SerializeField] UnitAttributes unitAttributes;
-   [SerializeField] UnitAttributes enemyUnitAttributes;
-   [SerializeField] UnitAttributes allyUnitAttributes;
-   [SerializeField] DeathAnimation deathAnimationUnit;
-   [SerializeField] DeathAnimation deathAnimationEnemy;
+   [SerializeField] UnitAttributes _unitAttributes;
+   [SerializeField] UnitAttributes _enemyUnitAttributes;
+   [SerializeField] UnitAttributes _allyUnitAttributes;
+   [SerializeField] DeathAnimation _deathAnimationUnit;
+   [SerializeField] DeathAnimation _deathAnimationEnemy;
+   [SerializeField] private UnityEvent _attackOver;
+ 
+
    
    // Singleton Template
    private static ActionEventManager instance; // = new ActionEventManager();
@@ -37,11 +42,6 @@ public class ActionEventManager : MonoBehaviour
          }
       
    } 
-
-   void Update(){
-   }
-
-
 
    // event running status
    private bool status;
@@ -100,7 +100,7 @@ public class ActionEventManager : MonoBehaviour
       }
    }
 
-   //ally attributes
+      //ally attributes
    private class allyAttributes
    {
       public int health;
@@ -124,24 +124,23 @@ public class ActionEventManager : MonoBehaviour
    }
 
 
-
    // units action type: when they engage an enemy for battle
-   public void attackBattle(GameObject unit, GameObject enemyUnit)
+   public void attackBattle (GameObject unit, GameObject enemyUnit)
    {
       // get players data
-      unitAttributes = unit.GetComponent<UnitAttributes>();
-      deathAnimationUnit = unit.GetComponent<DeathAnimation>();
+      _unitAttributes = unit.GetComponent<UnitAttributes>();
+      _deathAnimationUnit = unit.GetComponent<DeathAnimation>();
       // get enemy data
-      enemyUnitAttributes = enemyUnit.GetComponent<UnitAttributes>();
-      deathAnimationEnemy = unit.GetComponent<DeathAnimation>();
+      _enemyUnitAttributes = enemyUnit.GetComponent<UnitAttributes>();
+      _deathAnimationEnemy = unit.GetComponent<DeathAnimation>();
 
 
       // get unit's attributes
-      double [] playerAtt = unitAttributes.GetAttackOneStats();
-      double [] enemyAtt = enemyUnitAttributes.GetAttackOneStats();
+      double [] playerAtt = _unitAttributes.GetAttackOneStats();
+      double [] enemyAtt = _enemyUnitAttributes.GetAttackOneStats();
       // intialize attributes health
-      player.health = unitAttributes.GetHealth();
-      enemy.health = enemyUnitAttributes.GetHealth();
+      player.health = _unitAttributes.GetHealth();
+      enemy.health = _enemyUnitAttributes.GetHealth();
       // intialize attributes for damage of attack
       player.attackDamage = (int)playerAtt[0];
       enemy.attackDamage = (int)enemyAtt[0];
@@ -155,43 +154,57 @@ public class ActionEventManager : MonoBehaviour
       player.attackCritChance = (int)(playerAtt[3] * 100);
       enemy.attackCritChance = (int)(enemyAtt[3] * 100);
       // intialize attributes for damage of critical hit attack
-      player.attackDamageCrit = (int)(playerAtt[4]);
-      enemy.attackDamageCrit = (int)(enemyAtt[4]);
+      player.attackDamageCrit=(int)(playerAtt[4]);
+      enemy.attackDamageCrit=(int)(enemyAtt[4]);
 
+
+
+       OnAttack?.Invoke();
+
+      
 
       // player was hit
-      if (Random.Range(0, 100) < enemy.attackHitChance)
+      if(Random.Range(0, 100) < enemy.attackHitChance)
       {
-         unitAttributes.DealDamage(enemy.attackDamage);
+         _unitAttributes.DealDamage(enemy.attackDamage);
          // critical hit 
          if (Random.Range(0, 100) < (enemy.attackCritChance))
          {
             Debug.Log("enemy hit critical");
-            unitAttributes.DealDamage(enemy.attackDamageCrit);
+         _unitAttributes.DealDamage(enemy.attackDamageCrit);
          }
       }
       // enemy was hit
-      if(Random.Range(0, 100) < player.attackHitChance){
-         enemyUnitAttributes.DealDamage(player.attackDamage);
+      if(Random.Range(0, 100) < player.attackHitChance)
+      {
+         _enemyUnitAttributes.DealDamage(player.attackDamage);
          // critical hit
          if(Random.Range(0, 100) < (player.attackCritChance)){
-            enemyUnitAttributes.DealDamage(player.attackDamageCrit);
+            _enemyUnitAttributes.DealDamage(player.attackDamageCrit);
             Debug.Log("player hit critical");
          }
       }
       Debug.Log("Player: After Battle");
-      Debug.Log(unitAttributes.GetHealth());
+      Debug.Log(_unitAttributes.GetHealth());
       //Debug.Log("Enemy: After Battle");
       //Debug.Log(enemyUnitAttributes.GetHealth());
       //Debug.Log("Enemy attack chance and crit chance");
       //Debug.Log(enemy.attackHitChance);
       //Debug.Log(enemy.attackCritChance);
 
-      if(unitAttributes.GetHealth()<=0){
+      // attack animation signal
+     
+      
+      
+      if(_unitAttributes.GetHealth()<=0)
+      {
+         //System.Threading.Thread.Sleep(2300);
          OnDeath?.Invoke();
       }
       
-      if(enemyUnitAttributes.GetHealth()<=100){
+      if(_enemyUnitAttributes.GetHealth()<=100)
+      {
+         //System.Threading.Thread.Sleep(2300);
          OnEnemyDeath?.Invoke();
       }
    }
@@ -200,40 +213,41 @@ public class ActionEventManager : MonoBehaviour
    // Action Event: heals a hurt unit on players turn
    // unit - is the player that will heal a unit
    // hurtUnit - is the unit that needs to be healed
-   public void healAlly(GameObject unit, GameObject hurtUnit)
+   public void healAlly (GameObject unit, GameObject hurtUnit)
    {
       // get players data
-      unitAttributes = unit.GetComponent<UnitAttributes>();
+      _unitAttributes = unit.GetComponent<UnitAttributes>();
       // get ally data
-      allyUnitAttributes = hurtUnit.GetComponent<UnitAttributes>();
+      _allyUnitAttributes = hurtUnit.GetComponent<UnitAttributes>();
       // get unit's attributes
-      double [] playerAtt = unitAttributes.GetAttackOneStats();
-      double [] allyAtt = allyUnitAttributes.GetAttackOneStats();
+      double [] playerAtt = _unitAttributes.GetAttackOneStats();
+      double [] allyAtt = _allyUnitAttributes.GetAttackOneStats();
 
       // dummy variable for healling 
       player.healIncrease = 15; // must change from Gibbys data
       // heal ally
-      allyUnitAttributes.GainHealth(player.healIncrease);
+      _allyUnitAttributes.GainHealth(player.healIncrease);
    }
 
 
    // units action type: when they do not want to do nothing but move, will suffer terrain damage
-   public void doNothingTurn(GameObject unit)
+   public void doNothingTurn (GameObject unit)
    {
       // temporay terrain damage, must later update with a tile
       int terrain = 5;
       //get units data
-      unitAttributes = unit.GetComponent<UnitAttributes>();
-      deathAnimationUnit = unit.GetComponent<DeathAnimation>();
+      _unitAttributes = unit.GetComponent<UnitAttributes>();
+      _deathAnimationUnit = unit.GetComponent<DeathAnimation>();
       // units get terrain damage
-      if (Random.Range(0, 100) < 100)
+      if(Random.Range(0, 100) < 100)
       {
-         unitAttributes.DealDamage(terrain);
-      }
+         _unitAttributes.DealDamage(terrain);  
+      } 
       Debug.Log("Move");
-      Debug.Log(unitAttributes.GetHealth());
+      Debug.Log(_unitAttributes.GetHealth());
       // animate death
-      if(unitAttributes.GetHealth()<=0){
+      if(_unitAttributes.GetHealth()<=0)
+      {
          OnDeath?.Invoke();
       }
    }
@@ -243,26 +257,27 @@ public class ActionEventManager : MonoBehaviour
    public int getUpdateUnitHealth(GameObject unit)
    {
       // get current unit attributes
-      unitAttributes = unit.GetComponent<UnitAttributes>();
+      _unitAttributes = unit.GetComponent<UnitAttributes>();
       // Animation Unit Death
-      if(unitAttributes.GetHealth()<=0){
-         OnDeath?.Invoke();
-      }
-      return unitAttributes.GetHealth();
+      //if(_unitAttributes.GetHealth()<=0)
+      //{
+      //  OnDeath?.Invoke();
+      //}
+      return _unitAttributes.GetHealth();
    }
 
    // do not use
    // used for testing: player health during the event, health of internal data structure
    public int getPlayerEventHealth()
    {
-      return (player.health);
+      return(player.health);
    }
 
    // do not use
    // used for testing: enemy health during the event, health of internal data structure
    public int getEnemyEventHealth()
    {
-      return (enemy.health);
+      return(enemy.health);
    }
 
    // set a temporary data structure for player health
