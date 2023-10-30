@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random=UnityEngine.Random;
+using UnityEngine.Events;
 
 public class ActionEventManager : MonoBehaviour
 {
    public static event Action OnDeath;
    public static event Action OnEnemyDeath;
+   public static event Action OnAttack;
 
    // unit's data
    [SerializeField] UnitAttributes _unitAttributes;
@@ -15,6 +17,9 @@ public class ActionEventManager : MonoBehaviour
    [SerializeField] UnitAttributes _allyUnitAttributes;
    [SerializeField] DeathAnimation _deathAnimationUnit;
    [SerializeField] DeathAnimation _deathAnimationEnemy;
+   [SerializeField] private UnityEvent _attackOver;
+ 
+
    
    // Singleton Template
    private static ActionEventManager instance; // = new ActionEventManager();
@@ -119,7 +124,6 @@ public class ActionEventManager : MonoBehaviour
    }
 
 
-
    // units action type: when they engage an enemy for battle
    public void attackBattle (GameObject unit, GameObject enemyUnit)
    {
@@ -154,6 +158,11 @@ public class ActionEventManager : MonoBehaviour
       enemy.attackDamageCrit=(int)(enemyAtt[4]);
 
 
+
+       OnAttack?.Invoke();
+
+      
+
       // player was hit
       if(Random.Range(0, 100) < enemy.attackHitChance)
       {
@@ -182,13 +191,19 @@ public class ActionEventManager : MonoBehaviour
       //Debug.Log(enemy.attackHitChance);
       //Debug.Log(enemy.attackCritChance);
 
+      // attack animation signal
+     
+      
+      
       if(_unitAttributes.GetHealth()<=0)
       {
+         //System.Threading.Thread.Sleep(2300);
          OnDeath?.Invoke();
       }
       
       if(_enemyUnitAttributes.GetHealth()<=100)
       {
+         //System.Threading.Thread.Sleep(2300);
          OnEnemyDeath?.Invoke();
       }
    }

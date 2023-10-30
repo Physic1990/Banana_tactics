@@ -508,8 +508,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 363.56976, y: 0}
-  m_SizeDelta: {x: 119.13954, y: 0}
+  m_AnchoredPosition: {x: 362.97922, y: 0}
+  m_SizeDelta: {x: 117.95841, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &386455175
 MonoBehaviour:
@@ -623,8 +623,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 341.56976, y: 0}
-  m_SizeDelta: {x: 555.1395, y: 0}
+  m_AnchoredPosition: {x: 340.9792, y: 0}
+  m_SizeDelta: {x: 553.9584, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &387164975
 MonoBehaviour:
@@ -1901,6 +1901,9 @@ MonoBehaviour:
   _allyUnitAttributes: {fileID: 0}
   _deathAnimationUnit: {fileID: 0}
   _deathAnimationEnemy: {fileID: 0}
+  _attackOver:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &997389034
 Transform:
   m_ObjectHideFlags: 0
@@ -2278,8 +2281,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 317.56976, y: 0}
-  m_SizeDelta: {x: 635.1395, y: 0}
+  m_AnchoredPosition: {x: 316.9792, y: 0}
+  m_SizeDelta: {x: 633.9584, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1166870850
 MonoBehaviour:
@@ -2813,7 +2816,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 343.56976, y: 0}
+  m_AnchoredPosition: {x: 342.9792, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1433627334
@@ -3192,6 +3195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7bf938d68018643bb8af15ebc4afdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NTime: 0
   flame: {fileID: 0}
 --- !u!95 &1573880851
 Animator:
@@ -3201,7 +3205,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573880846}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 29b9584b12ab61e4ca8a9447989cf669, type: 2}
   m_CullingMode: 0
@@ -3355,7 +3359,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 317.56976, y: 0}
+  m_AnchoredPosition: {x: 316.9792, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1794977238
@@ -3711,6 +3715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9f50a7158bb6f4ebac1c6974c7d7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NTime: 0
   flame: {fileID: 1573880851}
   killEnemyUnit: 0
   deathAnimation: {fileID: 1973877404}
@@ -3853,7 +3858,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 341.56976, y: 0}
+  m_AnchoredPosition: {x: 340.9792, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2054968480
