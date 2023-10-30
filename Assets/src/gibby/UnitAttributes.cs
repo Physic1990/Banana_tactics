@@ -35,15 +35,9 @@ public class UnitAttributes : MonoBehaviour
         //checks what class unit has been set too
         if (whatClass == "Warrior")
         {
-<<<<<<< HEAD
             SetWarrior(); //calls these functions to set varibles to class specific traits
         } 
         else if (whatClass == "Gunslinger") 
-=======
-            SetWarrior();
-        }
-        else if (whatClass == "Gunslinger")
->>>>>>> ui-lofi
         {
             SetGunSlinger();
         }
@@ -96,11 +90,7 @@ public class UnitAttributes : MonoBehaviour
         }
         else
         {
-<<<<<<< HEAD
             attack = "Banana Slam";
-=======
-            attack = "Punch";
->>>>>>> ui-lofi
             SetAttacks(attack);
         }
     }
@@ -172,39 +162,12 @@ public class UnitAttributes : MonoBehaviour
     //Dummy Holder So Peoples Code does not return errors
     public double[] GetAttackStats()
     {
-<<<<<<< HEAD
         attackValuesOne[0] = 0;
         attackValuesOne[1] = 0;
         attackValuesOne[2] = 0;
         attackValuesOne[3] = 0;
         attackValuesOne[4] = 0;
         return attackValuesOne;
-=======
-        hasActed = status;
-        if (status)
-        {
-            //makes sprite gray
-            GrayOut();
-        }
-        if (!status)
-        {
-            //reverts back to og sprite color
-            RevertToOriginalColor();
-        }
-    }
-
-    public bool HasActed()
-    {
-        //says if action has been done
-        return hasActed;
-
-    }
-
-    public string GetAttackName()
-    {
-        //return attack name
-        return attack1;
->>>>>>> ui-lofi
     }
 
     //get the fist attack stats

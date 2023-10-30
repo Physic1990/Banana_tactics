@@ -38,9 +38,6 @@ public class GameScreen : MonoBehaviour
     VisualElement UnitMenu;
     VisualElement EnemyUnitMenu;
 
-    private bool isUnitMenuOpen = false;
-    private bool isEnemyUnitMenuOpen = false;
-
     // Unit Menu Buttons
     const string unitAttackButtonName = "UnitAttackButton";
     const string unitWaitButtonName = "UnitWaitButton";
@@ -51,24 +48,20 @@ public class GameScreen : MonoBehaviour
     Button UnitCancelAttackButton;
     Button UnitConfirmAttackButton;
 
-    private void Awake()
-    {
-        closeAllMenus();
-    }
-
     private void Start()
     {
         uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
-    }
 
-    void onEnable()
-    {
         MainMenuDocument = GetComponent<UIDocument>();
 
         if (MainMenuDocument == null)
         {
             Debug.LogError("Main Menu UI Document is null");
             return;
+        }
+        else
+        {
+            Debug.Log("Main menu detected!");
         }
 
         root = MainMenuDocument.rootVisualElement;
@@ -109,60 +102,78 @@ public class GameScreen : MonoBehaviour
         UnitWaitButton?.RegisterCallback<ClickEvent>(ClickUnitWaitButton);
         UnitCancelAttackButton?.RegisterCallback<ClickEvent>(ClickUnitCancelAttackButton);
         UnitConfirmAttackButton?.RegisterCallback<ClickEvent>(ClickUnitConfirmAttackButton);
+
+        CloseAllMenus();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //If pause screen already active unpause and viceversa
+            PauseGame(!GetIsUIElementVisible(PauseMenu));
+        }
     }
 
     // Game Menu Click Events
-    private void ClickNextLevelButton(ClickEvent event)
+    private void ClickNextLevelButton(ClickEvent evt)
     {
         uiManager.Restart();
     }
 
-    private void ClickRetryButton(ClickEvent event) {
+    private void ClickRetryButton(ClickEvent evt)
+    {
         uiManager.Restart();
     }
 
-    private void ClickQuitButton(ClickEvent event) {
+    private void ClickQuitButton(ClickEvent evt)
+    {
         uiManager.Quit();
     }
 
-     private void ClickResumeButton(ClickEvent event) {
-        // uiManager.Quit();
+    private void ClickResumeButton(ClickEvent evt)
+    {
+        PauseGame(false);
     }
 
     // Unit Menu Click Events
-    private void ClickUnitAttackButton(ClickEvent event) {
+    private void ClickUnitAttackButton(ClickEvent evt)
+    {
     }
 
-    private void ClickUnitWaitButton(ClickEvent event) {
+    private void ClickUnitWaitButton(ClickEvent evt)
+    {
     }
 
-    private void ClickUnitCancelAttackButton(ClickEvent event) {
+    private void ClickUnitCancelAttackButton(ClickEvent evt)
+    {
     }
 
-    private void ClickUnitConfirmAttackButton(ClickEvent event) {
+    private void ClickUnitConfirmAttackButton(ClickEvent evt)
+    {
     }
 
     // UI ELement Visibility
-    public void closeAllGameMenus()
+    public void CloseAllGameMenus()
     {
         SetUIElementVisibility(WinMenu, false);
         SetUIElementVisibility(GameOverMenu, false);
         SetUIElementVisibility(PauseMenu, false);
     }
 
-    public void closeAllUnitMenus()
+    public void CloseAllUnitMenus()
     {
         SetUIElementVisibility(UnitMenu, false);
         SetUIElementVisibility(EnemyUnitMenu, false);
     }
 
-    public void closeAllMenus()
+    public void CloseAllMenus()
     {
-        closeAllGameMenus();
-        closeAllUnitMenus();
+        CloseAllGameMenus();
+        CloseAllUnitMenus();
     }
 
-    void SetUIElementVisibility(VisualElement uiElement, bool isVisible)
+    public void SetUIElementVisibility(VisualElement uiElement, bool isVisible)
     {
         if (uiElement == null)
             return;
@@ -170,21 +181,29 @@ public class GameScreen : MonoBehaviour
         uiElement.style.display = (isVisible) ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
+    public bool GetIsUIElementVisible(VisualElement uiElement)
+    {
+        if (uiElement == null)
+            return false;
+
+        return uiElement.style.display != DisplayStyle.None;
+    }
+
     public void SetWinMenuVisibility(bool visibility)
     {
-        closeAllGameMenus();
+        CloseAllGameMenus();
         SetUIElementVisibility(WinMenu, visibility);
     }
 
     public void SetGameOverMenuVisibility(bool visibility)
     {
-        closeAllGameMenus();
+        CloseAllGameMenus();
         SetUIElementVisibility(GameOverMenu, visibility);
     }
 
     public void SetPauseMenuVisibility(bool visibility)
     {
-        closeAllGameMenus();
+        CloseAllGameMenus();
         SetUIElementVisibility(PauseMenu, visibility);
     }
 
@@ -192,23 +211,35 @@ public class GameScreen : MonoBehaviour
     public void SetUnitMenuVisibility(bool visibility)
     {
         SetUIElementVisibility(UnitMenu, visibility);
-        isUnitMenuOpen = visibility;
     }
 
     public void SetEnemyUnitMenuVisibility(bool visibility)
     {
         SetUIElementVisibility(EnemyUnitMenu, visibility);
-        isEnemyUnitMenuOpen = visibility;
     }
 
-    public bool isUnitMenuOpen()
+    public bool getIsUnitMenuOpen()
     {
-        return isUnitMenuOpen;
+        return GetIsUIElementVisible(UnitMenu);
     }
 
-    public bool isEnemyUnitMenuOpen()
+    public bool getIsEnemyUnitMenuOpen()
     {
-        return isEnemyUnitMenuOpen;
+        return GetIsUIElementVisible(EnemyUnitMenu);
+    }
+
+    // Pausing Game
+    public void PauseGame(bool status)
+    {
+        //If status == true pause | if status == false unpause
+        SetUIElementVisibility(PauseMenu, status);
+
+        //When pause status is true change timescale to 0 (time stops)
+        //when it's false change it back to 1 (time goes by normally)
+        if (status)
+            Time.timeScale = 0;
+        else
+            Time.timeScale = 1;
     }
 }
 

@@ -60,7 +60,7 @@
         <ui:VisualElement name="UnitImage" style="flex-grow: 0; width: 160px; height: 160px; background-color: rgb(65, 65, 65); flex-shrink: 0; border-top-right-radius: 9999px; border-bottom-right-radius: 9999px; border-top-left-radius: 9999px; border-bottom-left-radius: 9999px; position: absolute; right: auto;" />
     </ui:VisualElement>
     <ui:VisualElement name="GameMenus" style="flex-grow: 1; align-items: center; justify-content: center; display: flex; visibility: visible;">
-        <ui:Instance template="WinMenu" name="WinMenu" style="position: relative; display: none;" />
+        <ui:Instance template="WinMenu" name="WinMenu" style="position: relative; display: none; visibility: visible;" />
         <ui:Instance template="LoseMenu" name="GameOverMenu" style="display: none;" />
         <ui:Instance template="PauseMenu" name="PauseMenu" style="display: none;" />
     </ui:VisualElement>

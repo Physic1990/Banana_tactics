@@ -19,8 +19,8 @@ public class MainMenu : MonoBehaviour
     // Button SettingsButton;
     Button QuitButton;
 
-    [Header("Level Data")]
-    [SerializeField] LevelSO levelData;
+    // [Header("Level Data")]
+    // [SerializeField] LevelSO levelData;
 
     private void Start()
     {
@@ -49,23 +49,18 @@ public class MainMenu : MonoBehaviour
             Debug.Log("Main Menu Play Button detected");
         }
 
-        PlayButton?.RegisterCallback<ClickEvent>(ClickPlayButton);
-        QuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
+        // PlayButton?.RegisterCallback<ClickEvent>(ClickPlayButton);
+        // QuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
     }
 
-    private void ClickPlayButton(ClickEvent event)
-    {
-        uiManager.PlayGame(levelData.sceneName);
-    }
+    // private void ClickPlayButton(ClickEvent event)
+    // {
+    // uiManager.PlayGame(levelData.sceneName);
+    // }
 
-    private void ClickQuitButton(ClickEvent event)
-    {
-        uiManager.Quit();
-    }
-
-    //Quit game/exit play mode if in Editor
-
-
-
-    }
+    // private void ClickQuitButton(ClickEvent event)
+    // {
+    // uiManager.Quit();
+    // }
+}
 
