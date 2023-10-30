@@ -136,6 +136,7 @@ public class GridManager : MonoBehaviour
                 {
                     //Finds a game object of tag "enemy" and places it at the top right tile
                     spawnedTile.SpawnUnit("Enemy", _enemyUnits);
+                    _enemyUnits.Add(GameObject.FindGameObjectWithTag("Enemy"));
                 }
                 //This code handles the checkered pattern of the grid but coloring offset tiles a darker green
                 bool isOffset = ((x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0));
