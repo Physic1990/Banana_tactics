@@ -7,61 +7,74 @@ using UnityEngine.Events;
 
 public class ActionEventManager : MonoBehaviour
 {
-   public static event Action OnDeath;
-   public static event Action OnEnemyDeath;
-   public static event Action OnAttack;
+   // observer pattern triggers
+   public static event Action onDeath;
+   public static event Action onEnemyDeath;
+   public static event Action onAttack;
 
    // unit's data
    [SerializeField] UnitAttributes _unitAttributes;
    [SerializeField] UnitAttributes _enemyUnitAttributes;
    [SerializeField] UnitAttributes _allyUnitAttributes;
+   // unit's animation object data
    [SerializeField] DeathAnimation _deathAnimationUnit;
    [SerializeField] DeathAnimation _deathAnimationEnemy;
    [SerializeField] private UnityEvent _attackOver;
  
-
-   
-   // Singleton Template
-   private static ActionEventManager instance; // = new ActionEventManager();
+   // singleton locking mechanism
+   private static ActionEventManager instance; 
    private static readonly object padlock = new object();
 
+   // single instance
    private ActionEventManager(){}
    public static ActionEventManager Instance
    {
       get{return instance;}
    }
 
+   // creating only 1 instance
    void Awake()
    {
-     
-         lock(padlock)
+      // locking mechanism for singleton pattern
+      lock(padlock)
+      {
+         // 1 existing instance
+         if(instance == null)
          {
-            if(instance == null){
-               instance=this;
-            }
+            instance=this;
          }
-      
+      }  
    } 
 
    // event running status
    private bool status;
-   // the type of event 
+   // type of event 
    private int eventType;
-   //private int playerHealth;
+   // type of terrain tile
    private int terrain;
+   // data structure for player unit
    private playerAttributes player = new playerAttributes();
+   // data structure for enemy unit
    private enemyAttributes enemy = new enemyAttributes();
+   // data structure for ally unit 
    private allyAttributes ally = new allyAttributes();
 
    //player attributes
    private class playerAttributes
    {
+      // unit's health
       public int health;
+      // unit's attack damage for an attack
       public int attackDamage;
+      // unit's attack range for an attack
       public int attackRange;
+      // unit's hit chance ratio for an critical attack
       public int attackCritChance;
+      // unit's hit chance ratio for an attack
       public int attackHitChance;
+      // unit's attack damage for a critical attack
       public int attackDamageCrit;
+      // unit's healing power
       public int healIncrease;
       // default attributes
       public playerAttributes()
@@ -80,12 +93,19 @@ public class ActionEventManager : MonoBehaviour
    // enemy attributes
    private class enemyAttributes
    {
+      // enemy's health
       public int health;
+      // enemy's attack damage for an attack
       public int attackDamage;
+      // enemy's attack range for an attack
       public int attackRange;
+      // enemy's hit chance ratio for an critical attack
       public int attackCritChance;
+      // enemy's hit chance ratio for an attack
       public int attackHitChance;
+      // enemy's attack damage for a critical attack
       public int attackDamageCrit;
+      // enemy's healing power
       public int healIncrease;
       // default attributes
       public enemyAttributes()
@@ -100,15 +120,22 @@ public class ActionEventManager : MonoBehaviour
       }
    }
 
-      //ally attributes
+   //ally attributes
    private class allyAttributes
    {
+      // ally's health
       public int health;
+      // ally's attack damage for an attack
       public int attackDamage;
+      // ally's attack range for an attack
       public int attackRange;
+      // ally's hit chance ratio for an critical attack
       public int attackCritChance;
+      // ally's hit chance ratio for an attack
       public int attackHitChance;
+      // ally's attack damage for a critical attack
       public int attackDamageCrit;
+      // ally's healing power
       public int healIncrease;
       // default attributes
       public allyAttributes()
@@ -133,8 +160,7 @@ public class ActionEventManager : MonoBehaviour
       // get enemy data
       _enemyUnitAttributes = enemyUnit.GetComponent<UnitAttributes>();
       _deathAnimationEnemy = unit.GetComponent<DeathAnimation>();
-
-
+      
       // get unit's attributes
       double [] playerAtt = _unitAttributes.GetAttackOneStats();
       double [] enemyAtt = _enemyUnitAttributes.GetAttackOneStats();
@@ -157,11 +183,8 @@ public class ActionEventManager : MonoBehaviour
       player.attackDamageCrit=(int)(playerAtt[4]);
       enemy.attackDamageCrit=(int)(enemyAtt[4]);
 
-
-
-       OnAttack?.Invoke();
-
-      
+      // attack animation
+      onAttack?.Invoke();
 
       // player was hit
       if(Random.Range(0, 100) < enemy.attackHitChance)
@@ -171,7 +194,7 @@ public class ActionEventManager : MonoBehaviour
          if (Random.Range(0, 100) < (enemy.attackCritChance))
          {
             Debug.Log("enemy hit critical");
-         _unitAttributes.DealDamage(enemy.attackDamageCrit);
+            _unitAttributes.DealDamage(enemy.attackDamageCrit);
          }
       }
       // enemy was hit
@@ -192,20 +215,18 @@ public class ActionEventManager : MonoBehaviour
       //Debug.Log(enemy.attackHitChance);
       //Debug.Log(enemy.attackCritChance);
 
-      // attack animation signal
-     
-      
-      
+      // player unit has died
       if(_unitAttributes.GetHealth()<=0)
       {
-         //System.Threading.Thread.Sleep(2300);
-         OnDeath?.Invoke();
+         // obsrever signal
+         onDeath?.Invoke();
       }
       
+      // enemy unit has died
       if(_enemyUnitAttributes.GetHealth()<=100)
       {
-         //System.Threading.Thread.Sleep(2300);
-         OnEnemyDeath?.Invoke();
+         // observer signal
+         onEnemyDeath?.Invoke();
       }
    }
 
@@ -222,7 +243,6 @@ public class ActionEventManager : MonoBehaviour
       // get unit's attributes
       double [] playerAtt = _unitAttributes.GetAttackOneStats();
       double [] allyAtt = _allyUnitAttributes.GetAttackOneStats();
-
       // dummy variable for healling 
       player.healIncrease = 15; // must change from Gibbys data
       // heal ally
@@ -230,50 +250,45 @@ public class ActionEventManager : MonoBehaviour
    }
 
 
-   // units action type: when they do not want to do nothing but move, will suffer terrain damage
+   // Action Event: a action that is used for general movement 
+   // with no other action, unit will suffer terrain damage
    public void doNothingTurn (GameObject unit)
    {
-      // temporay terrain damage, must later update with a tile
+      // temporay terrain damage
       int terrain = 5;
-      //get units data
+      //get unit's data
       _unitAttributes = unit.GetComponent<UnitAttributes>();
       _deathAnimationUnit = unit.GetComponent<DeathAnimation>();
-      // units get terrain damage
+      // unit suffers terrain damage
       if(Random.Range(0, 100) < 100)
       {
          _unitAttributes.DealDamage(terrain);  
       } 
+      // testing
       Debug.Log("Move");
       Debug.Log(_unitAttributes.GetHealth());
-      // animate death
+      // animate death when health is less than 1
       if(_unitAttributes.GetHealth()<=0)
       {
-         OnDeath?.Invoke();
+         // death signal
+         onDeath?.Invoke();
       }
    }
 
-   // Caleb use to eliminate a Unit from the game
    // get the current update of any unit health on the game board
    public int getUpdateUnitHealth(GameObject unit)
    {
       // get current unit attributes
       _unitAttributes = unit.GetComponent<UnitAttributes>();
-      // Animation Unit Death
-      //if(_unitAttributes.GetHealth()<=0)
-      //{
-      //  OnDeath?.Invoke();
-      //}
       return _unitAttributes.GetHealth();
    }
 
-   // do not use
    // used for testing: player health during the event, health of internal data structure
    public int getPlayerEventHealth()
    {
       return(player.health);
    }
 
-   // do not use
    // used for testing: enemy health during the event, health of internal data structure
    public int getEnemyEventHealth()
    {
