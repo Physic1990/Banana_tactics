@@ -22,7 +22,6 @@ public class GridManager : MonoBehaviour
                               Imported Scripts
     ************************************************************************/
 
-    AudioManager audioManager;
     AI aiManager;
     ActionEventManager actionEvent;
     CursorController cursor;
@@ -75,7 +74,6 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         //First Grid Manager finds all partner scripts it will be calling functions from
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         aiManager = GameObject.FindGameObjectWithTag("Ai").GetComponent<AI>();
         actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
         cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorController>();
@@ -122,10 +120,7 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < _height; y++)
             {
-                //creates a new tile using Instantiate at the locations X, Y
-                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y, 0), Quaternion.identity);
-                //Names the tile by it's coordinates
-                spawnedTile.name = $"Tile {x} {y}";
+                Tile spawnedTile = CreateTile(new Vector2(x, y));
                 //Placeholder code to place two units. This will be replaced in the future with a call to LevelManager
                 if (x == 0 && y == 0)
                 {
@@ -149,11 +144,18 @@ public class GridManager : MonoBehaviour
         _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
     }
 
+    //PATTERN: Builder
+    public Tile CreateTile(Vector2 position)
+    {
+        var spawnedTile = Instantiate(_tilePrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
+        spawnedTile.name = $"Tile {position.x} {position.y}";
+        return spawnedTile;
+    }
 
     /*************************************************************************
              "Get At" Functions (pretty much just return statemenets)
     ************************************************************************/
-    
+
     //Takes an Vector2 containing the coordinates of the tile you want and returns that tile object to you
     public Tile GetTileAtPosition(Vector2 pos)
     {
@@ -233,7 +235,7 @@ public class GridManager : MonoBehaviour
             //Checks if the cursor actually changed position
             if (_cursorTile != temp)
             {
-                audioManager.PlaySFX(audioManager.cursorMove);
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.cursorMove);
                 _cursorTimer = 0;
             }
         }
@@ -277,9 +279,9 @@ public class GridManager : MonoBehaviour
         //fetches the tile at the position we want to go to
         Tile temp = GetTileAtPosition(pos);
         //Checks if x and y coordinates are out of bounds. If yes, plays an error sound
-        if ((pos.x < 0 || pos.y < 0 || pos.x >= _width || pos.y >= _height) && !audioManager.SFXisPlaying())
+        if ((pos.x < 0 || pos.y < 0 || pos.x >= _width || pos.y >= _height) && !AudioManager.Instance.SFXisPlaying())
         {
-            audioManager.PlaySFX(audioManager.error);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.error);
         }
         //if the cursor would be moving to a valid tile, highlight this new tile,
         //remove the highlight from the old tile, and return this new tile as the cursorTile
@@ -309,7 +311,7 @@ public class GridManager : MonoBehaviour
                 if (_cursorTile._unit.CompareTag("Player") && !CheckActed(_cursorTile._unit))
                 {
                     _selectedTile = _cursorTile;
-                    audioManager.PlaySFX(audioManager.select);
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
                     _selectionMode = true;
                 }
             }
@@ -325,7 +327,7 @@ public class GridManager : MonoBehaviour
                     _selectedTile.RemoveUnit();
                     _selectionMode = false;
                     _selectedTile.TurnOffHighlight();
-                    audioManager.PlaySFX(audioManager.placed);
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.placed);
 
                     //Allows the Player to take an action in this new spot (ACTION EVENT MANAGER)
                     List<GameObject> adjUnits = GetAdjancentObjects(_moveToTile);
@@ -344,7 +346,7 @@ public class GridManager : MonoBehaviour
                 else
                 {
                     //Do not move the Player
-                    audioManager.PlaySFX(audioManager.error);
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.error);
                 }
 
             }
@@ -354,7 +356,7 @@ public class GridManager : MonoBehaviour
         {
             _selectedTile.TurnOffHighlight();
             _selectionMode = false;
-            audioManager.PlaySFX(audioManager.back);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.back);
         }
     }
 

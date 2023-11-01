@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//PATTERN: Singleton
 public class AudioManager : MonoBehaviour
 {
+
+    public static AudioManager Instance { get; private set; }
+
     [Header("---------- Audio Source ----------")]
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource sfxSource;
@@ -19,6 +24,19 @@ public class AudioManager : MonoBehaviour
     public AudioClip error;
 
     private bool pauseMusic = false;
+
+    // Ensures there is only one instance of AudioManager
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
