@@ -36,8 +36,8 @@ public class UnitAttributes : MonoBehaviour
         if (whatClass == "Warrior")
         {
             SetWarrior(); //calls these functions to set varibles to class specific traits
-        } 
-        else if (whatClass == "Gunslinger") 
+        }
+        else if (whatClass == "Gunslinger")
         {
             SetGunSlinger();
         }
@@ -150,6 +150,13 @@ public class UnitAttributes : MonoBehaviour
     {
         //current health 
         return health;
+    }
+
+    //returns maximum health value
+    public int GetMaxHealth()
+    {
+        //max health 
+        return maxHealth;
     }
 
     //returns how much the unit can move

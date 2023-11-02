@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,52 +6,71 @@ using UnityEngine.UIElements;
 
 public class GameScreen : MonoBehaviour
 {
-    UIDocument MainMenuDocument;
+    protected UIDocument MainMenuDocument;
     protected VisualElement root;
 
-    UIManager uiManager;
+    protected UIManager uiManager;
+    protected ActionEventManager actionEvent;
+
 
     // Game Menus
     const string gameOverMenuName = "GameOverMenu";
     const string winMenuName = "WinMenu";
-    const string pauseMenuName = "PauseMenu";
+    // const string pauseMenuName = "PauseMenu";
     VisualElement GameOverMenu;
     VisualElement WinMenu;
-    VisualElement PauseMenu;
+    // VisualElement PauseMenu;
 
     // Game Menu Buttons
     const string winNextLevelButtonName = "WinNextLevelButton";
     const string winQuitButtonName = "WinQuitButton";
     const string gameOverRetryButtonName = "GameOverRetryButton";
     const string gameOverQuitButtonName = "GameOverQuitButton";
-    const string pauseResumeButtonName = "PauseResumeButton";
-    const string pauseQuitButtonName = "PauseQuitButton";
+    // const string pauseResumeButtonName = "PauseResumeButton";
+    // const string pauseQuitButtonName = "PauseQuitButton";
     Button WinNextLevelButton;
     Button WinQuitButton;
     Button GameOverRetryButton;
     Button GameOverQuitButton;
-    Button PauseResumeButton;
-    Button PauseQuitButton;
+    // Button PauseResumeButton;
+    // Button PauseQuitButton;
 
     // Unit Menu
-    const string unitMenuName = "UnitMenu";
+    const string unitMenusContainerName = "UnitMenus";
+    const string playerUnitMenuName = "UnitMenu";
+    const string playerUnitName = "UnitNameText";
+    const string playerUnitHealthName = "UnitHPText";
     const string enemyUnitMenuName = "EnemyUnitMenu";
-    VisualElement UnitMenu;
+    const string enemyUnitName = "EnemyUnitNameText";
+    const string enemyUnitHealthName = "EnemyUnitHPText";
+    VisualElement UnitMenusContainer;
+    VisualElement PlayerUnitMenu;
+    Label PlayerUnitName;
+    Label PlayerUnitHealth;
     VisualElement EnemyUnitMenu;
+    Label EnemyUnitName;
+    Label EnemyUnitHealth;
+
+    private GameObject playerUnit;
+    private GameObject enemyUnit;
+
 
     // Unit Menu Buttons
-    const string unitAttackButtonName = "UnitAttackButton";
-    const string unitWaitButtonName = "UnitWaitButton";
-    const string unitCancelAttackButtonName = "UnitCancelAttackButton";
-    const string unitConfirmAttackButtonName = "UnitConfirmAttackButton";
-    Button UnitAttackButton;
-    Button UnitWaitButton;
-    Button UnitCancelAttackButton;
-    Button UnitConfirmAttackButton;
+    const string playerUnitAttackButtonName = "UnitAttackButton";
+    const string playerUnitWaitButtonName = "UnitWaitButton";
+    const string playerUnitCancelAttackButtonName = "UnitCancelAttackButton";
+    const string playerUnitConfirmAttackButtonName = "UnitConfirmAttackButton";
+    Button PlayerUnitAttackButton;
+    Button PlayerUnitWaitButton;
+    Button PlayerUnitCancelAttackButton;
+    Button PlayerUnitConfirmAttackButton;
 
-    private void Start()
+    private bool isInCombatPrediction = false;
+
+    protected virtual void Awake()
     {
         uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
 
         MainMenuDocument = GetComponent<UIDocument>();
 
@@ -59,61 +79,59 @@ public class GameScreen : MonoBehaviour
             Debug.LogError("Main Menu UI Document is null");
             return;
         }
-        else
-        {
-            Debug.Log("Main menu detected!");
-        }
 
         root = MainMenuDocument.rootVisualElement;
 
         // Game Menus
         GameOverMenu = root.Q<VisualElement>(gameOverMenuName);
         WinMenu = root.Q<VisualElement>(winMenuName);
-        PauseMenu = root.Q<VisualElement>(pauseMenuName);
 
         // Game Menu Buttons
         WinNextLevelButton = root.Q<Button>(winNextLevelButtonName);
         WinQuitButton = root.Q<Button>(winQuitButtonName);
         GameOverRetryButton = root.Q<Button>(gameOverRetryButtonName);
         GameOverQuitButton = root.Q<Button>(gameOverQuitButtonName);
-        PauseResumeButton = root.Q<Button>(pauseResumeButtonName);
-        PauseQuitButton = root.Q<Button>(pauseQuitButtonName);
 
         // Game Menu Click Events
         WinNextLevelButton?.RegisterCallback<ClickEvent>(ClickNextLevelButton);
         WinQuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
         GameOverRetryButton?.RegisterCallback<ClickEvent>(ClickRetryButton);
         GameOverQuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
-        PauseResumeButton?.RegisterCallback<ClickEvent>(ClickResumeButton);
-        PauseQuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
 
         // Unit Menus
-        UnitMenu = root.Q<VisualElement>(unitMenuName);
+        UnitMenusContainer = root.Q<VisualElement>(unitMenusContainerName);
+        PlayerUnitMenu = root.Q<VisualElement>(playerUnitMenuName);
+        PlayerUnitName = root.Q<Label>(playerUnitName);
+        PlayerUnitHealth = root.Q<Label>(playerUnitHealthName);
         EnemyUnitMenu = root.Q<VisualElement>(enemyUnitMenuName);
+        EnemyUnitName = root.Q<Label>(enemyUnitName);
+        EnemyUnitHealth = root.Q<Label>(enemyUnitHealthName);
 
         // Unit Menu Buttons
-        UnitAttackButton = root.Q<Button>(unitAttackButtonName);
-        UnitWaitButton = root.Q<Button>(unitWaitButtonName);
-        UnitCancelAttackButton = root.Q<Button>(unitCancelAttackButtonName);
-        UnitConfirmAttackButton = root.Q<Button>(unitConfirmAttackButtonName);
-
+        PlayerUnitAttackButton = root.Q<Button>(playerUnitAttackButtonName);
+        PlayerUnitWaitButton = root.Q<Button>(playerUnitWaitButtonName);
+        PlayerUnitCancelAttackButton = root.Q<Button>(playerUnitCancelAttackButtonName);
+        PlayerUnitConfirmAttackButton = root.Q<Button>(playerUnitConfirmAttackButtonName);
         // Unit Menu Click Events
-        UnitAttackButton?.RegisterCallback<ClickEvent>(ClickUnitAttackButton);
-        UnitWaitButton?.RegisterCallback<ClickEvent>(ClickUnitWaitButton);
-        UnitCancelAttackButton?.RegisterCallback<ClickEvent>(ClickUnitCancelAttackButton);
-        UnitConfirmAttackButton?.RegisterCallback<ClickEvent>(ClickUnitConfirmAttackButton);
-
+        PlayerUnitAttackButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitAttackButton);
+        PlayerUnitWaitButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitWaitButton);
+        PlayerUnitCancelAttackButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitCancelAttackButton);
+        PlayerUnitConfirmAttackButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitConfirmAttackButton);
         CloseAllMenus();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            //If pause screen already active unpause and viceversa
-            PauseGame(!GetIsUIElementVisible(PauseMenu));
-        }
+        ActionEventManager.OnEnemyDeath += OnEnemyDeath;
+        ActionEventManager.OnDeath += OnPlayerUnitDeath;
     }
+    // unsubscribe to an event
+    private void OnDisable()
+    {
+        ActionEventManager.OnEnemyDeath -= OnEnemyDeath;
+        ActionEventManager.OnDeath -= OnPlayerUnitDeath;
+    }
+
 
     // Game Menu Click Events
     private void ClickNextLevelButton(ClickEvent evt)
@@ -126,44 +144,24 @@ public class GameScreen : MonoBehaviour
         uiManager.Restart();
     }
 
-    private void ClickQuitButton(ClickEvent evt)
+    protected void ClickQuitButton(ClickEvent evt)
     {
         uiManager.Quit();
     }
 
-    private void ClickResumeButton(ClickEvent evt)
-    {
-        PauseGame(false);
-    }
 
-    // Unit Menu Click Events
-    private void ClickUnitAttackButton(ClickEvent evt)
-    {
-    }
-
-    private void ClickUnitWaitButton(ClickEvent evt)
-    {
-    }
-
-    private void ClickUnitCancelAttackButton(ClickEvent evt)
-    {
-    }
-
-    private void ClickUnitConfirmAttackButton(ClickEvent evt)
-    {
-    }
 
     // UI ELement Visibility
-    public void CloseAllGameMenus()
+    public virtual void CloseAllGameMenus()
     {
         SetUIElementVisibility(WinMenu, false);
         SetUIElementVisibility(GameOverMenu, false);
-        SetUIElementVisibility(PauseMenu, false);
+        // SetUIElementVisibility(PauseMenu, false);
     }
 
     public void CloseAllUnitMenus()
     {
-        SetUIElementVisibility(UnitMenu, false);
+        SetUIElementVisibility(PlayerUnitMenu, false);
         SetUIElementVisibility(EnemyUnitMenu, false);
     }
 
@@ -201,45 +199,193 @@ public class GameScreen : MonoBehaviour
         SetUIElementVisibility(GameOverMenu, visibility);
     }
 
-    public void SetPauseMenuVisibility(bool visibility)
+    // public void SetPauseMenuVisibility(bool visibility)
+    // {
+    // CloseAllGameMenus();
+    // SetUIElementVisibility(PauseMenu, visibility);
+    // }
+
+    // Pausing Game
+    // public void PauseGame(bool status)
+    // {
+    //If status == true pause | if status == false unpause
+    // // SetUIElementVisibility(PauseMenu, status);
+
+    //When pause status is true change timescale to 0 (time stops)
+    //when it's false change it back to 1 (time goes by normally)
+    // if (status)
+    // Time.timeScale = 0;
+    // else
+    // Time.timeScale = 1;
+    // }
+
+    /*************************************************************************
+                                    Unit Menus
+    ************************************************************************/
+    /* UNIT MENUS */
+    private void UpdateUnitMenus()
     {
-        CloseAllGameMenus();
-        SetUIElementVisibility(PauseMenu, visibility);
+        SetPlayerUnitMenuInfo(GetUnitAttributes(playerUnit));
+        SetEnemyUnitMenuInfo(GetUnitAttributes(enemyUnit));
     }
 
-    // Unit Menu Visibility
-    public void SetUnitMenuVisibility(bool visibility)
+    public void HandleUnitByTile(Tile tile)
     {
-        SetUIElementVisibility(UnitMenu, visibility);
+        if (tile._occupied)
+        {
+            HandleUnitByGameObject(tile._unit);
+        }
+        else
+        {
+            SetPlayerUnitMenuVisibility(false);
+            SetEnemyUnitMenuVisibility(false);
+        }
+    }
+
+    public void HandleUnitByGameObject(GameObject gameObject)
+    {
+        if (!gameObject) return;
+
+        UnitAttributes selectedUnit = GetUnitAttributes(gameObject);
+
+        if (gameObject.CompareTag("Player"))
+        {
+            playerUnit = gameObject;
+            SetPlayerUnitMenuInfo(selectedUnit);
+            SetPlayerUnitMenuVisibility(true);
+        }
+        else if (gameObject.CompareTag("Enemy"))
+        {
+            enemyUnit = gameObject;
+            SetEnemyUnitMenuInfo(selectedUnit);
+            SetEnemyUnitMenuVisibility(true);
+        }
+
+        SetPlayerUnitMenuInfo(GetUnitAttributes(playerUnit));
+        SetEnemyUnitMenuInfo(GetUnitAttributes(enemyUnit));
+    }
+
+    private UnitAttributes GetUnitAttributes(GameObject gameObject)
+    {
+        if (!gameObject) return null;
+
+        return gameObject.GetComponent<UnitAttributes>();
+    }
+
+    /* PLAYER UNIT */
+    public void SetPlayerUnitMenuVisibility(bool visibility)
+    {
+        SetUIElementVisibility(PlayerUnitMenu, visibility);
+
+        if (!visibility) playerUnit = null;
+
+        if (visibility && GetIsEnemyUnitMenuOpen())
+        {
+            UnitMenusContainer.style.justifyContent = Justify.SpaceBetween;
+        }
+        else if (visibility && !GetIsEnemyUnitMenuOpen())
+        {
+            UnitMenusContainer.style.justifyContent = Justify.FlexEnd;
+        }
+        else if (!visibility && GetIsEnemyUnitMenuOpen())
+        {
+            UnitMenusContainer.style.justifyContent = Justify.FlexStart;
+        }
+    }
+
+    public void SetPlayerUnitMenuInfo(UnitAttributes unit)
+    {
+        if (!unit) return;
+
+        PlayerUnitName.text = unit.whatClass;
+        PlayerUnitHealth.text = unit.GetHealth() + "/" + unit.GetMaxHealth();
+
+        SetUIElementVisibility(PlayerUnitAttackButton, !unit.HasActed() && enemyUnit && GetIsEnemyUnitMenuOpen() && !isInCombatPrediction);
+        SetUIElementVisibility(PlayerUnitWaitButton, !unit.HasActed() && !isInCombatPrediction);
+        SetUIElementVisibility(PlayerUnitConfirmAttackButton, !unit.HasActed() && enemyUnit && GetIsEnemyUnitMenuOpen() && isInCombatPrediction);
+        SetUIElementVisibility(PlayerUnitCancelAttackButton, !unit.HasActed() && enemyUnit && GetIsEnemyUnitMenuOpen() && isInCombatPrediction);
+    }
+
+    public bool GetIsPlayerUnitMenuOpen()
+    {
+        return GetIsUIElementVisible(PlayerUnitMenu);
+    }
+
+    private void OnPlayerUnitDeath()
+    {
+        SetPlayerUnitMenuVisibility(false);
+    }
+
+    // Player Unit Click Events
+    private void ClickPlayerUnitAttackButton(ClickEvent evt)
+    {
+        isInCombatPrediction = true;
+
+        SetPlayerUnitMenuInfo(GetUnitAttributes(playerUnit));
+    }
+
+    private void ClickPlayerUnitWaitButton(ClickEvent evt)
+    {
+        if (!playerUnit) return;
+
+        GetUnitAttributes(playerUnit).SetActed(true);
+    }
+
+    private void ClickPlayerUnitCancelAttackButton(ClickEvent evt)
+    {
+        isInCombatPrediction = false;
+        UpdateUnitMenus();
+    }
+
+    private void ClickPlayerUnitConfirmAttackButton(ClickEvent evt)
+    {
+        if (!isInCombatPrediction || !playerUnit || !enemyUnit) return;
+
+        actionEvent.attackBattle(playerUnit, enemyUnit);
+
+        GetUnitAttributes(playerUnit).SetActed(true);
+        isInCombatPrediction = false;
+        UpdateUnitMenus();
+    }
+
+    /* ENEMY UNIT */
+    public void SetEnemyUnitMenuInfo(UnitAttributes unit)
+    {
+        if (!unit) return;
+
+        EnemyUnitName.text = unit.whatClass;
+        EnemyUnitHealth.text = unit.GetHealth() + "/" + unit.GetMaxHealth();
     }
 
     public void SetEnemyUnitMenuVisibility(bool visibility)
     {
         SetUIElementVisibility(EnemyUnitMenu, visibility);
+
+        if (!visibility) enemyUnit = null;
+
+        if (visibility && GetIsPlayerUnitMenuOpen())
+        {
+            UnitMenusContainer.style.justifyContent = Justify.SpaceBetween;
+        }
+        else if (visibility && !GetIsPlayerUnitMenuOpen())
+        {
+            UnitMenusContainer.style.justifyContent = Justify.FlexStart;
+        }
+        else if (!visibility && GetIsPlayerUnitMenuOpen())
+        {
+            UnitMenusContainer.style.justifyContent = Justify.FlexEnd;
+        }
+
+        SetPlayerUnitMenuInfo(GetUnitAttributes(playerUnit));
     }
 
-    public bool getIsUnitMenuOpen()
-    {
-        return GetIsUIElementVisible(UnitMenu);
-    }
-
-    public bool getIsEnemyUnitMenuOpen()
+    public bool GetIsEnemyUnitMenuOpen()
     {
         return GetIsUIElementVisible(EnemyUnitMenu);
     }
 
-    // Pausing Game
-    public void PauseGame(bool status)
+    private void OnEnemyDeath()
     {
-        //If status == true pause | if status == false unpause
-        SetUIElementVisibility(PauseMenu, status);
-
-        //When pause status is true change timescale to 0 (time stops)
-        //when it's false change it back to 1 (time goes by normally)
-        if (status)
-            Time.timeScale = 0;
-        else
-            Time.timeScale = 1;
+        SetEnemyUnitMenuVisibility(false);
     }
 }
-

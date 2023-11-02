@@ -19,22 +19,20 @@ public class MainMenu : MonoBehaviour
     // Button SettingsButton;
     Button QuitButton;
 
-    // [Header("Level Data")]
-    // [SerializeField] LevelSO levelData;
-
     private void Start()
     {
         uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
-    }
 
-    void onEnable()
-    {
         MainMenuDocument = GetComponent<UIDocument>();
 
         if (MainMenuDocument == null)
         {
             Debug.LogError("Main Menu UI Document is null");
             return;
+        }
+        else
+        {
+            Debug.Log("Main menu detected!");
         }
 
         root = MainMenuDocument.rootVisualElement;
@@ -44,23 +42,18 @@ public class MainMenu : MonoBehaviour
         // SettingsButton = root.Q<Button>(settingsButtonName);
         QuitButton = root.Q<Button>(quitButtonName);
 
-        if (PlayButton != null)
-        {
-            Debug.Log("Main Menu Play Button detected");
-        }
-
-        // PlayButton?.RegisterCallback<ClickEvent>(ClickPlayButton);
-        // QuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
+        PlayButton?.RegisterCallback<ClickEvent>(ClickPlayButton);
+        QuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
     }
 
-    // private void ClickPlayButton(ClickEvent event)
-    // {
-    // uiManager.PlayGame(levelData.sceneName);
-    // }
+    private void ClickPlayButton(ClickEvent evt)
+    {
+        uiManager.PlayGame("SampleScene");
+    }
 
-    // private void ClickQuitButton(ClickEvent event)
-    // {
-    // uiManager.Quit();
-    // }
+    private void ClickQuitButton(ClickEvent evt)
+    {
+        uiManager.Quit();
+    }
 }
 
