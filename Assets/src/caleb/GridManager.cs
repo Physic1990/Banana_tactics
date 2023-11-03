@@ -26,7 +26,7 @@ public class GridManager : MonoBehaviour
     AI aiManager;
     ActionEventManager actionEvent;
     CursorController cursor;
-    GameScreen gameUI;
+    UnitMenus gameUI;
 
     /*************************************************************************
                              Dictionarys & Lists
@@ -80,7 +80,7 @@ public class GridManager : MonoBehaviour
         aiManager = GameObject.FindGameObjectWithTag("Ai").GetComponent<AI>();
         actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
         cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorController>();
-        gameUI = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<GameScreen>();
+        gameUI = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<UnitMenus>();
 
         //Varaibles are initilized to their default values
         playerTurnOver = false;
@@ -94,25 +94,31 @@ public class GridManager : MonoBehaviour
         _cursorTile = GetTileAtPosition(new Vector2(0, 0));
         _cursorTile.TurnOnHighlight();
 
+        // BEN ADDED THIS
+        // Handles the Unit Menu for the Unit (If any) on the cursor's tile
         gameUI.HandleUnitByTile(_cursorTile);
     }
 
     //Update is called every frame
     private void Update()
     {
+        // BEN ADDED THIS
+        // Stores the turn status of the previous Update execution
         bool isPrevEnemyTurn = playerTurnOver;
 
         //checks if player turn has ended
         playerTurnOver = CheckPlayerTurn();
 
+        // BEN ADDED THIS
         // If the previous execution was for the enemies' turn but this execution is for the player's turn.
         // This should only execute when the player's turn first begins.
         if (isPrevEnemyTurn && !playerTurnOver)
         {
-            //Allows the Player to take an action in this new spot (ACTION EVENT MANAGER)
+            // Gets the adjancent game objects around the cursor tile
             List<GameObject> adjUnits = GetAdjancentObjects(_cursorTile);
             if (adjUnits.Count > 0)
             {
+                // Updates the enemy Unit Menu to be the Unit for the first adjancent game object
                 gameUI.HandleUnitByGameObject(adjUnits[0]);
             }
             else
@@ -258,8 +264,11 @@ public class GridManager : MonoBehaviour
             //Checks if the cursor actually changed position
             if (_cursorTile != temp)
             {
+                // BEN ADDED THIS
+                // If not in selection mode, then any updates to the cursor's position should update the Unit Menu(s) for the new tile
                 if (!_selectionMode)
                 {
+                    // Handles the Unit Menu for the Unit (If any) on the cursor's tile
                     gameUI.HandleUnitByTile(_cursorTile);
                 }
 
@@ -357,19 +366,18 @@ public class GridManager : MonoBehaviour
                     _selectedTile.TurnOffHighlight();
                     audioManager.PlaySFX(audioManager.placed);
 
-                    //Allows the Player to take an action in this new spot (ACTION EVENT MANAGER)
+                    // BEN ADDED THIS
+                    // Gets the adjancent game objects around the moved to tile
                     List<GameObject> adjUnits = GetAdjancentObjects(_moveToTile);
                     if (adjUnits.Count > 0)
                     {
-                        // actionEvent.attackBattle(_moveToTile._unit, adjUnits[0]);
+                        // Updates the enemy Unit Menu to be the Unit for the first adjancent game object
                         gameUI.HandleUnitByGameObject(adjUnits[0]);
                     }
                     else
                     {
-                        // actionEvent.doNothingTurn(_moveToTile._unit);
                         gameUI.SetEnemyUnitMenuVisibility(false);
                     }
-                    // UpdateActed(_moveToTile._unit, true);
 
                 }
                 //if the tile is already occupied
@@ -434,7 +442,6 @@ public class GridManager : MonoBehaviour
         //Once enemy turn has ended, start player turn again
         if (_Delay < 0)
         {
-            // playerTurnOver = false;
             _Delay = 400;
             ReactivatePlayerUnits();
         }
@@ -457,7 +464,6 @@ public class GridManager : MonoBehaviour
         if (unitA != null)
         {
             unitA.SetActed(acted); // Set to true or false for if they've acted or not
-            // gameUI.SetPlayerUnitMenuInfo(unitA);
         }
     }
 

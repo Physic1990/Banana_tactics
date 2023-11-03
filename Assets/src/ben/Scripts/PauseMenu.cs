@@ -6,34 +6,41 @@ using UnityEngine.UIElements;
 
 public class PauseMenu : GameScreen
 {
-    // protected UIDocument MainMenuDocument;
-
-    // protected UIManager uiManager;
-    // protected ActionEventManager actionEvent;
+    GameScreen gameUI;
 
 
-    // Game Menus
+    /*************************************************************************
+                                    Pause Menu
+    ************************************************************************/
     const string pauseMenuName = "PauseMenu";
     VisualElement PauseMenuEl;
 
-    // Game Menu Buttons
+    /*************************************************************************
+                                Pause Menu Buttons
+    ************************************************************************/
     const string pauseResumeButtonName = "PauseResumeButton";
     const string pauseQuitButtonName = "PauseQuitButton";
     Button PauseResumeButton;
     Button PauseQuitButton;
 
+    /*************************************************************************
+                                    Lifecycles
+    ************************************************************************/
     protected override void Awake()
     {
         base.Awake();
 
-        // Game Menus
+        // Needed to access the 'isGameOver' variable
+        gameUI = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<GameScreen>();
+
+        // Pause Menu
         PauseMenuEl = root.Q<VisualElement>(pauseMenuName);
 
-        // Game Menu Buttons
+        // Pause Menu Buttons
         PauseResumeButton = root.Q<Button>(pauseResumeButtonName);
         PauseQuitButton = root.Q<Button>(pauseQuitButtonName);
 
-        // Game Menu Click Events
+        // Pause Menu Click Events
         PauseResumeButton?.RegisterCallback<ClickEvent>(ClickResumeButton);
         PauseQuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
 
@@ -42,30 +49,29 @@ public class PauseMenu : GameScreen
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !gameUI.GetIsGameOver())
         {
-            //If pause screen already active unpause and viceversa
+            // Toggles the Pause Menu so long as the game isn't over
             PauseGame(!GetIsUIElementVisible(PauseMenuEl));
         }
     }
 
+    /*************************************************************************
+                                Click Events
+    ************************************************************************/
     private void ClickResumeButton(ClickEvent evt)
     {
         PauseGame(false);
     }
 
-    // UI ELement Visibility
+    /*************************************************************************
+                                Menu Visibility
+    ************************************************************************/
     public override void CloseAllGameMenus()
     {
         base.CloseAllGameMenus();
         SetUIElementVisibility(PauseMenuEl, false);
     }
-
-    // public void CloseAllMenus()
-    // {
-    //     CloseAllGameMenus();
-    //     CloseAllUnitMenus();
-    // }
 
     public void SetPauseMenuVisibility(bool visibility)
     {
@@ -73,14 +79,15 @@ public class PauseMenu : GameScreen
         SetUIElementVisibility(PauseMenuEl, visibility);
     }
 
-    // Pausing Game
+    /*************************************************************************
+                                Actions
+    ************************************************************************/
     public void PauseGame(bool status)
     {
-        //If status == true pause | if status == false unpause
-        SetUIElementVisibility(PauseMenuEl, status);
+        // Hides or shows the Pause Menu
+        SetPauseMenuVisibility(status);
 
-        //When pause status is true change timescale to 0 (time stops)
-        //when it's false change it back to 1 (time goes by normally)
+        // If the game is paused, stop the game time, otherwise resume the game time
         if (status)
             Time.timeScale = 0;
         else
