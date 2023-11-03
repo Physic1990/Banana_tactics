@@ -81,14 +81,14 @@ public class UnitMenus : GameScreen
 
     private void OnEnable()
     {
-        ActionEventManager.OnEnemyDeath += OnEnemyDeath;
-        ActionEventManager.OnDeath += OnPlayerUnitDeath;
+        ActionEventManager.onEnemyDeath += OnEnemyDeath;
+        ActionEventManager.onDeath += OnPlayerUnitDeath;
     }
     // unsubscribe to an event
     private void OnDisable()
     {
-        ActionEventManager.OnEnemyDeath -= OnEnemyDeath;
-        ActionEventManager.OnDeath -= OnPlayerUnitDeath;
+        ActionEventManager.onEnemyDeath -= OnEnemyDeath;
+        ActionEventManager.onDeath -= OnPlayerUnitDeath;
     }
 
     /*************************************************************************
