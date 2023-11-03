@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/src/ben/UI/USS/GameMenuStyles.uss?fileID=7433441132597879392&amp;guid=77742b6f6e5ba4f4b9afeecce09ae67e&amp;type=3#GameMenuStyles" />
-    <ui:VisualElement name="PauseMenu" class="game-menu">
+    <ui:VisualElement name="PauseMenu" class="game-menu" style="display: flex;">
         <ui:VisualElement name="Header" style="flex-grow: 0; width: auto; padding-top: 0; padding-bottom: 24px;">
             <ui:Label tabindex="-1" text="Pause" parse-escape-sequences="true" display-tooltip-when-elided="true" name="YouWinText" class="game-menu-header-text" />
         </ui:VisualElement>

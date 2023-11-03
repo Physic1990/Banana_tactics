@@ -259,7 +259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6477c4b732ace9447b8463f1208233a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSelection: {fileID: 0}
 --- !u!1 &1690815040
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1690815041}
   - component: {fileID: 1690815042}
+  - component: {fileID: 1690815043}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -308,6 +308,18 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 9a7ef981c96a71147960b0e93c7240c4, type: 3}
   m_SortingOrder: 0
+--- !u!114 &1690815043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690815040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858757ca37d19244e955ccd3cf18a91a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1933431848
 GameObject:
   m_ObjectHideFlags: 0
