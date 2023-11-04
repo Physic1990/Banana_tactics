@@ -17,12 +17,14 @@ public class DeathAnimation : MonoBehaviour
     {
         ActionEventManager.onDeath +=killAnimation;
         ActionEventManager.onAttack +=attackAnimation;
+        ActionEventManager.onHeal +=healAnimation;
     }
     // unsubscribe to an event
     private void OnDisable()
     {
         ActionEventManager.onDeath -= killAnimation;
         ActionEventManager.onAttack -= attackAnimation;
+        ActionEventManager.onHeal -= healAnimation;
     }
 
     void Awake()
@@ -50,5 +52,10 @@ public class DeathAnimation : MonoBehaviour
     {
         flame.SetBool("attack", true);
         attackUnit=true;
+    }
+
+    public virtual void healAnimation()
+    {
+        flame.SetBool("heal", true);
     }
 }

@@ -11,6 +11,7 @@ public class ActionEventManager : MonoBehaviour
    public static event Action onDeath;
    public static event Action onEnemyDeath;
    public static event Action onAttack;
+   public static event Action onHeal;
 
    // unit's data
    [SerializeField] UnitAttributes _unitAttributes;
@@ -247,6 +248,8 @@ public class ActionEventManager : MonoBehaviour
       player.healIncrease = 15; // must change from Gibbys data
       // heal ally
       _allyUnitAttributes.GainHealth(player.healIncrease);
+      // observation signal
+      onHeal?.Invoke();
    }
 
 
