@@ -100,14 +100,11 @@ public class GridManager : MonoBehaviour
     //Update is called every frame
     private void Update()
     {
-        // BEN ADDED THIS
-        // Stores the turn status of the previous Update execution
         bool isPrevEnemyTurn = playerTurnOver;
 
         //checks if player turn has ended
         playerTurnOver = CheckPlayerTurn();
 
-        // BEN ADDED THIS
         // If the previous execution was for the enemies' turn but this execution is for the player's turn.
         // This should only execute when the player's turn first begins.
         if (isPrevEnemyTurn && !playerTurnOver)
@@ -136,8 +133,6 @@ public class GridManager : MonoBehaviour
             CursorControl();
             //move cursor according to player input
             cursor.MoveCursor(new Vector2(_cursorTile.transform.position.x, _cursorTile.transform.position.y));
-
-
         }
     }
 
@@ -438,7 +433,7 @@ public class GridManager : MonoBehaviour
     {
         if (_Delay == 400)
         {
-            aiManager.AITurn(_playerUnits, _enemyUnits);
+            //aiManager.AITurn(_playerUnits, _enemyUnits, _tiles);
         }
         _Delay--;
         //Once enemy turn has ended, start player turn again

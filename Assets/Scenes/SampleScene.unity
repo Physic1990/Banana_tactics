@@ -310,7 +310,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1793391842}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &386455173
 GameObject:
@@ -1963,27 +1963,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433627332}
   m_CullTransparentMesh: 1
---- !u!1 &1499843589 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2104768792474717273, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
-  m_PrefabInstance: {fileID: 5159592277260320609}
-  m_PrefabAsset: {fileID: 0}
---- !u!111 &1499843594
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499843589}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 0}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &1557152759
 GameObject:
   m_ObjectHideFlags: 0
@@ -2947,7 +2926,39 @@ PrefabInstance:
     - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
       propertyPath: animationComponent
       value: 
-      objectReference: {fileID: 1499843594}
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.w
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.x
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.y
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.z
+      value: 0.049999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462455909922243419, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.16
+      objectReference: {fileID: 0}
     - target: {fileID: 7853242180262146469, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -2960,14 +2971,15 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -2076239609
       objectReference: {fileID: 0}
+    - target: {fileID: 7853242180262146469, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3493521015749958410, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2104768792474717273, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1499843594}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
 --- !u!1001 &7991907986371676097
 PrefabInstance:
@@ -3046,3 +3058,4 @@ SceneRoots:
   - {fileID: 679468888}
   - {fileID: 1433627333}
   - {fileID: 1794977237}
+  - {fileID: 280577433}
