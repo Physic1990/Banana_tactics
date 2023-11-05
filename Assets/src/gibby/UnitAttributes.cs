@@ -12,6 +12,7 @@ public class UnitAttributes : MonoBehaviour
     public bool IsPlayer = true;
     public bool IsEnemy = false;
     public bool hasActed = false;
+    private bool modeBC = false;
 
     int health;
     private int minHealth = 0;
@@ -48,7 +49,7 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
-    //sets specofoc varibalies
+    //sets specific varibalies
     void SetWarrior()
     {
         health = 100;
@@ -56,9 +57,18 @@ public class UnitAttributes : MonoBehaviour
         attack1 = "Banana Slam";
         attack2 = "Banana Slam";
         //SetAttacks();
+
+        if (modeBC == true && IsEnemy == true)
+        {
+            health = 1;
+        }
+        else if(modeBC == true && IsPlayer == true)
+        {
+            health = 999;
+        }
     }
 
-    //sets specofoc varibalies
+    //sets specific varibalies
     void SetGunSlinger()
     {
         health = 100;
@@ -66,6 +76,15 @@ public class UnitAttributes : MonoBehaviour
         attack1 = "Shoot";
         attack2 = "Shoot";
         //SetAttacks();
+
+        if (modeBC == true && IsEnemy == true)
+        {
+            health = 1;
+        }
+        else if (modeBC == true && IsPlayer == true)
+        {
+            health = 999;
+        }
     }
 
     //when called it will set all attacks stats based on what attack you are refrencing (in code it is called when people want the stats)
@@ -87,6 +106,26 @@ public class UnitAttributes : MonoBehaviour
             attackRange = 2;
             attackDamage = 6;
             attackDamageCrit = attackDamage * 2;
+        }
+        //makes all player characters do insane damage and enemys zero if bc mode is on
+        else if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                attackCritChance = 1;
+                attackHitChance = 1;
+                attackRange = 999;
+                attackDamage = 999;
+                attackDamageCrit = attackDamage * 10;
+            } 
+            else if (IsEnemy == true)
+            {
+                attackCritChance = 0;
+                attackHitChance = 0;
+                attackRange = 0;
+                attackDamage = 0;
+                attackDamageCrit = attackDamage * 0;
+            }
         }
         else
         {
@@ -115,6 +154,18 @@ public class UnitAttributes : MonoBehaviour
         }
 
         health = changeHealthAmount;
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
+        }
     }
 
     //subtracts a value from health
@@ -129,6 +180,18 @@ public class UnitAttributes : MonoBehaviour
         {
             health -= changeHealthAmount;
         }
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
+        }
     }
 
     //adds value to health
@@ -142,6 +205,18 @@ public class UnitAttributes : MonoBehaviour
         else
         {
             health += changeHealthAmount;
+        }
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
         }
     }
 
@@ -248,6 +323,20 @@ public class UnitAttributes : MonoBehaviour
     {
         //normal color set       
         spriteRenderer.color = originalColor;
+    }
+
+    public void triggerBC ()
+    {
+        if (modeBC == false)
+        {
+            modeBC = true;
+        } 
+        else
+        {
+            modeBC = false;
+        }
+
+        
     }
 
     void Start()
