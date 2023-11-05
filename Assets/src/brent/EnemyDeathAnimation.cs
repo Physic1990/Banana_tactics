@@ -7,7 +7,7 @@ public class EnemyDeathAnimation : DeathAnimation
     // subscribe to an event
     private void OnEnable()
     {
-        ActionEventManager.onEnemyDeath +=killAnimation;
+        ActionEventManager.onEnemyDeath += killAnimation;
     }
     // unsubscribe to an event
     private void OnDisable()
@@ -29,7 +29,7 @@ public class EnemyDeathAnimation : DeathAnimation
         if(killEnemyUnit == true)
         {
             // play animation
-            flame.enabled = true;
+            eventAnimation.enabled = true;
         }
     }
 }

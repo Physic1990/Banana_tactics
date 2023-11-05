@@ -5,19 +5,19 @@ using UnityEngine;
 public class DeathAnimation : MonoBehaviour
 {
     // signal unit has died
-    protected bool killUnit = false;
+   // protected bool killUnit = false;
     // signal unit has attacked
-    protected bool attackUnit = false;
+    //protected bool attackUnit = false;
     AnimatorStateInfo animStateInfo;
     public float NTime;
     bool animationFinished;
-    public Animator flame;
+    public Animator eventAnimation;
     // subscribe to event
     private void OnEnable()
     {
         ActionEventManager.onDeath +=killAnimation;
         ActionEventManager.onAttack +=attackAnimation;
-         ActionEventManager.onHealth +=healthAnimation;
+        ActionEventManager.onHealth +=healthAnimation;
     }
     // unsubscribe to an event
     private void OnDisable()
@@ -29,39 +29,39 @@ public class DeathAnimation : MonoBehaviour
 
     void Awake()
     {
-        flame = gameObject.GetComponent<Animator>();
+        eventAnimation = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        if(flame.GetCurrentAnimatorStateInfo(0).IsName("attackRoy") && 
-        flame.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+        if(eventAnimation.GetCurrentAnimatorStateInfo(0).IsName("attackRoy") && 
+        eventAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
-            flame.SetBool("attack", false);
-            attackUnit=false;
+            eventAnimation.SetBool("attack", false);
+            //attackUnit=false;
         }
-        if(flame.GetCurrentAnimatorStateInfo(0).IsName("addHealth") && 
-       flame.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+        if(eventAnimation.GetCurrentAnimatorStateInfo(0).IsName("addHealth") && 
+           eventAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
        {
-        flame.SetBool("powerUp", false);
-        attackUnit=false;
+            eventAnimation.SetBool("powerUp", false);
+            //attackUnit=false;
        }
     }
 
     public virtual void killAnimation()
     {
-        flame.SetBool("die", true);
+        eventAnimation.SetBool("die", true);
     }
 
     public virtual void attackAnimation()
     {
-        flame.SetBool("attack", true);
-        attackUnit=true;
+        eventAnimation.SetBool("attack", true);
+        //attackUnit=true;
     }
 
     public virtual void healthAnimation()
     {
-        flame.SetBool("powerUp", true);
+        eventAnimation.SetBool("powerUp", true);
     }
 }

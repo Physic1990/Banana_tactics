@@ -186,6 +186,7 @@ public class ActionEventManager : MonoBehaviour
 
       // attack animation
       onAttack?.Invoke();
+      //onDeath?.Invoke();
 
       // player was hit
       if(Random.Range(0, 100) < enemy.attackHitChance)
@@ -217,10 +218,11 @@ public class ActionEventManager : MonoBehaviour
       //Debug.Log(enemy.attackCritChance);
 
       // player unit has died
-      if(_unitAttributes.GetHealth()<=0)
+      if(_unitAttributes.GetHealth()<=100)
       {
          // obsrever signal
-         onDeath?.Invoke();
+         onHealth?.Invoke();
+         //onDeath?.Invoke();
       }
       
       // enemy unit has died
@@ -245,7 +247,7 @@ public class ActionEventManager : MonoBehaviour
       double [] playerAtt = _unitAttributes.GetAttackOneStats();
       double [] allyAtt = _allyUnitAttributes.GetAttackOneStats();
       // dummy variable for healling 
-      player.healIncrease = 15; // must change from Gibbys data
+      player.healIncrease = (int)playerAtt[5]; // must change from Gibbys data
       // heal ally
       _allyUnitAttributes.GainHealth(player.healIncrease);
       // observation signal
