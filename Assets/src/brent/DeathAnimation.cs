@@ -17,14 +17,14 @@ public class DeathAnimation : MonoBehaviour
     {
         ActionEventManager.onDeath +=killAnimation;
         ActionEventManager.onAttack +=attackAnimation;
-        ActionEventManager.onHeal +=healAnimation;
+         ActionEventManager.onHealth +=healthAnimation;
     }
     // unsubscribe to an event
     private void OnDisable()
     {
         ActionEventManager.onDeath -= killAnimation;
         ActionEventManager.onAttack -= attackAnimation;
-        ActionEventManager.onHeal -= healAnimation;
+        ActionEventManager.onHealth -= healthAnimation;
     }
 
     void Awake()
@@ -41,6 +41,12 @@ public class DeathAnimation : MonoBehaviour
             flame.SetBool("attack", false);
             attackUnit=false;
         }
+        if(flame.GetCurrentAnimatorStateInfo(0).IsName("addHealth") && 
+       flame.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+       {
+        flame.SetBool("powerUp", false);
+        attackUnit=false;
+       }
     }
 
     public virtual void killAnimation()
@@ -54,8 +60,8 @@ public class DeathAnimation : MonoBehaviour
         attackUnit=true;
     }
 
-    public virtual void healAnimation()
+    public virtual void healthAnimation()
     {
-        flame.SetBool("heal", true);
+        flame.SetBool("powerUp", true);
     }
 }

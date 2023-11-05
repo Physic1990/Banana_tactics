@@ -11,7 +11,7 @@ public class ActionEventManager : MonoBehaviour
    public static event Action onDeath;
    public static event Action onEnemyDeath;
    public static event Action onAttack;
-   public static event Action onHeal;
+   public static event Action onHealth;
 
    // unit's data
    [SerializeField] UnitAttributes _unitAttributes;
@@ -249,7 +249,7 @@ public class ActionEventManager : MonoBehaviour
       // heal ally
       _allyUnitAttributes.GainHealth(player.healIncrease);
       // observation signal
-      onHeal?.Invoke();
+      onHealth?.Invoke();
    }
 
 
