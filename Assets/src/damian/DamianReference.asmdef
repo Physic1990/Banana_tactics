@@ -1,7 +1,10 @@
 {
     "name": "DamianReference",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:0cbc72186d9a25c4a8dd605da60c142c",
+        "GUID:0338da957d2483244bbaf4d830414d0e"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

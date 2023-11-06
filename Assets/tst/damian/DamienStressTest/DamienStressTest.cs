@@ -8,6 +8,7 @@ public class DamienStressTest : MonoBehaviour
     AI EnemyAi = new AI();
     List<GameObject> UnitsList = new List<GameObject>();
     List<GameObject> OtherUnitsList = new List<GameObject>();
+    private Dictionary<Vector2, Tile> tiles = new Dictionary<Vector2, Tile>();
     float incVal = 1f;
 
 
@@ -22,7 +23,7 @@ public class DamienStressTest : MonoBehaviour
     {
         for (int i = 0; i <= incVal; i++)
         {
-            EnemyAi.AITurn(UnitsList, OtherUnitsList);
+            EnemyAi.AITurn(UnitsList, OtherUnitsList, tiles);
         }
         
         

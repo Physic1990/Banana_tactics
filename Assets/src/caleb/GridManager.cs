@@ -499,7 +499,7 @@ public class GridManager : MonoBehaviour
     {
         if (_Delay == 400)
         {
-            //aiManager.AITurn(_playerUnits, _enemyUnits, _tiles);
+            aiManager.AITurn(_playerUnits, _enemyUnits, _tiles);
         }
         _Delay--;
         //Once enemy turn has ended, start player turn again
