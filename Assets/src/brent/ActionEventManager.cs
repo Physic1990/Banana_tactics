@@ -218,19 +218,21 @@ public class ActionEventManager : MonoBehaviour
       //Debug.Log(enemy.attackCritChance);
 
       // player unit has died
-      if(_unitAttributes.GetHealth()<=100)
+      if(_unitAttributes.GetHealth()<50)
       {
          // obsrever signal
-         onHealth?.Invoke();
-         //onDeath?.Invoke();
+         //onHealth?.Invoke();
+         
+         onDeath?.Invoke();
       }
       
       // enemy unit has died
-      if(_enemyUnitAttributes.GetHealth()<=100)
+      if(_enemyUnitAttributes.GetHealth()<90)
       {
          // observer signal
          onEnemyDeath?.Invoke();
       }
+      //onEnemyDeath?.Invoke();
    }
 
 

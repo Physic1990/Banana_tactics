@@ -4,32 +4,42 @@ using UnityEngine;
 
 public class EnemyDeathAnimation : DeathAnimation
 {
-    // subscribe to an event
-    private void OnEnable()
-    {
-        ActionEventManager.onEnemyDeath += killAnimation;
-    }
-    // unsubscribe to an event
-    private void OnDisable()
-    {
-        ActionEventManager.onEnemyDeath -=killAnimation;
-    }
-    // signal enemy's death
-    public bool killEnemyUnit = false;
-    // death animation
-    public DeathAnimation deathAnimation;
+
     public override void killAnimation()
     {
-        killEnemyUnit=true;
+        eventAnimation.SetBool("enemy1die", true);
     }
-    // waiting for death signal
-    public override void  Update()
+
+    // Update is called once per frame
+    public override void Update()
     {
-        // enemy died
-        if(killEnemyUnit == true)
+        if(eventAnimation.GetCurrentAnimatorStateInfo(0).IsName("attackRoy") && 
+        eventAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
-            // play animation
-            eventAnimation.enabled = true;
+            eventAnimation.SetBool("attack", false);
+            //attackUnit=false;
         }
+        if(eventAnimation.GetCurrentAnimatorStateInfo(0).IsName("addHealth") && 
+           eventAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+       {
+            eventAnimation.SetBool("powerUpEnemy1", false);
+            //attackUnit=false;
+       }
+    }
+
+    // waiting for death signal
+    public override void enemyKillAnimation()
+    {
+        eventAnimation.SetBool("enemy1die", true);
+    }
+
+    public override void attackAnimation()
+    {
+        eventAnimation.SetBool("attackEnemy1", true);
+    }
+
+    public override void healthAnimation()
+    {
+        eventAnimation.SetBool("powerUpEnemy1", true);
     }
 }

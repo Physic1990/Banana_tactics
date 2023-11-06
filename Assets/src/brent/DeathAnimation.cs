@@ -18,6 +18,7 @@ public class DeathAnimation : MonoBehaviour
         ActionEventManager.onDeath +=killAnimation;
         ActionEventManager.onAttack +=attackAnimation;
         ActionEventManager.onHealth +=healthAnimation;
+        ActionEventManager.onEnemyDeath += enemyKillAnimation;
     }
     // unsubscribe to an event
     private void OnDisable()
@@ -25,6 +26,7 @@ public class DeathAnimation : MonoBehaviour
         ActionEventManager.onDeath -= killAnimation;
         ActionEventManager.onAttack -= attackAnimation;
         ActionEventManager.onHealth -= healthAnimation;
+        ActionEventManager.onEnemyDeath -= enemyKillAnimation;
     }
 
     void Awake()
@@ -54,10 +56,15 @@ public class DeathAnimation : MonoBehaviour
         eventAnimation.SetBool("die", true);
     }
 
+    public virtual void enemyKillAnimation()
+    {
+        eventAnimation.SetBool("deathAsEnemy", true);
+    }
+
+
     public virtual void attackAnimation()
     {
         eventAnimation.SetBool("attack", true);
-        //attackUnit=true;
     }
 
     public virtual void healthAnimation()
