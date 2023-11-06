@@ -18,3 +18,8 @@ VisualElement {
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
 }
+
+.main-menu-selected-button {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgb(73, 255, 77);
+}

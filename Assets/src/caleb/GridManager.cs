@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using UnityEditor.Profiling;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 public class GridManager : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class GridManager : MonoBehaviour
     AI aiManager;
     ActionEventManager actionEvent;
     CursorController cursor;
-    UnitMenus gameUI;
+    UnitMenus unitMenus;
+    PauseMenu pauseMenu;
 
     /*************************************************************************
                              Dictionarys & Lists
@@ -68,8 +70,45 @@ public class GridManager : MonoBehaviour
     private bool playerTurnOver;
 
     /*************************************************************************
+                             Player Movement
+    ************************************************************************/
+    // BEN ADDED THIS
+    private PlayerControls input = null;
+
+    // Tracks the player's movement inputs as a Vector2
+    private Vector2 movementInput = Vector2.zero;
+
+    /*************************************************************************
                          Initilize and Update Functions
     ************************************************************************/
+    private void Awake()
+    {
+        input = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
+        input.Enable();
+        // Handles Player Movement
+        input.Player.Move.performed += OnMovementPerformed;
+        input.Player.Move.canceled += OnMovementCancelled;
+
+        // Handles Unit Selection
+        input.Player.SelectUnit.performed += ctx => SelectUnit();
+        input.Player.UnselectUnit.performed += ctx => UnselectUnit();
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+        // Clears Player Movement actions
+        input.Player.Move.performed -= OnMovementPerformed;
+        input.Player.Move.canceled -= OnMovementCancelled;
+
+        // Clears Unit Selection actions
+        input.Player.SelectUnit.performed -= ctx => SelectUnit();
+        input.Player.UnselectUnit.performed -= ctx => UnselectUnit();
+    }
 
     //Start function called as soon as Grid Manager is initilized
     private void Start()
@@ -78,7 +117,8 @@ public class GridManager : MonoBehaviour
         aiManager = GameObject.FindGameObjectWithTag("Ai").GetComponent<AI>();
         actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
         cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorController>();
-        gameUI = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<UnitMenus>();
+        unitMenus = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<UnitMenus>();
+        pauseMenu = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<PauseMenu>();
 
         //Varaibles are initilized to their default values
         playerTurnOver = false;
@@ -94,12 +134,13 @@ public class GridManager : MonoBehaviour
 
         // BEN ADDED THIS
         // Handles the Unit Menu for the Unit (If any) on the cursor's tile
-        gameUI.HandleUnitByTile(_cursorTile);
+        unitMenus.HandleUnitByTile(_cursorTile);
     }
 
     //Update is called every frame
     private void Update()
     {
+
         bool isPrevEnemyTurn = playerTurnOver;
 
         //checks if player turn has ended
@@ -114,11 +155,11 @@ public class GridManager : MonoBehaviour
             if (adjUnits.Count > 0)
             {
                 // Updates the enemy Unit Menu to be the Unit for the first adjancent game object
-                gameUI.HandleUnitByGameObject(adjUnits[0]);
+                unitMenus.HandleUnitByGameObject(adjUnits[0]);
             }
             else
             {
-                gameUI.SetEnemyUnitMenuVisibility(false);
+                unitMenus.SetEnemyUnitMenuVisibility(false);
             }
         }
 
@@ -242,6 +283,19 @@ public class GridManager : MonoBehaviour
     /*************************************************************************
                        Cursor and Player Input Functions
     ************************************************************************/
+    // BEN ADDED THIS
+    private void OnMovementPerformed(InputAction.CallbackContext value)
+    {
+        // Reads the vector2 value and assigns it to movementInput
+        movementInput = value.ReadValue<Vector2>();
+    }
+
+    // BEN ADDED THIS
+    private void OnMovementCancelled(InputAction.CallbackContext value)
+    {
+        // Clears movementInput
+        movementInput = Vector2.zero;
+    }
 
     //This function is the lifeblood of the cursor and handles all aspects and function calls related to the cursor (both moving and selection)
     private void CursorControl()
@@ -266,43 +320,49 @@ public class GridManager : MonoBehaviour
                 if (!_selectionMode)
                 {
                     // Handles the Unit Menu for the Unit (If any) on the cursor's tile
-                    gameUI.HandleUnitByTile(_cursorTile);
+                    unitMenus.HandleUnitByTile(_cursorTile);
                 }
 
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.cursorMove);
                 _cursorTimer = 0;
             }
         }
-        //Calls selection control which handles the cursor selecting a game object, confirming selections and backing out of selections
-        SelectionControl();
     }
 
     //Checks if the player has inputted anything and updates the x and y coordinates of the _cursorTile accordingly
     private Tile TakePlayerInput()
     {
+        // BEN ADDED THIS
+        // This is needed because the Input System still registers inputs when the Timescale is 0
+        if (pauseMenu.isGamePaused) return _cursorTile;
+
         //New x y coordinates of the cursor
         float x = _cursorTile.transform.position.x;
         float y = _cursorTile.transform.position.y;
+
+        // BEN ADDED THIS
         //The right arrow key increments the x position of the cursor
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (movementInput.x == 1.0f)
         {
             x++;
         }
         //The left arrow key decrements the x position of the cursor
-        if (Input.GetKey(KeyCode.LeftArrow))
+        else if (movementInput.x == -1.0f)
         {
             x--;
         }
-        //The down arrow key decrements the y position of the cursor
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            y--;
-        }
+
         //The up arrow key increments the y position of the cursor
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (movementInput.y == 1.0f)
         {
             y++;
         }
+        //The down arrow key decrements the y position of the cursor
+        else if (movementInput.y == -1.0f)
+        {
+            y--;
+        }
+
         //Calls MoveCursor to actually move the cursor to these new coordinates
         return MoveCursor(new Vector2(x, y));
     }
@@ -332,67 +392,73 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    //Controls taking player inputs to select an object where the cursor is and back out of selections
-    private void SelectionControl()
+    // BEN MADE THIS A SEPERATE FUNCTION
+    // Handles Unit Selection
+
+    private void SelectUnit()
     {
-        // The F key is used to select the thing where the cursor is at
-        if (Input.GetKeyDown(KeyCode.F))
+        // This is needed because the Input System still registers inputs when the Timescale is 0
+        if (pauseMenu.isGamePaused) return;
+
+        //If something hasn't been selected yet, and there is an object occupying the space the cursor is at, we mark that object as selected
+        if (!_selectionMode && _cursorTile._occupied)
         {
-            //If something hasn't been selected yet, and there is an object occupying the space the cursor is at, we mark that object as selected
-            if (!_selectionMode && _cursorTile._occupied)
+            //Checks that you're moving a player and they have not acted (so, no moving enemies or players that have already acted)
+            if (_cursorTile._unit.CompareTag("Player") && !CheckActed(_cursorTile._unit))
             {
-                //Checks that you're moving a player and they have not acted (so, no moving enemies or players that have already acted)
-                if (_cursorTile._unit.CompareTag("Player") && !CheckActed(_cursorTile._unit))
-                {
-                    _selectedTile = _cursorTile;
-                    AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
-                    _selectionMode = true;
-                }
+                _selectedTile = _cursorTile;
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
+                _selectionMode = true;
             }
-            //If the player press F while an object is marked as selected, this code will try to move the object to the current cursorTile space
-            else if (_selectionMode)
+        }
+        //If the player press F while an object is marked as selected, this code will try to move the object to the current cursorTile space
+        else if (_selectionMode)
+        {
+            _moveToTile = _cursorTile;
+            //checks that there's not already an object on the tile
+            if (!_moveToTile._occupied && ValidMove())
             {
-                _moveToTile = _cursorTile;
-                //checks that there's not already an object on the tile
-                if (!_moveToTile._occupied && ValidMove())
+                //Assigns player unit to new tile and removes them from the old tile. Dehighlight all non-cursor tiles
+                _moveToTile.AssignUnit(_selectedTile._unit);
+                _selectedTile.RemoveUnit();
+                _selectionMode = false;
+                _selectedTile.TurnOffHighlight();
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.placed);
+
+                // BEN ADDED THIS
+                // Gets the adjancent game objects around the moved to tile
+                List<GameObject> adjUnits = GetAdjancentObjects(_moveToTile);
+                if (adjUnits.Count > 0)
                 {
-                    //Assigns player unit to new tile and removes them from the old tile. Dehighlight all non-cursor tiles
-                    _moveToTile.AssignUnit(_selectedTile._unit);
-                    _selectedTile.RemoveUnit();
-                    _selectionMode = false;
-                    _selectedTile.TurnOffHighlight();
-                    AudioManager.Instance.PlaySFX(AudioManager.Instance.placed);
-
-                    // BEN ADDED THIS
-                    // Gets the adjancent game objects around the moved to tile
-                    List<GameObject> adjUnits = GetAdjancentObjects(_moveToTile);
-                    if (adjUnits.Count > 0)
-                    {
-                        // Updates the enemy Unit Menu to be the Unit for the first adjancent game object
-                        gameUI.HandleUnitByGameObject(adjUnits[0]);
-                    }
-                    else
-                    {
-                        gameUI.SetEnemyUnitMenuVisibility(false);
-                    }
-
+                    // Updates the enemy Unit Menu to be the Unit for the first adjancent game object
+                    unitMenus.HandleUnitByGameObject(adjUnits[0]);
                 }
-                //if the tile is already occupied
                 else
                 {
-                    //Do not move the Player
-                    AudioManager.Instance.PlaySFX(AudioManager.Instance.error);
+                    unitMenus.SetEnemyUnitMenuVisibility(false);
                 }
 
             }
+            //if the tile is already occupied
+            else
+            {
+                //Do not move the Player
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.error);
+            }
+
         }
-        // By pressing the V key, the player can unmark a selected unit (back out of a selection)
-        if (Input.GetKeyUp(KeyCode.V))
-        {
-            _selectedTile.TurnOffHighlight();
-            _selectionMode = false;
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.back);
-        }
+    }
+
+    // BEN MADE THIS A SEPERATE FUNCTION
+    // Unselects the selected Unit.
+    private void UnselectUnit()
+    {
+        // This is needed because the Input System still registers inputs when the Timescale is 0
+        if (pauseMenu.isGamePaused) return;
+
+        _selectedTile.TurnOffHighlight();
+        _selectionMode = false;
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.back);
     }
 
     public bool ValidMove()
