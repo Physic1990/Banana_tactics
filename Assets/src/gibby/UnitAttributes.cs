@@ -42,6 +42,10 @@ public class UnitAttributes : MonoBehaviour
         {
             SetGunSlinger();
         }
+        else if (whatClass == "Lancer")
+        {
+            SetLancer();
+        }
         else
         {
             //defult is warrior if wrong string or none had been entered
@@ -55,7 +59,7 @@ public class UnitAttributes : MonoBehaviour
         health = 100;
         movement = 2;
         attack1 = "Banana Slam";
-        attack2 = "Banana Slam";
+        attack2 = "Banana Punch";
         //SetAttacks();
 
         if (modeBC == true && IsEnemy == true)
@@ -74,7 +78,25 @@ public class UnitAttributes : MonoBehaviour
         health = 100;
         movement = 3;
         attack1 = "Shoot";
-        attack2 = "Shoot";
+        attack2 = "Banana Punch";
+        //SetAttacks();
+
+        if (modeBC == true && IsEnemy == true)
+        {
+            health = 1;
+        }
+        else if (modeBC == true && IsPlayer == true)
+        {
+            health = 999;
+        }
+    }
+
+    void SetLancer()
+    {
+        health = 100;
+        movement = 3;
+        attack1 = "Banana Thrust";
+        attack2 = "Banana Punch";
         //SetAttacks();
 
         if (modeBC == true && IsEnemy == true)
@@ -90,21 +112,37 @@ public class UnitAttributes : MonoBehaviour
     //when called it will set all attacks stats based on what attack you are refrencing (in code it is called when people want the stats)
     void SetAttacks(string attack)
     {
-        if (attack == "Banana Slam")
+        if (attack == "Banana Punch")
         {
             attackCritChance = 0.2;
-            attackHitChance = 0.8;
-            attackRange = 1;
+            attackHitChance = 0.99;
+            attackRange = 10;
             attackDamage = 5;
             attackDamageCrit = attackDamage * 2;
 
         }
+        else if (attack == "Banana Slam")
+        {
+            attackCritChance = 0.35;
+            attackHitChance = 0.75;
+            attackRange = 1;
+            attackDamage = 20;
+            attackDamageCrit = attackDamage * 2;
+        }
         else if (attack == "Shoot")
         {
             attackCritChance = 0.1;
-            attackHitChance = 0.7;
+            attackHitChance = 0.70;
+            attackRange = 4;
+            attackDamage = 20;
+            attackDamageCrit = attackDamage * 2;
+        }
+        else if (attack == "Banana Thrust")
+        {
+            attackCritChance = 0.3;
+            attackHitChance = 0.85;
             attackRange = 2;
-            attackDamage = 6;
+            attackDamage = 20;
             attackDamageCrit = attackDamage * 2;
         }
         //makes all player characters do insane damage and enemys zero if bc mode is on
@@ -129,7 +167,7 @@ public class UnitAttributes : MonoBehaviour
         }
         else
         {
-            attack = "Banana Slam";
+            attack = "Banana Punch";
             SetAttacks(attack);
         }
     }
