@@ -90,7 +90,7 @@ public class UnitMenus : GameScreen
     private void OnEnable()
     {
         ActionEventManager.onEnemyDeath += OnEnemyDeath;
-        ActionEventManager.onDeath += OnPlayerUnitDeath;
+       // ActionEventManager.onDeath += OnPlayerUnitDeath;
 
         input.Enable();
         input.Player.ButtonWest.performed += ctx => ClickWestButton();
@@ -100,7 +100,7 @@ public class UnitMenus : GameScreen
     private void OnDisable()
     {
         ActionEventManager.onEnemyDeath -= OnEnemyDeath;
-        ActionEventManager.onDeath -= OnPlayerUnitDeath;
+       // ActionEventManager.onDeath -= OnPlayerUnitDeath;
 
         input.Disable();
         input.Player.ButtonWest.performed -= ctx => ClickWestButton();
