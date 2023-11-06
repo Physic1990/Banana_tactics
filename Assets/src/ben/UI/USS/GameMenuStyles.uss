@@ -59,3 +59,7 @@
     -unity-text-align: middle-center;
     color: rgb(202, 202, 202);
 }
+
+.game-menu-selected-button {
+    background-color: rgb(77, 255, 59);
+}

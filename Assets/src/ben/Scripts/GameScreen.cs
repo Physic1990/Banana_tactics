@@ -53,7 +53,13 @@ public class GameScreen : MonoBehaviour
     ************************************************************************/
     protected void ClickQuitButton(ClickEvent evt)
     {
+        QuitGame();
+    }
+
+    protected void QuitGame()
+    {
         uiManager.Quit();
+
     }
 
 

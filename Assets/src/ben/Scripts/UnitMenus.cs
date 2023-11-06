@@ -49,11 +49,19 @@ public class UnitMenus : GameScreen
     private bool isInCombatPrediction = false;
 
     /*************************************************************************
+                                Player Input
+    ************************************************************************/
+    private PlayerControls input = null;
+
+
+    /*************************************************************************
                                    Lifecycles
     ************************************************************************/
     protected override void Awake()
     {
         base.Awake();
+
+        input = new PlayerControls();
 
         // Unit Menus
         UnitMenusContainer = root.Q<VisualElement>(unitMenusContainerName);
@@ -83,12 +91,50 @@ public class UnitMenus : GameScreen
     {
         ActionEventManager.onEnemyDeath += OnEnemyDeath;
         ActionEventManager.onDeath += OnPlayerUnitDeath;
+
+        input.Enable();
+        input.Player.ButtonWest.performed += ctx => ClickWestButton();
+        input.Player.ButtonNorth.performed += ctx => ClickNorthButton();
     }
     // unsubscribe to an event
     private void OnDisable()
     {
         ActionEventManager.onEnemyDeath -= OnEnemyDeath;
         ActionEventManager.onDeath -= OnPlayerUnitDeath;
+
+        input.Disable();
+        input.Player.ButtonWest.performed -= ctx => ClickWestButton();
+        input.Player.ButtonNorth.performed -= ctx => ClickNorthButton();
+    }
+
+    // Runs when the Square/X button on a controller is clicked
+    private void ClickWestButton()
+    {
+        // Initiates combat is the Attack Button is visible
+        if (GetIsUIElementVisible(PlayerUnitAttackButton))
+        {
+            PlayerAttack();
+        }
+        // Confirms combat if the Confirm Attack Button is visible
+        else if (GetIsUIElementVisible(PlayerUnitConfirmAttackButton))
+        {
+            PlayerConfirmAttack();
+        }
+    }
+
+    // Runs when the Triangle/Y button on a controller is clicked
+    private void ClickNorthButton()
+    {
+        // Skips Unit turn if the Unit Wait Button is visible
+        if (GetIsUIElementVisible(PlayerUnitWaitButton))
+        {
+            PlayerWait();
+        }
+        // Cancels combat initiation if the Cancel Attack Button is visible
+        else if (GetIsUIElementVisible(PlayerUnitCancelAttackButton))
+        {
+            PlayerCancelAttack();
+        }
     }
 
     /*************************************************************************
@@ -222,6 +268,14 @@ public class UnitMenus : GameScreen
     ************************************************************************/
     private void ClickPlayerUnitAttackButton(ClickEvent evt)
     {
+        if (!GetIsUIElementVisible(PlayerUnitAttackButton)) return;
+
+        PlayerAttack();
+    }
+
+    // Initiates combat predicition
+    private void PlayerAttack()
+    {
         // Enter Combat Predicition mode
         isInCombatPrediction = true;
 
@@ -231,13 +285,30 @@ public class UnitMenus : GameScreen
 
     private void ClickPlayerUnitWaitButton(ClickEvent evt)
     {
+        if (!GetIsUIElementVisible(PlayerUnitWaitButton)) return;
+
+        PlayerWait();
+    }
+
+    // Skips the player Unit's turn
+    private void PlayerWait()
+    {
         if (!playerUnit) return;
 
         // Updates the player Unit to have acted for their turn
         GetUnitAttributes(playerUnit).SetActed(true);
     }
 
+
     private void ClickPlayerUnitCancelAttackButton(ClickEvent evt)
+    {
+        if (!GetIsUIElementVisible(PlayerUnitCancelAttackButton)) return;
+
+        PlayerCancelAttack();
+    }
+
+    // Cancels combay predicition
+    private void PlayerCancelAttack()
     {
         // Exit Combat Predicition mode
         isInCombatPrediction = false;
@@ -247,6 +318,14 @@ public class UnitMenus : GameScreen
     }
 
     private void ClickPlayerUnitConfirmAttackButton(ClickEvent evt)
+    {
+        if (!GetIsUIElementVisible(PlayerUnitConfirmAttackButton)) return;
+
+        PlayerConfirmAttack();
+    }
+
+    // Confirms attack
+    private void PlayerConfirmAttack()
     {
         if (!isInCombatPrediction || !playerUnit || !enemyUnit) return;
 
