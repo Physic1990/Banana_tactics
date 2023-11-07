@@ -23,6 +23,8 @@ public class UnitAttributes : MonoBehaviour
     private double attackHitChance;
     private int attackDamage;
     private int attackDamageCrit;
+    private int instanceIDObject;
+    private int instanceIDScript;
 
     string attack1 = "Punch";
     string attack2 = "Punch";
@@ -363,7 +365,7 @@ public class UnitAttributes : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
-    public void triggerBC ()
+    public void TriggerBC ()
     {
         if (modeBC == false)
         {
@@ -377,9 +379,23 @@ public class UnitAttributes : MonoBehaviour
         
     }
 
+    //Gets Instance ID of object attached to script
+    public int GetInstnaceIDOfGameObject()
+    {
+        return instanceIDObject;
+    }
+
+    //Gets Instance ID of the script
+    public int GetInstnaceIDOfScript()
+    {
+        return instanceIDScript;
+    }
+
     void Start()
     {
         SetClassStats();
+        instanceIDObject = gameObject.GetInstanceID();
+        instanceIDScript = GetHashCode();
         //Debug.Log(health);
         //Debug.Log(movement);
         //Debug.Log(attackRange);
@@ -390,5 +406,11 @@ public class UnitAttributes : MonoBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
+
+        //you have to manually toggle enemy so if its true then its supposed to be an enemy unit
+        if (IsEnemy == true && IsPlayer == true)
+        {
+            IsPlayer = false;
+        }
     }
 }
