@@ -52,7 +52,7 @@ public class AI : MonoBehaviour
     }
 
 
-    void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles)
+    void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
     {
 
         float _targetX = controlledUnit.transform.position.x; 
@@ -60,7 +60,7 @@ public class AI : MonoBehaviour
         Tile _controlledTile = tiles[new Vector2(controlledUnit.transform.position.x, controlledUnit.transform.position.y)];
         float _distanceFromTarget = (Math.Abs(controlledUnit.transform.position.x - targetUnit.transform.position.x) + Math.Abs(controlledUnit.transform.position.y - targetUnit.transform.position.y));
 
-        Debug.Log(_distanceFromTarget);
+        //Debug.Log(_distanceFromTarget);
         if (_distanceFromTarget <= controlledUnit.GetComponent<UnitAttributes>().GetMovement() + 1) { //if target unit is in movement range go to target
             //if they are at the same y it must be offset by the x
             if (targetUnit.transform.position.y == controlledUnit.transform.position.y)
@@ -90,9 +90,16 @@ public class AI : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            List<Tile> _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, targetUnit.transform.position.x, targetUnit.transform.position.y, tiles);
+            //Debug.Log(_bestPath.Count);
+            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.x;
+            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.y;
+        }
 
         //todo: make sure its in range and can actually move to that tile if it can't only move as far as it can move.
-
+        
 
         //Move controlled unit to the new target tile
         controlledUnit.transform.position = new Vector3(_targetX, _targetY, 0);
@@ -104,15 +111,192 @@ public class AI : MonoBehaviour
     }
 
 
-    private List<Tile> FindPath(int startX, int startY, int endX, int endY, Dictionary<Vector2, Tile> tiles)
+    private List<Tile> FindPath(float startX, float startY, float endX, float endY, Dictionary<Vector2, Tile> tiles) //find best path with A*
     {
         Tile _startTile = tiles[new Vector2(startX, startY)];
+        Tile _endTile = tiles[new Vector2(endX, endY)];
 
-        openList = new List<Tile> { _startTile };
-        closedList = new List<Tile>();
+        openList = new List<Tile> { _startTile }; //tiles to search
+        closedList = new List<Tile>(); //searched tiles
 
-        return null;
+        int _height = FindHeightOfGrid(tiles); //height of grid
+        int _width = FindWidthOfGrid(tiles); //width of grid
+        
+        //Debug.Log(_height);
+        //Debug.Log(_width);
+
+        for (int x = 0; x < _width; x++) //init for pathfinding
+        {
+            for (int y = 0; y < _height; y++) {
+                Tile _pathTile = tiles[new Vector2(x, y)];
+                _pathTile.gCost = int.MaxValue;
+                _pathTile.fCost = _pathTile.gCost + _pathTile.hCost;
+                _pathTile.cameFromNode = null;
+            }
+        }
+
+        //setting first node values
+        _startTile.gCost = 0;
+        _startTile.hCost = FindDistanceCost(_startTile, _endTile);
+        _startTile.fCost = _startTile.gCost + _startTile.hCost;
+
+
+        //Debug.Log(openList.Count);
+        while (openList.Count > 0)
+        {
+            Tile _currentTile = FindLowestFCostTile(openList);
+            if (_currentTile == _endTile) //target spotted engaging
+            {
+                return CalculatePath(_endTile);//gimme that best path
+            }
+
+            openList.Remove(_currentTile);
+            closedList.Add(_currentTile);
+
+            foreach (Tile neighborTile in GetNeighbors(_currentTile, _height, _width, tiles)) // itterate through neighboring tiles to search further
+            {
+                //Debug.Log(neighborTile);
+                if (closedList.Contains(neighborTile))
+                {
+                    //Debug.Log("closed list contains tile");
+                    continue;
+                }
+
+                float _tempGCost = _currentTile.gCost + FindDistanceCost(_currentTile, neighborTile);
+                if (_tempGCost < neighborTile.gCost)
+                {
+                    // the real calculations
+                    neighborTile.cameFromNode = _currentTile;
+                    neighborTile.gCost = _tempGCost;
+                    neighborTile.hCost = FindDistanceCost(neighborTile, _endTile);
+                    neighborTile.fCost = (neighborTile.gCost + neighborTile.hCost);
+
+                    if (!openList.Contains(neighborTile)) //we haven't visited this node yet
+                    {
+                        openList.Add(neighborTile);
+                    }
+                }
+            }
+
+        }
+
+
+        return null; // we are done
     }
+
+    private List<Tile> GetNeighbors(Tile currentTile, int height, int width, Dictionary<Vector2, Tile> tiles) //return all neighboring tiles
+    {
+        List<Tile> neighborList = new List<Tile>();
+
+        if(currentTile.transform.position.x - 1 >= 0)
+        {
+            //Debug.Log("Left");
+            neighborList.Add(tiles[new Vector2(currentTile.transform.position.x - 1, currentTile.transform.position.y)]); //Left
+            
+            if (currentTile.transform.position.y - 1 >= 0)
+            {
+                //Debug.Log("Left down");
+                neighborList.Add(tiles[new Vector2(currentTile.transform.position.x - 1, currentTile.transform.position.y - 1)]); //Left Down
+            }
+                
+            if (currentTile.transform.position.y + 1 < height)
+            {
+                //Debug.Log("Left up");
+                neighborList.Add(tiles[new Vector2(currentTile.transform.position.x - 1, currentTile.transform.position.y + 1)]); //Left Up
+            }
+                
+        }
+        if(currentTile.transform.position.x + 1 < width)
+        {
+            //Debug.Log("right");
+            neighborList.Add(tiles[new Vector2(currentTile.transform.position.x + 1, currentTile.transform.position.y)]); //Right
+            if (currentTile.transform.position.y - 1 >= 0)
+            {
+                //Debug.Log("right down");
+                neighborList.Add(tiles[new Vector2(currentTile.transform.position.x + 1, currentTile.transform.position.y -1)]); //Right Down
+            }
+                
+            if (currentTile.transform.position.y + 1 < height)
+            {
+                //Debug.Log("right up");
+                neighborList.Add(tiles[new Vector2(currentTile.transform.position.x + 1, currentTile.transform.position.y + 1)]); //Right up
+            }
+                
+        }
+        if(currentTile.transform.position.y - 1 >= 0)
+        {
+            //Debug.Log("down");
+            neighborList.Add(tiles[new Vector2(currentTile.transform.position.x, currentTile.transform.position.y - 1)]); //Down
+        }
+        if(currentTile.transform.position.y + 1 < height)
+        {
+            //Debug.Log("up");
+            neighborList.Add(tiles[new Vector2(currentTile.transform.position.x, currentTile.transform.position.y + 1)]); //Up
+        }
+        return neighborList;
+    }
+
+    private List<Tile> CalculatePath(Tile endTile) //return best path
+    {
+        List<Tile> path = new List<Tile>();
+        path.Add(endTile);
+        Tile _currentTile = endTile;
+        while (_currentTile.cameFromNode != null) 
+        {
+            path.Add(_currentTile.cameFromNode);
+            _currentTile = _currentTile.cameFromNode;
+        }
+        path.Reverse();
+        //Debug.Log(path.Count);
+        return path;
+    }
+
+    private Tile FindLowestFCostTile(List<Tile> pathList) // find node with lowest f cost
+    {
+        Tile lowestFCostTile = pathList[0];
+        //Debug.Log(pathList.Count);
+        for (int i = 1; i < pathList.Count; i++)
+        {
+            if (pathList[i].fCost < lowestFCostTile.fCost)
+            {
+                lowestFCostTile = pathList[i];
+            }
+        }
+        return lowestFCostTile;
+    }
+
+    private float FindDistanceCost(Tile a, Tile b) //return distance calc for a* to use
+    {
+        float _xDist = Mathf.Abs(a.transform.position.x - b.transform.position.x);
+        float _yDist = Mathf.Abs(a.transform.position.y - b.transform.position.y);
+        float _remaining = MathF.Abs(_xDist - _yDist);
+        return(14 * Mathf.Min(_xDist, _yDist) + 10 * _remaining);
+
+    }
+
+
+    private int FindHeightOfGrid(Dictionary<Vector2, Tile> tiles) //find height of grid
+    {
+        int _height = 0;
+        while(tiles.ContainsKey(new Vector2(0,_height))) 
+        { 
+            _height++;
+        }
+
+        return _height;
+    }
+
+    private int FindWidthOfGrid(Dictionary<Vector2, Tile> tiles) //find width of grid
+    {
+        int _width = 0;
+        while (tiles.ContainsKey(new Vector2(_width, 0)))
+        {
+            _width++;
+        }
+
+        return _width;
+    }
+
 
 
 }

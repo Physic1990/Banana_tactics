@@ -8,8 +8,11 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject _highlight;  // Serialized field for a highlight GameObject
     [SerializeField] public GameObject _unit;  // Serialized field for a game unit GameObject
     
-    public int gCost = 0;
-    public int hCost = 0;
+    //Damien's Variables for Pathfinding
+    public float gCost = 0;
+    public float hCost = 0;
+    public float fCost = 0;
+    public Tile cameFromNode;
 
     public bool _occupied = false;  // Flag indicating if the tile is occupied by a unit
     private SpriteRenderer _renderer;  // Reference to the SpriteRenderer component
