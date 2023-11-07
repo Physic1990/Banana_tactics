@@ -48,6 +48,14 @@ public class UnitAttributes : MonoBehaviour
         {
             SetLancer();
         }
+        else if (whatClass == "Rogue")
+        {
+            SetRogue();
+        }
+        else if (whatClass == "Hero")
+        {
+            SetHero();
+        }
         else
         {
             //defult is warrior if wrong string or none had been entered
@@ -78,7 +86,7 @@ public class UnitAttributes : MonoBehaviour
     void SetGunSlinger()
     {
         health = 100;
-        movement = 3;
+        movement = 1;
         attack1 = "Shoot";
         attack2 = "Banana Punch";
         //SetAttacks();
@@ -98,6 +106,42 @@ public class UnitAttributes : MonoBehaviour
         health = 100;
         movement = 3;
         attack1 = "Banana Thrust";
+        attack2 = "Banana Punch";
+        //SetAttacks();
+
+        if (modeBC == true && IsEnemy == true)
+        {
+            health = 1;
+        }
+        else if (modeBC == true && IsPlayer == true)
+        {
+            health = 999;
+        }
+    }
+
+    void SetRogue()
+    {
+        health = 100;
+        movement = 2;
+        attack1 = "Banana Backstab";
+        attack2 = "Banana Punch";
+        //SetAttacks();
+
+        if (modeBC == true && IsEnemy == true)
+        {
+            health = 1;
+        }
+        else if (modeBC == true && IsPlayer == true)
+        {
+            health = 999;
+        }
+    }
+
+    void SetHero()
+    {
+        health = 100;
+        movement = 2;
+        attack1 = "Banana Ultimate Punch";
         attack2 = "Banana Punch";
         //SetAttacks();
 
@@ -140,6 +184,22 @@ public class UnitAttributes : MonoBehaviour
             attackDamageCrit = attackDamage * 2;
         }
         else if (attack == "Banana Thrust")
+        {
+            attackCritChance = 0.3;
+            attackHitChance = 0.85;
+            attackRange = 2;
+            attackDamage = 20;
+            attackDamageCrit = attackDamage * 2;
+        }
+        else if (attack == "Banana Backstab")
+        {
+            attackCritChance = 0.3;
+            attackHitChance = 0.85;
+            attackRange = 2;
+            attackDamage = 20;
+            attackDamageCrit = attackDamage * 2;
+        }
+        else if (attack == "Banana Ultimate Punch")
         {
             attackCritChance = 0.3;
             attackHitChance = 0.85;
@@ -365,6 +425,7 @@ public class UnitAttributes : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
+    //triggers bc mode which makes all player units invinciblie and all enemy units one shot
     public void TriggerBC ()
     {
         if (modeBC == false)
