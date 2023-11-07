@@ -239,22 +239,20 @@ public class ActionEventManager : MonoBehaviour
    // Action Event: heals a hurt unit on players turn
    // unit - is the player that will heal a unit
    // hurtUnit - is the unit that needs to be healed
-   public void healAlly (GameObject unit, GameObject hurtUnit)
+   public void healSelf(GameObject unit)
    {
       // get players data
       _unitAttributes = unit.GetComponent<UnitAttributes>();
-      // get ally data
-      _allyUnitAttributes = hurtUnit.GetComponent<UnitAttributes>();
       // get unit's attributes
       double [] playerAtt = _unitAttributes.GetAttackOneStats();
-      double [] allyAtt = _allyUnitAttributes.GetAttackOneStats();
       // dummy variable for healling 
-      player.healIncrease = (int)playerAtt[5]; // must change from Gibbys data
+      player.healIncrease = 5;
       // heal ally
       _allyUnitAttributes.GainHealth(player.healIncrease);
       // observation signal
       onHealth?.Invoke();
    }
+
 
 
    // Action Event: a action that is used for general movement 
