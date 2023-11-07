@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -67,6 +68,7 @@ public class UnitAttributes : MonoBehaviour
     void SetWarrior()
     {
         health = 100;
+        maxHealth = health;
         movement = 2;
         attack1 = "Banana Slam";
         attack2 = "Banana Punch";
@@ -86,6 +88,7 @@ public class UnitAttributes : MonoBehaviour
     void SetGunSlinger()
     {
         health = 100;
+        maxHealth = health;
         movement = 1;
         attack1 = "Shoot";
         attack2 = "Banana Punch";
@@ -104,6 +107,7 @@ public class UnitAttributes : MonoBehaviour
     void SetLancer()
     {
         health = 100;
+        maxHealth = health;
         movement = 3;
         attack1 = "Banana Thrust";
         attack2 = "Banana Punch";
@@ -122,6 +126,7 @@ public class UnitAttributes : MonoBehaviour
     void SetRogue()
     {
         health = 100;
+        maxHealth = health;
         movement = 2;
         attack1 = "Banana Backstab";
         attack2 = "Banana Punch";
@@ -140,7 +145,8 @@ public class UnitAttributes : MonoBehaviour
     void SetHero()
     {
         health = 100;
-        movement = 2;
+        maxHealth = health;
+        movement = 1;
         attack1 = "Banana Ultimate Punch";
         attack2 = "Banana Punch";
         //SetAttacks();
@@ -193,18 +199,18 @@ public class UnitAttributes : MonoBehaviour
         }
         else if (attack == "Banana Backstab")
         {
-            attackCritChance = 0.3;
-            attackHitChance = 0.85;
-            attackRange = 2;
-            attackDamage = 20;
-            attackDamageCrit = attackDamage * 2;
+            attackCritChance = 0.5;
+            attackHitChance = .8;
+            attackRange = 1;
+            attackDamage = 12;
+            attackDamageCrit = attackDamage * 3;
         }
         else if (attack == "Banana Ultimate Punch")
         {
-            attackCritChance = 0.3;
-            attackHitChance = 0.85;
-            attackRange = 2;
-            attackDamage = 20;
+            attackCritChance = 0.1;
+            attackHitChance = 0.7;
+            attackRange = 1;
+            attackDamage = 35;
             attackDamageCrit = attackDamage * 2;
         }
         //makes all player characters do insane damage and enemys zero if bc mode is on
@@ -441,6 +447,40 @@ public class UnitAttributes : MonoBehaviour
         return instanceIDScript;
     }
 
+    //cahnges teh sprite to player or enemy one
+    void ChangeUnitSprite()
+    {
+        // Get the SpriteRenderer component of the GameObject
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        string spritePathPlayer = "Assets/Artwork/playerMonkey.png";
+        Sprite playerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathPlayer);
+
+        string spritePathEnemy = "Assets/Artwork/alt_enemySprite.png";
+        Sprite enemySprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathEnemy);
+
+        if (spriteRenderer != null)
+        {
+            // Change the sprite based on the unit type
+            if (IsPlayer == true && playerSprite != null)
+            {
+                spriteRenderer.sprite = playerSprite;
+            }
+            else if (IsEnemy == true && enemySprite != null)
+            {
+                spriteRenderer.sprite = enemySprite;
+            }
+            else
+            {
+                Debug.LogWarning("Sprite not assigned for the unit type.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SpriteRenderer component not found.");
+        }
+    }
+
     void Start()
     {
         SetClassStats();
@@ -462,5 +502,6 @@ public class UnitAttributes : MonoBehaviour
         {
             IsPlayer = false;
         }
+        ChangeUnitSprite();
     }
 }
