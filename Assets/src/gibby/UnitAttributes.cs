@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -23,9 +24,11 @@ public class UnitAttributes : MonoBehaviour
     private double attackHitChance;
     private int attackDamage;
     private int attackDamageCrit;
+    private int instanceIDObject;
+    private int instanceIDScript;
 
-    string attack1 = "Punch";
-    string attack2 = "Punch";
+    string attack1;
+    string attack2;
 
     double[] attackValuesOne = new double[5];
     double[] attackValuesTwo = new double[5];
@@ -46,6 +49,14 @@ public class UnitAttributes : MonoBehaviour
         {
             SetLancer();
         }
+        else if (whatClass == "Rogue")
+        {
+            SetRogue();
+        }
+        else if (whatClass == "Hero")
+        {
+            SetHero();
+        }
         else
         {
             //defult is warrior if wrong string or none had been entered
@@ -57,6 +68,7 @@ public class UnitAttributes : MonoBehaviour
     void SetWarrior()
     {
         health = 100;
+        maxHealth = health;
         movement = 2;
         attack1 = "Banana Slam";
         attack2 = "Banana Punch";
@@ -76,7 +88,8 @@ public class UnitAttributes : MonoBehaviour
     void SetGunSlinger()
     {
         health = 100;
-        movement = 3;
+        maxHealth = health;
+        movement = 1;
         attack1 = "Shoot";
         attack2 = "Banana Punch";
         //SetAttacks();
@@ -94,8 +107,47 @@ public class UnitAttributes : MonoBehaviour
     void SetLancer()
     {
         health = 100;
+        maxHealth = health;
         movement = 3;
         attack1 = "Banana Thrust";
+        attack2 = "Banana Punch";
+        //SetAttacks();
+
+        if (modeBC == true && IsEnemy == true)
+        {
+            health = 1;
+        }
+        else if (modeBC == true && IsPlayer == true)
+        {
+            health = 999;
+        }
+    }
+
+    void SetRogue()
+    {
+        health = 100;
+        maxHealth = health;
+        movement = 2;
+        attack1 = "Banana Backstab";
+        attack2 = "Banana Punch";
+        //SetAttacks();
+
+        if (modeBC == true && IsEnemy == true)
+        {
+            health = 1;
+        }
+        else if (modeBC == true && IsPlayer == true)
+        {
+            health = 999;
+        }
+    }
+
+    void SetHero()
+    {
+        health = 100;
+        maxHealth = health;
+        movement = 1;
+        attack1 = "Banana Ultimate Punch";
         attack2 = "Banana Punch";
         //SetAttacks();
 
@@ -143,6 +195,22 @@ public class UnitAttributes : MonoBehaviour
             attackHitChance = 0.85;
             attackRange = 2;
             attackDamage = 20;
+            attackDamageCrit = attackDamage * 2;
+        }
+        else if (attack == "Banana Backstab")
+        {
+            attackCritChance = 0.5;
+            attackHitChance = .8;
+            attackRange = 1;
+            attackDamage = 12;
+            attackDamageCrit = attackDamage * 3;
+        }
+        else if (attack == "Banana Ultimate Punch")
+        {
+            attackCritChance = 0.1;
+            attackHitChance = 0.7;
+            attackRange = 1;
+            attackDamage = 35;
             attackDamageCrit = attackDamage * 2;
         }
         //makes all player characters do insane damage and enemys zero if bc mode is on
@@ -279,17 +347,6 @@ public class UnitAttributes : MonoBehaviour
         return movement;
     }
 
-    //Dummy Holder So Peoples Code does not return errors
-    public double[] GetAttackStats()
-    {
-        attackValuesOne[0] = 0;
-        attackValuesOne[1] = 0;
-        attackValuesOne[2] = 0;
-        attackValuesOne[3] = 0;
-        attackValuesOne[4] = 0;
-        return attackValuesOne;
-    }
-
     //get the fist attack stats
     public double[] GetAttackOneStats()
     {
@@ -363,7 +420,8 @@ public class UnitAttributes : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
-    public void triggerBC ()
+    //triggers bc mode which makes all player units invinciblie and all enemy units one shot
+    public void TriggerBC ()
     {
         if (modeBC == false)
         {
@@ -377,9 +435,57 @@ public class UnitAttributes : MonoBehaviour
         
     }
 
+    //Gets Instance ID of object attached to script
+    public int GetInstnaceIDOfGameObject()
+    {
+        return instanceIDObject;
+    }
+
+    //Gets Instance ID of the script
+    public int GetInstnaceIDOfScript()
+    {
+        return instanceIDScript;
+    }
+
+    //cahnges teh sprite to player or enemy one
+    void ChangeUnitSprite()
+    {
+        // Get the SpriteRenderer component of the GameObject
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        string spritePathPlayer = "Assets/Artwork/playerMonkey.png";
+        Sprite playerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathPlayer);
+
+        string spritePathEnemy = "Assets/Artwork/alt_enemySprite.png";
+        Sprite enemySprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathEnemy);
+
+        if (spriteRenderer != null)
+        {
+            // Change the sprite based on the unit type
+            if (IsPlayer == true && playerSprite != null)
+            {
+                spriteRenderer.sprite = playerSprite;
+            }
+            else if (IsEnemy == true && enemySprite != null)
+            {
+                spriteRenderer.sprite = enemySprite;
+            }
+            else
+            {
+                Debug.LogWarning("Sprite not assigned for the unit type.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SpriteRenderer component not found.");
+        }
+    }
+
     void Start()
     {
         SetClassStats();
+        instanceIDObject = gameObject.GetInstanceID();
+        instanceIDScript = GetHashCode();
         //Debug.Log(health);
         //Debug.Log(movement);
         //Debug.Log(attackRange);
@@ -390,5 +496,12 @@ public class UnitAttributes : MonoBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
+
+        //you have to manually toggle enemy so if its true then its supposed to be an enemy unit
+        if (IsEnemy == true && IsPlayer == true)
+        {
+            IsPlayer = false;
+        }
+        ChangeUnitSprite();
     }
 }
