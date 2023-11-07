@@ -78,7 +78,7 @@ public class UnitAttributes : MonoBehaviour
         {
             health = 1;
         }
-        else if(modeBC == true && IsPlayer == true)
+        else if (modeBC == true && IsPlayer == true)
         {
             health = 999;
         }
@@ -223,7 +223,7 @@ public class UnitAttributes : MonoBehaviour
                 attackRange = 999;
                 attackDamage = 999;
                 attackDamageCrit = attackDamage * 10;
-            } 
+            }
             else if (IsEnemy == true)
             {
                 attackCritChance = 0;
@@ -421,18 +421,18 @@ public class UnitAttributes : MonoBehaviour
     }
 
     //triggers bc mode which makes all player units invinciblie and all enemy units one shot
-    public void TriggerBC ()
+    public void TriggerBC()
     {
         if (modeBC == false)
         {
             modeBC = true;
-        } 
+        }
         else
         {
             modeBC = false;
         }
 
-        
+
     }
 
     //Gets Instance ID of object attached to script
@@ -453,9 +453,11 @@ public class UnitAttributes : MonoBehaviour
         // Get the SpriteRenderer component of the GameObject
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
+        //set path to player sprite
         string spritePathPlayer = "Assets/Artwork/playerMonkey.png";
         Sprite playerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathPlayer);
 
+        //set path to enemy sprite
         string spritePathEnemy = "Assets/Artwork/alt_enemySprite.png";
         Sprite enemySprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathEnemy);
 
