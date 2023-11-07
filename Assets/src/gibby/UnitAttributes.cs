@@ -26,8 +26,8 @@ public class UnitAttributes : MonoBehaviour
     private int instanceIDObject;
     private int instanceIDScript;
 
-    string attack1 = "Punch";
-    string attack2 = "Punch";
+    string attack1;
+    string attack2;
 
     double[] attackValuesOne = new double[5];
     double[] attackValuesTwo = new double[5];
@@ -339,17 +339,6 @@ public class UnitAttributes : MonoBehaviour
     {
         //give how many tiles the unit can move
         return movement;
-    }
-
-    //Dummy Holder So Peoples Code does not return errors
-    public double[] GetAttackStats()
-    {
-        attackValuesOne[0] = 0;
-        attackValuesOne[1] = 0;
-        attackValuesOne[2] = 0;
-        attackValuesOne[3] = 0;
-        attackValuesOne[4] = 0;
-        return attackValuesOne;
     }
 
     //get the fist attack stats
