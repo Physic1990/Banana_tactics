@@ -126,7 +126,7 @@ public class GridManager : MonoBehaviour
         playerTurnOver = false;
         _cursorTimer = 0;
         _Delay = 400;
-        if(_width < 5)
+        if (_width < 5)
         {
             _width = 5;
         }
@@ -149,27 +149,18 @@ public class GridManager : MonoBehaviour
     //Update is called every frame
     private void Update()
     {
-
         bool isPrevEnemyTurn = playerTurnOver;
 
         //checks if player turn has ended
         playerTurnOver = CheckPlayerTurn();
 
+        // BEN ADDED THIS
         // If the previous execution was for the enemies' turn but this execution is for the player's turn.
         // This should only execute when the player's turn first begins.
         if (isPrevEnemyTurn && !playerTurnOver)
         {
-            // Gets the adjancent game objects around the cursor tile
-            List<GameObject> adjUnits = GetAdjancentObjects(_cursorTile);
-            if (adjUnits.Count > 0)
-            {
-                // Updates the enemy Unit Menu to be the Unit for the first adjancent game object
-                unitMenus.HandleUnitByGameObject(adjUnits[0]);
-            }
-            else
-            {
-                unitMenus.SetEnemyUnitMenuVisibility(false);
-            }
+            // Update the Unit Menus
+            HandleUnitMenusByTile(_cursorTile);
         }
 
         if (playerTurnOver)
@@ -222,14 +213,14 @@ public class GridManager : MonoBehaviour
     public void GenerateUnits()
     {
         Tile tile = null;
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
             tile = GetTileAtPosition(new Vector2(i, 0));
-            SpawnUnitAt(tile, "player", i+1);
+            SpawnUnitAt(tile, "player", i + 1);
         }
         for (int i = 0; i < 5; i++)
         {
-            tile = GetTileAtPosition(new Vector2(_width-1-i, _height-1));
+            tile = GetTileAtPosition(new Vector2(_width - 1 - i, _height - 1));
             SpawnUnitAt(tile, "enemy", i + 10);
         }
     }
@@ -288,6 +279,29 @@ public class GridManager : MonoBehaviour
         temp = GetTileAtPosition(new Vector2(x - 1, y));
         BuildAdjList(Units, temp);
         return Units;
+    }
+
+    // BEN ADDED THIS
+    // Returns a List of all the adjacent Enemy Unit game objects around the passed tile
+    private List<GameObject> GetAdjacentEnemeyUnits(Tile tile)
+    {
+        // Gets all adjacent objects around the passed tile
+        List<GameObject> adjObjects = GetAdjancentObjects(tile);
+
+        // The list of Enemy Unit game objects that will be returned later
+        List<GameObject> enemies = new List<GameObject>();
+
+        // For each adjacent object
+        foreach (GameObject adjObject in adjObjects)
+        {
+            // If the adjacent object isn't an Enemy Unit, continue
+            if (!adjObject.CompareTag("Enemy")) continue;
+
+            // Add the Enemy Unit game object to the enemies List
+            enemies.Add(adjObject);
+        }
+
+        return enemies;
     }
 
     //Used to build the list of adjacent units
@@ -349,11 +363,10 @@ public class GridManager : MonoBehaviour
             if (_cursorTile != temp)
             {
                 // BEN ADDED THIS
-                // If not in selection mode, then any updates to the cursor's position should update the Unit Menu(s) for the new tile
+                // If not in selection mode, then any updates to the cursor's position should update the Unit Menus for the new tile
                 if (!_selectionMode)
                 {
-                    // Handles the Unit Menu for the Unit (If any) on the cursor's tile
-                    unitMenus.HandleUnitByTile(_cursorTile);
+                    HandleUnitMenusByTile(_cursorTile);
                 }
 
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.cursorMove);
@@ -456,23 +469,11 @@ public class GridManager : MonoBehaviour
                 _selectedTile.RemoveUnit();
                 _selectionMode = false;
                 _selectedTile.TurnOffHighlight();
-                //Important to BEN
                 _moveToTile._unit.GetComponent<UnitAttributes>().SetActed(true);
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.placed);
 
-                // BEN ADDED THIS
-                // Gets the adjancent game objects around the moved to tile
-                List<GameObject> adjUnits = GetAdjancentObjects(_moveToTile);
-                if (adjUnits.Count > 0)
-                {
-                    // Updates the enemy Unit Menu to be the Unit for the first adjancent game object
-                    unitMenus.HandleUnitByGameObject(adjUnits[0]);
-                }
-                else
-                {
-                    unitMenus.SetEnemyUnitMenuVisibility(false);
-                }
-
+                // Handles the Unit Menus in response to the unit being placed on a new tile
+                HandleUnitMenusByTile(_moveToTile);
             }
             //if the tile is already occupied
             else
@@ -480,7 +481,6 @@ public class GridManager : MonoBehaviour
                 //Do not move the Player
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.error);
             }
-
         }
     }
 
@@ -574,6 +574,44 @@ public class GridManager : MonoBehaviour
             return unitA.HasActed(); // Set to true or false as needed
         }
         return true;
+    }
+
+
+    /*************************************************************************
+                             UI HELPER FUNCTIONS
+    ************************************************************************/
+    // BEN ADDED THIS
+    // Handles updating both the Player and Enemy Unit Menus based on the passed tile.
+    private void HandleUnitMenusByTile(Tile tile)
+    {
+        // Handles the Unit Menu for the Unit (If any) on the passed tile
+        unitMenus.HandleUnitByTile(tile);
+
+        // BEN ADDED THIS
+        // If the passed tile has a Player Unit on it
+        if (tile._occupied && tile._unit.CompareTag("Player"))
+        {
+            // Gets the adjancent enemy unit game objects around the Player Unit's tile (If any)
+            List<GameObject> adjEnemyUnits = GetAdjacentEnemeyUnits(tile);
+            // If there are any enemy units adjacent to the Player Unit
+            if (adjEnemyUnits.Count > 0)
+            {
+                // Updates the enemy Unit Menu to be the Unit for the first adjancent enemy unit
+                unitMenus.HandleUnitByGameObject(adjEnemyUnits[0]);
+            }
+            else
+            {
+                // Hide the enemy unit menu
+                unitMenus.SetEnemyUnitMenuVisibility(false);
+            }
+        }
+        // If the passed tile has an Enemy Unit on it
+        else if (tile._occupied && tile._unit.CompareTag("Enemy"))
+        {
+            // Hide the Player Unit menu
+            unitMenus.SetPlayerUnitMenuVisibility(false);
+
+        }
     }
 }
 
