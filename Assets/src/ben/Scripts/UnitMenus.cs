@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class UnitMenus : GameScreen
 {
+
     /*************************************************************************
                                Unit Data
    ************************************************************************/
@@ -16,19 +17,38 @@ public class UnitMenus : GameScreen
                                 Unit Menus
     ************************************************************************/
     const string unitMenusContainerName = "UnitMenus";
+    VisualElement UnitMenusContainer;
+
     const string playerUnitMenuName = "UnitMenu";
     const string playerUnitName = "UnitNameText";
+    const string playerUnitIconImageName = "UnitIconImage";
     const string playerUnitHealthName = "UnitHPText";
-    const string enemyUnitMenuName = "EnemyUnitMenu";
-    const string enemyUnitName = "EnemyUnitNameText";
-    const string enemyUnitHealthName = "EnemyUnitHPText";
-    VisualElement UnitMenusContainer;
+    const string playerUnitMovementName = "UnitMovementText";
+    const string playerUnitAttackPowerName = "UnitAttackPowerText";
+    const string playerUnitHPBarProgressName = "UnitHPBarProgress";
     VisualElement PlayerUnitMenu;
     Label PlayerUnitName;
+    VisualElement PlayerUnitIconImage;
     Label PlayerUnitHealth;
+    Label PlayerUnitMovement;
+    Label PlayerUnitAttackPower;
+    VisualElement PlayerUnitHPBarProgress;
+
+    const string enemyUnitMenuName = "EnemyUnitMenu";
+    const string enemyUnitName = "EnemyUnitNameText";
+    const string enemyUnitIconImageName = "EnemyUnitIconImage";
+    const string enemyUnitHealthName = "EnemyUnitHPText";
+    const string enemyUnitMovementName = "EnemyUnitMovementText";
+    const string enemyUnitAttackPowerName = "EnemyUnitAttackPowerText";
+    const string enemyUnitHPBarProgressName = "EnemyUnitHPBarProgress";
     VisualElement EnemyUnitMenu;
     Label EnemyUnitName;
+    VisualElement EnemyUnitIconImage;
     Label EnemyUnitHealth;
+    Label EnemyUnitMovement;
+    Label EnemyUnitAttackPower;
+    VisualElement EnemyUnitHPBarProgress;
+
 
 
     /*************************************************************************
@@ -44,6 +64,14 @@ public class UnitMenus : GameScreen
     Button PlayerUnitWaitButton;
     Button PlayerUnitCancelAttackButton;
     Button PlayerUnitConfirmAttackButton;
+
+    /*************************************************************************
+                            Unit Images
+    ************************************************************************/
+    [SerializeField] Texture2D normalMonkeyImage;
+    [SerializeField] Texture2D ninjaMonkeyImage;
+    [SerializeField] Texture2D heroMonkeyImage;
+
 
     /*************************************************************************
                             Combat Prediction Status
@@ -69,10 +97,21 @@ public class UnitMenus : GameScreen
         UnitMenusContainer = root.Q<VisualElement>(unitMenusContainerName);
         PlayerUnitMenu = root.Q<VisualElement>(playerUnitMenuName);
         PlayerUnitName = root.Q<Label>(playerUnitName);
+        PlayerUnitIconImage = root.Q<VisualElement>(playerUnitIconImageName);
         PlayerUnitHealth = root.Q<Label>(playerUnitHealthName);
+        PlayerUnitMovement = root.Q<Label>(playerUnitMovementName);
+        PlayerUnitAttackPower = root.Q<Label>(playerUnitAttackPowerName);
+        PlayerUnitHPBarProgress = root.Q<VisualElement>(playerUnitHPBarProgressName);
+
+
         EnemyUnitMenu = root.Q<VisualElement>(enemyUnitMenuName);
         EnemyUnitName = root.Q<Label>(enemyUnitName);
+        EnemyUnitIconImage = root.Q<VisualElement>(enemyUnitIconImageName);
         EnemyUnitHealth = root.Q<Label>(enemyUnitHealthName);
+        EnemyUnitMovement = root.Q<Label>(enemyUnitMovementName);
+        EnemyUnitAttackPower = root.Q<Label>(enemyUnitAttackPowerName);
+        EnemyUnitHPBarProgress = root.Q<VisualElement>(enemyUnitHPBarProgressName);
+
 
         // Unit Menu Buttons
         PlayerUnitAttackButton = root.Q<Button>(playerUnitAttackButtonName);
@@ -248,7 +287,42 @@ public class UnitMenus : GameScreen
         // Sets Unit name
         PlayerUnitName.text = unit.whatClass;
         // Sets Unit health text
-        PlayerUnitHealth.text = unit.GetHealth() + "/" + unit.GetMaxHealth();
+        PlayerUnitHealth.text = (unit.GetHealth() <= 0 ? 0 : unit.GetHealth()) + "/" + unit.GetMaxHealth();
+        PlayerUnitHPBarProgress.style.width = Length.Percent(unit.GetHealth() <= 0 ? 0 : (float)unit.GetHealth() / (float)unit.GetMaxHealth() * 100f);
+
+        // Set Unit movement text
+        PlayerUnitMovement.text = unit.GetMovement().ToString();
+        // Set Unit attack power text
+        PlayerUnitAttackPower.text = unit.GetAttackOneStats()[0].ToString();
+
+        if (unit.whatClass == "Hero")
+        {
+            PlayerUnitIconImage.style.backgroundImage = heroMonkeyImage;
+
+            PlayerUnitIconImage.style.width = Length.Percent(150);
+            PlayerUnitIconImage.style.minHeight = Length.Percent(150);
+            PlayerUnitIconImage.style.top = -20f;
+            PlayerUnitIconImage.style.right = -30f;
+        }
+        else if (unit.whatClass == "Rogue")
+        {
+            PlayerUnitIconImage.style.backgroundImage = ninjaMonkeyImage;
+
+            PlayerUnitIconImage.style.width = Length.Percent(140);
+            PlayerUnitIconImage.style.minHeight = Length.Percent(140);
+            PlayerUnitIconImage.style.top = -5f;
+            PlayerUnitIconImage.style.right = -25f;
+        }
+        else
+        {
+            PlayerUnitIconImage.style.backgroundImage = normalMonkeyImage;
+
+            PlayerUnitIconImage.style.width = Length.Percent(125);
+            PlayerUnitIconImage.style.minHeight = Length.Percent(150);
+            PlayerUnitIconImage.style.top = -25f;
+            PlayerUnitIconImage.style.right = -40f;
+        }
+
 
         // Sets the visibility of the player Unit Menu's action buttons
         SetUIElementVisibility(PlayerUnitAttackButton, !unit.HasActed() && enemyUnit && GetIsEnemyUnitMenuOpen() && !isInCombatPrediction);
@@ -325,7 +399,6 @@ public class UnitMenus : GameScreen
         // Updates the Unit Menus
         UpdateUnitMenus();
     }
-
 
     private void ClickPlayerUnitCancelAttackButton(ClickEvent evt)
     {
@@ -407,7 +480,42 @@ public class UnitMenus : GameScreen
         // Sets Unit name
         EnemyUnitName.text = unit.whatClass;
         // Sets Unit health text
-        EnemyUnitHealth.text = unit.GetHealth() + "/" + unit.GetMaxHealth();
+        EnemyUnitHealth.text = (unit.GetHealth() <= 0 ? 0 : unit.GetHealth()) + "/" + unit.GetMaxHealth();
+        EnemyUnitHPBarProgress.style.width = Length.Percent(unit.GetHealth() <= 0 ? 0 : (float)unit.GetHealth() / (float)unit.GetMaxHealth() * 100f);
+        // Set Unit movement text
+        EnemyUnitMovement.text = unit.GetMovement().ToString();
+        // Set Unit attack power text
+        EnemyUnitAttackPower.text = unit.GetAttackOneStats()[0].ToString();
+
+        if (unit.whatClass == "Hero")
+        {
+            EnemyUnitIconImage.style.backgroundImage = heroMonkeyImage;
+
+            EnemyUnitIconImage.style.width = Length.Percent(150);
+            EnemyUnitIconImage.style.minHeight = Length.Percent(150);
+            EnemyUnitIconImage.style.top = -20;
+            EnemyUnitIconImage.style.right = -30;
+        }
+        else if (unit.whatClass == "Rogue")
+        {
+            EnemyUnitIconImage.style.backgroundImage = ninjaMonkeyImage;
+
+            EnemyUnitIconImage.style.width = Length.Percent(140);
+            EnemyUnitIconImage.style.minHeight = Length.Percent(140);
+            EnemyUnitIconImage.style.top = -5f;
+            EnemyUnitIconImage.style.right = -25f;
+        }
+        else
+        {
+            EnemyUnitIconImage.style.backgroundImage = normalMonkeyImage;
+
+            EnemyUnitIconImage.style.width = Length.Percent(125);
+            EnemyUnitIconImage.style.minHeight = Length.Percent(150);
+            EnemyUnitIconImage.style.top = -25;
+            EnemyUnitIconImage.style.right = -40;
+        }
+
+        EnemyUnitIconImage.AddToClassList("unit-icon-tint-red");
     }
 
     public bool GetIsEnemyUnitMenuOpen()

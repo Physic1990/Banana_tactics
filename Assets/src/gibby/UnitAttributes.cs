@@ -483,7 +483,7 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
         SetClassStats();
         instanceIDObject = gameObject.GetInstanceID();

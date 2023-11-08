@@ -2606,6 +2606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ccf6037d00a5544b8e22dc39bff9e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalMonkeyImage: {fileID: 2800000, guid: 3a12370b91e1dc347ba23a1c0a3d5abb, type: 3}
+  ninjaMonkeyImage: {fileID: 2800000, guid: 3f9b92e2075016248aea98fe35578a8d, type: 3}
+  heroMonkeyImage: {fileID: 2800000, guid: 2a3bba30c7679684ba7fedf717ae6f76, type: 3}
 --- !u!1 &2069738891
 GameObject:
   m_ObjectHideFlags: 0
