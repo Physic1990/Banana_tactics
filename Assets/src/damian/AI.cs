@@ -55,57 +55,42 @@ public class AI : MonoBehaviour
     void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
     {
 
-        float _targetX = controlledUnit.transform.position.x; 
-        float _targetY = controlledUnit.transform.position.y;
+        float _targetX = targetUnit.transform.position.x; 
+        float _targetY = targetUnit.transform.position.y;
         Tile _controlledTile = tiles[new Vector2(controlledUnit.transform.position.x, controlledUnit.transform.position.y)];
         float _distanceFromTarget = (Math.Abs(controlledUnit.transform.position.x - targetUnit.transform.position.x) + Math.Abs(controlledUnit.transform.position.y - targetUnit.transform.position.y));
 
-        //Debug.Log(_distanceFromTarget);
-        if (_distanceFromTarget <= controlledUnit.GetComponent<UnitAttributes>().GetMovement() + 1) { //if target unit is in movement range go to target
-            //if they are at the same y it must be offset by the x
-            if (targetUnit.transform.position.y == controlledUnit.transform.position.y)
-            {
-                _targetY = targetUnit.transform.position.y;
-                //Check if target is to the left or the right of controlled unit
-                if (targetUnit.transform.position.x > controlledUnit.transform.position.x)
-                {
-                    _targetX = (targetUnit.transform.position.x - 1f); //offset x by -1
-                }
-                else if (targetUnit.transform.position.x < controlledUnit.transform.position.x)
-                {
-                    _targetX = (targetUnit.transform.position.x + 1f); //offset x by +1
-                }
-            }
-            else
-            {
-                _targetX = targetUnit.transform.position.x;
-                //Check if target is above or below controlled unit
-                if (targetUnit.transform.position.y > controlledUnit.transform.position.y)
-                {
-                    _targetY = (targetUnit.transform.position.y - 1f); //offset y by -1
-                }
-                else if (targetUnit.transform.position.y < controlledUnit.transform.position.y)
-                {
-                    _targetY = (targetUnit.transform.position.y + 1f); //offset y by +1
-                }
-            }
+       if(controlledUnit.transform.position.x > targetUnit.transform.position.x)
+        {
+            _targetX++;
         }
         else
         {
-            List<Tile> _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, targetUnit.transform.position.x, targetUnit.transform.position.y, tiles);
-            //Debug.Log(_bestPath.Count);
-            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.x;
-            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.y;
+            _targetX--;
+        }
+        if(controlledUnit.transform.position.y  > targetUnit.transform.position.y)
+        {
+            _targetY++;
+        }
+        else
+        {
+            _targetY--;
         }
 
-        //todo: make sure its in range and can actually move to that tile if it can't only move as far as it can move.
-        
+        List<Tile> _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, _targetX, _targetY, tiles);
+        Debug.Log("the best is is this long " + _bestPath.Count);
+        if (_bestPath.Count > 1)
+        {
+            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.x;
+            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.y;
 
-        //Move controlled unit to the new target tile
-        controlledUnit.transform.position = new Vector3(_targetX, _targetY, 0);
-        _controlledTile.RemoveUnit();
-        _controlledTile = tiles[new Vector2(_targetX, _targetY)];
-        _controlledTile.AssignUnit(controlledUnit);
+
+
+            controlledUnit.transform.position = new Vector3(_targetX, _targetY, 0);
+            _controlledTile.RemoveUnit();
+            _controlledTile = tiles[new Vector2(_targetX, _targetY)];
+            _controlledTile.AssignUnit(controlledUnit);
+        }
         //Debug.Log(_targetY);
         //Debug.Log(_targetX);
     }
@@ -115,6 +100,7 @@ public class AI : MonoBehaviour
     {
         Tile _startTile = tiles[new Vector2(startX, startY)];
         Tile _endTile = tiles[new Vector2(endX, endY)];
+        
 
         openList = new List<Tile> { _startTile }; //tiles to search
         closedList = new List<Tile>(); //searched tiles
@@ -141,9 +127,10 @@ public class AI : MonoBehaviour
         _startTile.fCost = _startTile.gCost + _startTile.hCost;
 
 
-        //Debug.Log(openList.Count);
+        
         while (openList.Count > 0)
         {
+            //Debug.Log(openList.Count);
             Tile _currentTile = FindLowestFCostTile(openList);
             if (_currentTile == _endTile) //target spotted engaging
             {
@@ -156,10 +143,19 @@ public class AI : MonoBehaviour
             foreach (Tile neighborTile in GetNeighbors(_currentTile, _height, _width, tiles)) // itterate through neighboring tiles to search further
             {
                 //Debug.Log(neighborTile);
+                
                 if (closedList.Contains(neighborTile))
                 {
                     //Debug.Log("closed list contains tile");
                     continue;
+                }
+
+                if (neighborTile._occupied)
+                {
+                    //Debug.Log(neighborTile + "isoccu");
+                    closedList.Add(neighborTile);
+                    continue;
+                    
                 }
 
                 float _tempGCost = _currentTile.gCost + FindDistanceCost(_currentTile, neighborTile);
@@ -180,8 +176,10 @@ public class AI : MonoBehaviour
 
         }
 
-
-        return null; // we are done
+        
+        List<Tile> _emptyList = new List<Tile>();
+        Debug.Log("returning empty list of length" + _emptyList.Count);
+        return _emptyList; // we are done
     }
 
     private List<Tile> GetNeighbors(Tile currentTile, int height, int width, Dictionary<Vector2, Tile> tiles) //return all neighboring tiles
@@ -247,7 +245,7 @@ public class AI : MonoBehaviour
             _currentTile = _currentTile.cameFromNode;
         }
         path.Reverse();
-        //Debug.Log(path.Count);
+        Debug.Log(path.Count);
         return path;
     }
 
