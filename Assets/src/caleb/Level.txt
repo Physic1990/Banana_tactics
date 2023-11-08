@@ -1,0 +1,13 @@
+Tag      Class     X   Y   ID
+
+player | warrior | 0 | 0 | 1
+player | gunslinger | 1 | 0 | 2
+player | rogue | 2 | 0 | 3
+player | hero | 3 | 0 | 4
+player | lancer | 4 | 0 | 5
+
+enemy | warrior | 0 | 5 | 10
+enemy | warrior | 1 | 5 | 11
+enemy | warrior | 2 | 5 | 12
+enemy | warrior | 3 | 5 | 13
+enemy | warrior | 4 | 5 | 14

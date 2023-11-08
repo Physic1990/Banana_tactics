@@ -15,8 +15,6 @@ public class GridManager : MonoBehaviour
     //Features which are initiated one a scene by scene basis
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform _cam;
     //The minimum number of frames that need to pass before a player's next input is read
     [SerializeField] private int _cursorDelay;
@@ -38,9 +36,9 @@ public class GridManager : MonoBehaviour
     //Stores all the generated tiles
     private Dictionary<Vector2, Tile> _tiles;
     //List of all "player" Game Objects
-    private List<GameObject> _playerUnits = new List<GameObject>();
+    public List<GameObject> _playerUnits = new List<GameObject>();
     //List of all "enemy" Game Objects
-    private List<GameObject> _enemyUnits = new List<GameObject>();
+    public List<GameObject> _enemyUnits = new List<GameObject>();
 
     /*************************************************************************
                                 Tile Variables
@@ -136,7 +134,7 @@ public class GridManager : MonoBehaviour
         }
         //The grid is created
         GenerateGrid();
-        GenerateUnits();
+        LevelSetup.Instance.GenerateUnits();
         //The default position of the cursor is always set to the bottom left
         _cursorTile = GetTileAtPosition(new Vector2(0, 0));
         _cursorTile.TurnOnHighlight();
@@ -205,42 +203,6 @@ public class GridManager : MonoBehaviour
         var spawnedTile = Instantiate(_tilePrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
         spawnedTile.name = $"Tile {position.x} {position.y}";
         return spawnedTile;
-    }
-
-    /*************************************************************************
-              Generates Units on Grid (do not grade)
-    ************************************************************************/
-    public void GenerateUnits()
-    {
-        Tile tile = null;
-        for (int i = 0; i < 5; i++)
-        {
-            tile = GetTileAtPosition(new Vector2(i, 0));
-            SpawnUnitAt(tile, "player", i + 1);
-        }
-        for (int i = 0; i < 5; i++)
-        {
-            tile = GetTileAtPosition(new Vector2(_width - 1 - i, _height - 1));
-            SpawnUnitAt(tile, "enemy", i + 10);
-        }
-    }
-
-    public void SpawnUnitAt(Tile tile, string tag, int id)
-    {
-        if (tag == "player")
-        {
-            var unit = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            tile.AssignUnit(unit);
-            _playerUnits.Add(unit);
-            unit.name = $"{tag} {id}";
-        }
-        else if (tag == "enemy")
-        {
-            var unit = Instantiate(enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            tile.AssignUnit(unit);
-            _enemyUnits.Add(unit);
-            unit.name = $"{tag} {id}";
-        }
     }
 
     /*************************************************************************
