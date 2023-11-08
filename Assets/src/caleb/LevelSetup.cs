@@ -13,13 +13,15 @@ public class LevelSetup : MonoBehaviour
     [SerializeField] private GameObject gunslingerPrefab;
     [SerializeField] private GameObject roguePrefab;
     [SerializeField] private GameObject heroPrefab;
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject enemyWarriorPrefab;
+    [SerializeField] private GameObject enemyLancerPrefab;
+    [SerializeField] private GameObject enemyGunslingerPrefab;
+    [SerializeField] private GameObject enemyRoguePrefab;
+    [SerializeField] private GameObject enemyHeroPrefab;
     [SerializeField] private TextAsset textAsset;
     GridManager grid;
     private int height;
     private int width;
-
-    private Dictionary<string, GameObject> classToPrefab; // Map class names to prefabs
 
     private void Awake()
     {
@@ -33,56 +35,12 @@ public class LevelSetup : MonoBehaviour
         grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
         height = grid.Height;
         width = grid.Width;
-
-        // Initialize the class-to-prefab mapping
-        classToPrefab = new Dictionary<string, GameObject>
-        {
-            { "warrior", warriorPrefab },
-            { "lancer", lancerPrefab },
-            { "gunslinger", gunslingerPrefab },
-            { "rogue", roguePrefab },
-            { "hero", heroPrefab }
-        };
     }
 
     /*************************************************************************
       Generates Units on Grid (do not grade)
     ************************************************************************/
     public void GenerateUnits()
-    {
-        ReadLevelInfo();
-    }
-
-    public void SpawnUnitAt(string tag, string className, int x, int y, int id)
-    {
-        Tile tile = grid.GetTileAtPosition(new Vector2(x, y));
-        if (tag == "player" && classToPrefab.ContainsKey(className) && tile != null && !tile._occupied)
-        {
-            GameObject prefab = classToPrefab[className];
-            var unit = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-            tile.AssignUnit(unit);
-            grid._playerUnits.Add(unit);
-            unit.name = $"{tag} {className} {id}";
-        }
-        else if (tag == "enemy" && tile != null && !tile._occupied)
-        {
-
-            var unit = Instantiate(enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            tile.AssignUnit(unit);
-            grid._enemyUnits.Add(unit);
-            unit.name = $"{tag} {className} {x}-{y}";
-        }
-        else if(tile == null)
-        {
-            Debug.LogWarning($"Out of Bounds Tile: {x} , {y}");
-        }
-        else
-        {
-            Debug.LogWarning($"Prefab not found for class: {className}");
-        }
-    }
-
-    public void ReadLevelInfo()
     {
         if (textAsset != null)
         {
@@ -98,7 +56,7 @@ public class LevelSetup : MonoBehaviour
                     int x, y, id;
                     if (int.TryParse(parts[2].Trim(), out x) && int.TryParse(parts[3].Trim(), out y) && int.TryParse(parts[4].Trim(), out id))
                     {
-                        if(x >= width)
+                        if (x >= width)
                         {
                             x = width - 1;
                         }
@@ -123,5 +81,93 @@ public class LevelSetup : MonoBehaviour
         {
             Debug.LogError("TextAsset is not assigned. Assign a TextAsset in the Inspector.");
         }
+    }
+
+    public void SpawnUnitAt(string tag, string className, int x, int y, int id)
+    {
+        Tile tile = grid.GetTileAtPosition(new Vector2(x, y));
+        GameObject prefab = FetchPrefab(tag, className);
+        if (tag == "player" && tile != null && !tile._occupied)
+        {
+            var unit = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            tile.AssignUnit(unit);
+            grid._playerUnits.Add(unit);
+            unit.name = $"{tag} {className} {id}";
+        }
+        else if (tag == "enemy" && tile != null && !tile._occupied)
+        {
+            var unit = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            tile.AssignUnit(unit);
+            grid._enemyUnits.Add(unit);
+            unit.name = $"{tag} {className} {id}";
+        }
+        else if(tile == null)
+        {
+            Debug.LogWarning($"Out of Bounds Tile: {x} , {y}");
+        }
+        else
+        {
+            Debug.LogWarning($"Prefab not found for class: {className}");
+        }
+    }
+
+   
+
+    public GameObject FetchPrefab(string tag, string className)
+    {
+        GameObject prefab = null;
+        if (tag == "player")
+        {
+            switch (className)
+            {
+                case "warrior":
+                    prefab = warriorPrefab;
+                    break;
+                case "lancer":
+                    prefab = lancerPrefab;
+                    break;
+                case "gunslinger":
+                    prefab = gunslingerPrefab;
+                    break;
+                case "rogue":
+                    prefab = roguePrefab;
+                    break;
+                case "hero":
+                    prefab = heroPrefab;
+                    break;
+                default:
+                    Debug.LogWarning($"Prefab not found for Player class: {className}");
+                    break;
+            }
+        }
+        else if (tag == "enemy")
+        {
+            switch (className)
+            {
+                case "warrior":
+                    prefab = enemyWarriorPrefab;
+                    break;
+                case "lancer":
+                    prefab = enemyLancerPrefab;
+                    break;
+                case "gunslinger":
+                    prefab = enemyGunslingerPrefab;
+                    break;
+                case "rogue":
+                    prefab = enemyRoguePrefab;
+                    break;
+                case "hero":
+                    prefab = enemyHeroPrefab;
+                    break;
+                default:
+                    Debug.LogWarning($"Prefab not found for enemy class: {className}");
+                    break;
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid affiliation: {className}");
+        }
+        return prefab;
     }
 }
