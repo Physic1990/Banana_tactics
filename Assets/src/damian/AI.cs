@@ -78,11 +78,11 @@ public class AI : MonoBehaviour
         }
 
         List<Tile> _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, _targetX, _targetY, tiles);
-        Debug.Log("the best is is this long " + _bestPath.Count);
+        //Debug.Log("the best is is this long " + _bestPath.Count);
         if (_bestPath.Count > 1)
         {
-            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.x;
-            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.y;
+            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.x;
+            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.y;
 
 
 
@@ -178,7 +178,7 @@ public class AI : MonoBehaviour
 
         
         List<Tile> _emptyList = new List<Tile>();
-        Debug.Log("returning empty list of length" + _emptyList.Count);
+        //Debug.Log("returning empty list of length" + _emptyList.Count);
         return _emptyList; // we are done
     }
 
@@ -245,7 +245,7 @@ public class AI : MonoBehaviour
             _currentTile = _currentTile.cameFromNode;
         }
         path.Reverse();
-        Debug.Log(path.Count);
+        //Debug.Log(path.Count);
         return path;
     }
 
