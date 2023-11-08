@@ -6,8 +6,8 @@ player | rogue | 2 | 0 | 3
 player | hero | 3 | 0 | 4
 player | lancer | 4 | 0 | 5
 
-enemy | warrior | 0 | 5 | 10
-enemy | warrior | 1 | 5 | 11
-enemy | warrior | 2 | 5 | 12
-enemy | warrior | 3 | 5 | 13
-enemy | warrior | 4 | 5 | 14
+enemy | warrior | 5 | 5 | 10
+enemy | warrior | 6 | 5 | 11
+enemy | warrior | 7 | 5 | 12
+enemy | warrior | 8 | 5 | 13
+enemy | warrior | 9 | 5 | 14

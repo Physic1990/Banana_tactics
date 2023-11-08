@@ -56,7 +56,7 @@ public class LevelSetup : MonoBehaviour
     public void SpawnUnitAt(string tag, string className, int x, int y, int id)
     {
         Tile tile = grid.GetTileAtPosition(new Vector2(x, y));
-        if (tag == "player" && classToPrefab.ContainsKey(className) && tile != null)
+        if (tag == "player" && classToPrefab.ContainsKey(className) && tile != null && !tile._occupied)
         {
             GameObject prefab = classToPrefab[className];
             var unit = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -64,8 +64,9 @@ public class LevelSetup : MonoBehaviour
             grid._playerUnits.Add(unit);
             unit.name = $"{tag} {className} {id}";
         }
-        else if (tag == "enemy" && tile != null)
+        else if (tag == "enemy" && tile != null && !tile._occupied)
         {
+
             var unit = Instantiate(enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             tile.AssignUnit(unit);
             grid._enemyUnits.Add(unit);
