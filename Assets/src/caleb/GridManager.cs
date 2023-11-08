@@ -148,10 +148,10 @@ public class GridManager : MonoBehaviour
     private void Update()
     {
         bool isPrevEnemyTurn = playerTurnOver;
-
+        //Function that removes dead units from the grid
+        RemoveDeadUnits();
         //checks if player turn has ended
         playerTurnOver = CheckPlayerTurn();
-
         // BEN ADDED THIS
         // If the previous execution was for the enemies' turn but this execution is for the player's turn.
         // This should only execute when the player's turn first begins.
@@ -483,9 +483,16 @@ public class GridManager : MonoBehaviour
     {
         foreach (GameObject obj in _playerUnits)
         {
-            if (!CheckActed(obj))
+            if (obj != null)
             {
-                return false;
+                if (!CheckActed(obj))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                _playerUnits.Remove(obj);
             }
         }
         return true;
@@ -538,6 +545,36 @@ public class GridManager : MonoBehaviour
         return true;
     }
 
+
+
+    //Checks to see if all Player units have acted or not
+    public void RemoveDeadUnits()
+    {
+        foreach (var kvp in _tiles)
+        {
+            Tile tile = kvp.Value;
+            if (tile._occupied)
+            {
+                if(tile._unit.GetComponent<UnitAttributes>().GetHealth() <= 0)
+                {
+                    Debug.Log("Removing Dead Unit");
+                    if (tile._unit.tag == "Player")
+                    {
+                        _playerUnits.Remove(tile._unit);
+                        Debug.Log("Player Removed");
+                    }
+                    else if (tile._unit.tag == "Enemy")
+                    {
+                        _enemyUnits.Remove(tile._unit);
+                        Debug.Log("Enemy Removed");
+                    }
+                    GameObject temp = tile._unit;
+                    tile.RemoveUnit();
+                    temp.GetComponent<UnitAttributes>().DestroyUnit();
+                }
+            }
+        }
+    }
 
     /*************************************************************************
                              UI HELPER FUNCTIONS
