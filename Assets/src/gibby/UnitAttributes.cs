@@ -10,12 +10,12 @@ public class UnitAttributes : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
-    public bool IsPlayer = true;
-    public bool IsEnemy = false;
-    public bool hasActed = false;
+    [SerializeField] bool IsPlayer = true;
+    [SerializeField] bool IsEnemy = false;
+    [SerializeField] bool hasActed = false;
     private bool modeBC = false;
 
-    int health;
+    private int health;
     private int minHealth = 0;
     private int maxHealth = 100;
     private int movement;
@@ -27,12 +27,12 @@ public class UnitAttributes : MonoBehaviour
     private int instanceIDObject;
     private int instanceIDScript;
 
-    string attack1;
-    string attack2;
+    private string attack1;
+    private string attack2;
 
-    double[] attackValuesOne = new double[5];
-    double[] attackValuesTwo = new double[5];
-    string[] attackNames = new string[2];
+    private double[] attackValuesOne = new double[5];
+    private double[] attackValuesTwo = new double[5];
+    private string[] attackNames = new string[2];
 
     void SetClassStats()
     {
