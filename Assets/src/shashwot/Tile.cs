@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject _highlight;  // Serialized field for a highlight GameObject
     [SerializeField] public GameObject _unit;  // Serialized field for a game unit GameObject
     
-    //Damien's Variables for Pathfinding
+    //Variables for A*Pathfinding
     public float gCost = 0;
     public float hCost = 0;
     public float fCost = 0;

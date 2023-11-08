@@ -5,17 +5,49 @@ using System;
 
 public class AI : MonoBehaviour
 {
-    private List<Tile> openList;
-    private List<Tile> closedList;
+    //Singleton Section
+    private static AI instance;
+
+    public static AI Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<AI>();
+
+                if (instance == null)
+                {
+                    GameObject singletonAI = new GameObject(typeof(AI).Name);
+                    instance = singletonAI.AddComponent<AI>();
+                }
+            }
+            return instance;
+        }
+    }
+    
 
     ActionEventManager Event;
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this as AI;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         Event = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
     }
     
-
+    private List<Tile> openList;
+    private List<Tile> closedList;
+    
+    
     public void AITurn(List<GameObject> playerUnits, List<GameObject> enemyUnits, Dictionary<Vector2, Tile> tiles)
     {
 
