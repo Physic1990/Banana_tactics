@@ -12,6 +12,16 @@ public class ActionEventManager : MonoBehaviour
    public static event Action onEnemyDeath;
    public static event Action onAttack;
    public static event Action onHealth;
+   public static event Action onP1;
+   public static event Action onP2;
+   public static event Action onP3;
+   public static event Action onP4;
+   public static event Action onP5;
+   public static event Action onE1;
+   public static event Action onE2;
+   public static event Action onE3;
+   public static event Action onE4;
+   public static event Action onE5;
 
    // unit's data
    [SerializeField] UnitAttributes _unitAttributes;
@@ -185,8 +195,65 @@ public class ActionEventManager : MonoBehaviour
       enemy.attackDamageCrit = (int)(enemyAtt[4]);
 
       // attack animation
-      onAttack?.Invoke();
-      //onDeath?.Invoke();
+      if (Equals(unit.name, "player warrior 1") == true)
+      {
+         onP1?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "player gunslinger 2") == true)
+      {
+         onP2?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "player rogue 3") == true)
+      {
+         onP3?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "player hero 4") == true)
+      {
+         onP4?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "player lancer 5") == true)
+      {
+         onP5?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 10") == true)
+      {
+         onE1?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 11") == true)
+      {
+         onE2?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 12") == true)
+      {
+         onE3?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 13") == true)
+      {
+         onE4?.Invoke();
+         onAttack?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 14") == true)
+      {
+         onE5?.Invoke();
+         onAttack?.Invoke();
+      }
 
       // player was hit
       if (Random.Range(0, 100) < enemy.attackHitChance)
@@ -224,16 +291,132 @@ public class ActionEventManager : MonoBehaviour
          // obsrever signal
          //onHealth?.Invoke();
 
-         onDeath?.Invoke();
+         if (Equals(unit.name, "player warrior 1") == true)
+         {
+            onP1?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player gunslinger 2") == true)
+         {
+            onP2?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player rogue 3") == true)
+         {
+            onP3?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player hero 4") == true)
+         {
+            onP4?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player lancer 5") == true)
+         {
+            onP5?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 10") == true)
+         {
+            onE1?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 11") == true)
+         {
+            onE2?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 12") == true)
+         {
+            onE3?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 13") == true)
+         {
+            onE4?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 14") == true)
+         {
+            onE5?.Invoke();
+            onDeath?.Invoke();
+         }
       }
 
       // enemy unit has died
       if (_enemyUnitAttributes.GetHealth() < 1)
       {
-         // observer signal
-         onEnemyDeath?.Invoke();
+         if (Equals(unit.name, "player warrior 1") == true)
+         {
+            onP1?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player gunslinger 2") == true)
+         {
+            onP2?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player rogue 3") == true)
+         {
+            onP3?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player hero 4") == true)
+         {
+            onP4?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player lancer 5") == true)
+         {
+            onP5?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 10") == true)
+         {
+            onE1?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 11") == true)
+         {
+            onE2?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 12") == true)
+         {
+            onE3?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 13") == true)
+         {
+            onE4?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 14") == true)
+         {
+            onE5?.Invoke();
+            onDeath?.Invoke();
+         }
+
       }
-      //onEnemyDeath?.Invoke();
+      
    }
 
 
@@ -253,7 +436,65 @@ public class ActionEventManager : MonoBehaviour
       // heal ally
       _unitAttributes.GainHealth(player.healIncrease);
       // observation signal
-      onHealth?.Invoke();
+      if (Equals(unit.name, "player warrior 1") == true)
+      {
+         onP1?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "player gunslinger 2") == true)
+      {
+         onP2?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "player rogue 3") == true)
+      {
+         onP3?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "player hero 4") == true)
+      {
+         onP4?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "player lancer 5") == true)
+      {
+         onP5?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 10") == true)
+      {
+         onE1?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 11") == true)
+      {
+         onE2?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 12") == true)
+      {
+         onE3?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 13") == true)
+      {
+         onE4?.Invoke();
+         onHealth?.Invoke();
+      }
+
+      if (Equals(unit.name, "enemy warrior 14") == true)
+      {
+         onE5?.Invoke();
+         onHealth?.Invoke();
+      }
    }
 
 
@@ -263,7 +504,7 @@ public class ActionEventManager : MonoBehaviour
    public void doNothingTurn(GameObject unit)
    {
       // temporay terrain damage
-      int terrain = 5;
+      int terrain = 15;
       //get unit's data
       _unitAttributes = unit.GetComponent<UnitAttributes>();
       _deathAnimationUnit = unit.GetComponent<DeathAnimation>();
@@ -279,7 +520,65 @@ public class ActionEventManager : MonoBehaviour
       if (_unitAttributes.GetHealth() <= 0)
       {
          // death signal
-         onDeath?.Invoke();
+         if (Equals(unit.name, "player warrior 1") == true)
+         {
+            onP1?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player gunslinger 2") == true)
+         {
+            onP2?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player rogue 3") == true)
+         {
+            onP3?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player hero 4") == true)
+         {
+            onP4?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "player lancer 5") == true)
+         {
+            onP5?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 10") == true)
+         {
+            onE1?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 11") == true)
+         {
+            onE2?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 12") == true)
+         {
+            onE3?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 13") == true)
+         {
+            onE4?.Invoke();
+            onDeath?.Invoke();
+         }
+
+         if (Equals(unit.name, "enemy warrior 14") == true)
+         {
+            onE5?.Invoke();
+            onDeath?.Invoke();
+         }
       }
    }
 

@@ -18,7 +18,16 @@ public class DeathAnimation : MonoBehaviour
         ActionEventManager.onDeath +=killAnimation;
         ActionEventManager.onAttack +=attackAnimation;
         ActionEventManager.onHealth +=healthAnimation;
-        ActionEventManager.onEnemyDeath += enemyKillAnimation;
+        ActionEventManager.onP1 += P1;
+        ActionEventManager.onP2 += P2;
+        ActionEventManager.onP3 += P3;
+        ActionEventManager.onP4 += P4;
+        ActionEventManager.onP5 += P5;
+        ActionEventManager.onE1 += E1;
+        ActionEventManager.onE2 += E2;
+        ActionEventManager.onE3 += E3;
+        ActionEventManager.onE4 += E4;
+        ActionEventManager.onE5 += E5;
     }
     // unsubscribe to an event
     private void OnDisable()
@@ -26,13 +35,76 @@ public class DeathAnimation : MonoBehaviour
         ActionEventManager.onDeath -= killAnimation;
         ActionEventManager.onAttack -= attackAnimation;
         ActionEventManager.onHealth -= healthAnimation;
-        ActionEventManager.onEnemyDeath -= enemyKillAnimation;
+        ActionEventManager.onP1 -= P1;
+        ActionEventManager.onP2 -= P2;
+        ActionEventManager.onP3 -= P3;
+        ActionEventManager.onP4 -= P4;
+        ActionEventManager.onP5 -= P5;
+        ActionEventManager.onE1 -= E1;
+        ActionEventManager.onE2 -= E2;
+        ActionEventManager.onE3 -= E3;
+        ActionEventManager.onE4 -= E4;
+        ActionEventManager.onE5 -= E5;
+    }
+
+    bool key = false;
+    void P1()
+    {
+        key = Equals(gameObject.name, "player warrior 1");
+        Debug.Log(key);
+    }
+
+    void P2()
+    {
+        key = Equals(gameObject.name, "player gunslinger 2");
+    }
+
+    void P3()
+    {
+        key = Equals(gameObject.name, "player rogue 3");
+    }
+
+    void P4()
+    {
+        key = Equals(gameObject.name, "player hero 4");
+    }
+
+    void P5()
+    {
+        key = Equals(gameObject.name, "player lancer 5");
+    }
+
+    void E1()
+    {
+        key = Equals(gameObject.name, "enemy warrior 10");
+    }
+
+    void E2()
+    {
+        key = Equals(gameObject.name, "enemy warrior 11");
+    }
+
+    void E3()
+    {
+        key = Equals(gameObject.name, "enemy warrior 12");
+    }
+
+    void E4()
+    {
+        key = Equals(gameObject.name, "enemy warrior 13");
+    }
+
+    void E5()
+    {
+      key = Equals(gameObject.name, "enemy warrior 14");
     }
 
     void Awake()
     {
         eventAnimation = gameObject.GetComponent<Animator>();
     }
+
+
 
     // Update is called once per frame
     public virtual void Update()
@@ -53,22 +125,32 @@ public class DeathAnimation : MonoBehaviour
 
     public virtual void killAnimation()
     {
-        eventAnimation.SetBool("die", true);
-    }
+        if(key)
+        {
+            eventAnimation.SetBool("die", true);
+        }
 
-    public virtual void enemyKillAnimation()
-    {
-        eventAnimation.SetBool("deathAsEnemy", true);
+        key = false;
     }
 
 
     public virtual void attackAnimation()
     {
-        eventAnimation.SetBool("attack", true);
+        if(key)
+        {
+            eventAnimation.SetBool("attack", true);
+        }
+
+        key = false;
     }
 
     public virtual void healthAnimation()
     {
-        eventAnimation.SetBool("powerUp", true);
+        if(key)
+        {
+            eventAnimation.SetBool("powerUp", true);
+        }
+
+        key = false;
     }
 }
