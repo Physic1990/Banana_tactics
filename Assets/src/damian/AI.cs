@@ -8,6 +8,14 @@ public class AI : MonoBehaviour
     private List<Tile> openList;
     private List<Tile> closedList;
 
+    ActionEventManager Event;
+
+    private void Awake()
+    {
+        Event = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
+    }
+    
+
     public void AITurn(List<GameObject> playerUnits, List<GameObject> enemyUnits, Dictionary<Vector2, Tile> tiles)
     {
 
@@ -15,13 +23,13 @@ public class AI : MonoBehaviour
 
         for (int i = 0; i < enemyUnits.Count; i++)
         {
-            //find the target to move toward or attack
-            int _targetIndex = FindClosestUnit(playerUnits, enemyUnits[i]);
+            
+            int _targetIndex = FindClosestUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
 
-            //move
             //Debug.Log(_targetIndex);
-            MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles);
+            MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
 
+            attackPlayer(enemyUnits[i], playerUnits[_targetIndex]); //swing
 
             //attack or heal
 
@@ -29,6 +37,15 @@ public class AI : MonoBehaviour
 
     }
     
+
+    private void attackPlayer(GameObject enemyUnit, GameObject playerUnit) //attack player he stole your bananas or something and now you're angry (-n-)
+    {
+        float _distanceBetweenUnits = Math.Abs(enemyUnit.transform.position.x - playerUnit.transform.position.x) + Math.Abs(enemyUnit.transform.position.y - playerUnit.transform.position.y);
+        if(_distanceBetweenUnits <= 1)
+        {
+            Event.attackBattle(enemyUnit, playerUnit); //Throw hands
+        }
+    }
     
     //Finds the closest unit to the current controlled unit
     public int FindClosestUnit(List<GameObject> playerUnits, GameObject enemyUnit) 
@@ -78,11 +95,11 @@ public class AI : MonoBehaviour
         }
 
         List<Tile> _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, _targetX, _targetY, tiles);
-        Debug.Log("the best is is this long " + _bestPath.Count);
+        //Debug.Log("the best is is this long " + _bestPath.Count);
         if (_bestPath.Count > 1)
         {
-            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.x;
-            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.y;
+            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.x;
+            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.y;
 
 
 
@@ -90,6 +107,10 @@ public class AI : MonoBehaviour
             _controlledTile.RemoveUnit();
             _controlledTile = tiles[new Vector2(_targetX, _targetY)];
             _controlledTile.AssignUnit(controlledUnit);
+        }
+        else
+        {
+            Event.doNothingTurn(controlledUnit);
         }
         //Debug.Log(_targetY);
         //Debug.Log(_targetX);
@@ -178,7 +199,7 @@ public class AI : MonoBehaviour
 
         
         List<Tile> _emptyList = new List<Tile>();
-        Debug.Log("returning empty list of length" + _emptyList.Count);
+        //Debug.Log("returning empty list of length" + _emptyList.Count);
         return _emptyList; // we are done
     }
 
@@ -245,7 +266,7 @@ public class AI : MonoBehaviour
             _currentTile = _currentTile.cameFromNode;
         }
         path.Reverse();
-        Debug.Log(path.Count);
+        //Debug.Log(path.Count);
         return path;
     }
 

@@ -35,10 +35,12 @@ public class UnitMenus : GameScreen
                                Unit Menu Buttons
    ************************************************************************/
     const string playerUnitAttackButtonName = "UnitAttackButton";
+    const string playerUnitHealButtonName = "UnitHealButton";
     const string playerUnitWaitButtonName = "UnitWaitButton";
     const string playerUnitCancelAttackButtonName = "UnitCancelAttackButton";
     const string playerUnitConfirmAttackButtonName = "UnitConfirmAttackButton";
     Button PlayerUnitAttackButton;
+    Button PlayerUnitHealButton;
     Button PlayerUnitWaitButton;
     Button PlayerUnitCancelAttackButton;
     Button PlayerUnitConfirmAttackButton;
@@ -74,12 +76,14 @@ public class UnitMenus : GameScreen
 
         // Unit Menu Buttons
         PlayerUnitAttackButton = root.Q<Button>(playerUnitAttackButtonName);
+        PlayerUnitHealButton = root.Q<Button>(playerUnitHealButtonName);
         PlayerUnitWaitButton = root.Q<Button>(playerUnitWaitButtonName);
         PlayerUnitCancelAttackButton = root.Q<Button>(playerUnitCancelAttackButtonName);
         PlayerUnitConfirmAttackButton = root.Q<Button>(playerUnitConfirmAttackButtonName);
 
         // Unit Menu Click Events
         PlayerUnitAttackButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitAttackButton);
+        PlayerUnitHealButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitHealButton);
         PlayerUnitWaitButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitWaitButton);
         PlayerUnitCancelAttackButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitCancelAttackButton);
         PlayerUnitConfirmAttackButton?.RegisterCallback<ClickEvent>(ClickPlayerUnitConfirmAttackButton);
@@ -248,6 +252,7 @@ public class UnitMenus : GameScreen
 
         // Sets the visibility of the player Unit Menu's action buttons
         SetUIElementVisibility(PlayerUnitAttackButton, !unit.HasActed() && enemyUnit && GetIsEnemyUnitMenuOpen() && !isInCombatPrediction);
+        SetUIElementVisibility(PlayerUnitHealButton, !unit.HasActed() && unit.GetHealth() < unit.GetMaxHealth() && !isInCombatPrediction);
         SetUIElementVisibility(PlayerUnitWaitButton, !unit.HasActed() && !isInCombatPrediction);
         SetUIElementVisibility(PlayerUnitConfirmAttackButton, !unit.HasActed() && enemyUnit && GetIsEnemyUnitMenuOpen() && isInCombatPrediction);
         SetUIElementVisibility(PlayerUnitCancelAttackButton, !unit.HasActed() && enemyUnit && GetIsEnemyUnitMenuOpen() && isInCombatPrediction);
@@ -280,6 +285,22 @@ public class UnitMenus : GameScreen
         isInCombatPrediction = true;
 
         // Update the player Unit Menu because the visibility of some action buttons are dependent on the Combat Predicition status 
+        SetPlayerUnitMenuInfo(GetUnitAttributes(playerUnit));
+    }
+
+    private void ClickPlayerUnitHealButton(ClickEvent evt)
+    {
+        if (!GetIsUIElementVisible(PlayerUnitHealButton)) return;
+
+        PlayerHealSelf();
+    }
+
+    // Heals Player Unit
+    private void PlayerHealSelf()
+    {
+        actionEvent.healSelf(playerUnit);
+
+        // Update the player Unit Menu because the Player Unit's health should be increased
         SetPlayerUnitMenuInfo(GetUnitAttributes(playerUnit));
     }
 
