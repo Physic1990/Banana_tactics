@@ -52,21 +52,22 @@ public class AI : MonoBehaviour
     {
 
         //Debug.Log(enemyUnits.Count);
-
-        for (int i = 0; i < enemyUnits.Count; i++)
+        if (playerUnits.Count > 0)
         {
-            
-            int _targetIndex = FindClosestUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
+            for (int i = 0; i < enemyUnits.Count; i++)
+            {
 
-            //Debug.Log(_targetIndex);
-            MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
+                int _targetIndex = FindClosestUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
 
-            attackPlayer(enemyUnits[i], playerUnits[_targetIndex]); //swing
+                //Debug.Log(_targetIndex);
+                MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
 
-            //attack or heal
+                attackPlayer(enemyUnits[i], playerUnits[_targetIndex]); //swing
 
+                //attack or heal
+
+            }
         }
-
     }
     
 
@@ -104,31 +105,43 @@ public class AI : MonoBehaviour
     void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
     {
 
-        float _targetX = targetUnit.transform.position.x; 
+        float _targetX = targetUnit.transform.position.x;
         float _targetY = targetUnit.transform.position.y;
         Tile _controlledTile = tiles[new Vector2(controlledUnit.transform.position.x, controlledUnit.transform.position.y)];
         float _distanceFromTarget = (Math.Abs(controlledUnit.transform.position.x - targetUnit.transform.position.x) + Math.Abs(controlledUnit.transform.position.y - targetUnit.transform.position.y));
+        int _height = FindHeightOfGrid(tiles); //height of grid
+        int _width = FindWidthOfGrid(tiles); //width of grid
 
-       if(controlledUnit.transform.position.x > targetUnit.transform.position.x)
+
+        //Debug.Log(controlledUnit + "offset");
+        if (controlledUnit.transform.position.x > targetUnit.transform.position.x)
         {
             _targetX++;
         }
-        else
+        else if (controlledUnit.transform.position.x < targetUnit.transform.position.x)
         {
             _targetX--;
         }
-        if(controlledUnit.transform.position.y  > targetUnit.transform.position.y)
+        else if (controlledUnit.transform.position.y > targetUnit.transform.position.y)
         {
             _targetY++;
         }
-        else
+        else if (controlledUnit.transform.position.y < targetUnit.transform.position.y)
         {
             _targetY--;
         }
 
-        List<Tile> _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, _targetX, _targetY, tiles);
+        List<Tile> _bestPath = new List<Tile>();
+
+        if ((_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0) && (!tiles[new Vector2(_targetX, _targetY)]._occupied))
+        {
+            Debug.Log("Finding path");
+            _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, _targetX, _targetY, tiles);
+            Debug.Log("path found");
+        }
+
         //Debug.Log("the best is is this long " + _bestPath.Count);
-        if (_bestPath.Count > 1)
+        if (_bestPath.Count > 1 && (_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0))
         {
             _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.x;
             _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.y;
@@ -142,7 +155,7 @@ public class AI : MonoBehaviour
         }
         else
         {
-            Event.doNothingTurn(controlledUnit);
+            //Event.doNothingTurn(controlledUnit);
         }
         //Debug.Log(_targetY);
         //Debug.Log(_targetX);
