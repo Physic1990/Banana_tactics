@@ -77,6 +77,10 @@ public class UnitMenus : GameScreen
                             Combat Prediction Status
     ************************************************************************/
     private bool isInCombatPrediction = false;
+    public bool GetIsInCombatPrediction()
+    {
+        return isInCombatPrediction;
+    }
 
     /*************************************************************************
                                 Player Input
@@ -355,6 +359,8 @@ public class UnitMenus : GameScreen
     // Initiates combat predicition
     private void PlayerAttack()
     {
+        if (!playerUnit) return;
+
         // Enter Combat Predicition mode
         isInCombatPrediction = true;
 
@@ -372,7 +378,12 @@ public class UnitMenus : GameScreen
     // Heals Player Unit
     private void PlayerHealSelf()
     {
+        if (!playerUnit) return;
+
         actionEvent.healSelf(playerUnit);
+
+        // Updates the player Unit to have acted for their turn
+        GetUnitAttributes(playerUnit).SetActed(true);
 
         // Update the player Unit Menu because the Player Unit's health should be increased
         SetPlayerUnitMenuInfo(GetUnitAttributes(playerUnit));

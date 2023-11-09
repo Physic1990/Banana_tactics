@@ -168,10 +168,20 @@ public class GridManager : MonoBehaviour
         }
         else
         {
-            //check for player input
-            CursorControl();
-            //move cursor according to player input
-            cursor.MoveCursor(new Vector2(_cursorTile.transform.position.x, _cursorTile.transform.position.y));
+            // If there isn't a Unit in Combat Prediction mode, handle moving the cursor as normal
+            if (!unitMenus.GetIsInCombatPrediction())
+            {
+                //check for player input
+                CursorControl();
+                //move cursor according to player input
+                cursor.MoveCursor(new Vector2(_cursorTile.transform.position.x, _cursorTile.transform.position.y));
+            }
+            // If there is a Unit in Combat Prediction mode, the cursor shouldn't be moveable because those controls
+            // instead select which Enemy Unit should be attacked
+            else
+            {
+                HandleCombatEnemySelection();
+            }
         }
     }
 
@@ -315,7 +325,7 @@ public class GridManager : MonoBehaviour
         {
             Tile temp = _cursorTile;
             //Updates the cursorTile's position according to the player's inputs
-            _cursorTile = TakePlayerInput();
+            _cursorTile = GetCursorTileByPlayerInput();
             //Highlight the selectedTile if selection mode is currently active
             if (_selectionMode && _selectedTile != null)
             {
@@ -337,12 +347,12 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    //Checks if the player has inputted anything and updates the x and y coordinates of the _cursorTile accordingly
-    private Tile TakePlayerInput()
+    // Gets the Player's Movement Input and returns the updated coordinates from the _cursorTile
+    private Vector2 TakePlayerInput()
     {
         // BEN ADDED THIS
         // This is needed because the Input System still registers inputs when the Timescale is 0
-        if (pauseMenu.isGamePaused) return _cursorTile;
+        if (pauseMenu.isGamePaused) return _cursorTile.transform.position;
 
         //New x y coordinates of the cursor
         float x = _cursorTile.transform.position.x;
@@ -371,8 +381,15 @@ public class GridManager : MonoBehaviour
             y--;
         }
 
-        //Calls MoveCursor to actually move the cursor to these new coordinates
-        return MoveCursor(new Vector2(x, y));
+        // Returns the updated coordinates
+        return new Vector2(x, y);
+    }
+
+    // Returns the updated _cursorTile to be the Tile matching the Player's Input
+    private Tile GetCursorTileByPlayerInput()
+    {
+        //Calls MoveCursor to actually move the cursor to the coordinates of the Player's Input
+        return MoveCursor(TakePlayerInput());
     }
 
     //Takes a coordinate Vector2, and checks to see if it is inbounds for the cursor to move there. Returns updated cursor tile
@@ -555,7 +572,7 @@ public class GridManager : MonoBehaviour
             Tile tile = kvp.Value;
             if (tile._occupied)
             {
-                if(tile._unit.GetComponent<UnitAttributes>().GetHealth() <= 0)
+                if (tile._unit.GetComponent<UnitAttributes>().GetHealth() <= 0)
                 {
                     Debug.Log("Removing Dead Unit");
                     if (tile._unit.tag == "Player")
@@ -611,6 +628,33 @@ public class GridManager : MonoBehaviour
             unitMenus.SetPlayerUnitMenuVisibility(false);
 
         }
+    }
+
+    // BEN ADDED THIS
+    // When in Combat Prediction mode, the player movement is used to select any Enemy Units around the cursor tile
+    // and update the Enemy Unit Menu accordingly
+    private void HandleCombatEnemySelection()
+    {
+        // The 'isGamePaused' is needed because the Input System still registers inputs when the Timescale is 0, and this
+        // function shouldn't be used if the selected Unit isn't in Combat Prediction mode.
+        if (pauseMenu.isGamePaused || !unitMenus.GetIsInCombatPrediction()) return;
+
+        _cursorTimer++;
+        if (_cursorTimer > _cursorDelay)
+        {
+            // Takes the Player's input and returns the tile at the Player's input.
+            Tile selectedTile = GetTileAtPosition(TakePlayerInput());
+
+            // If the selected Tile has an enemy unit on it
+            if (selectedTile._occupied && selectedTile._unit.CompareTag("Enemy"))
+            {
+                // Updates the enemy Unit Menu to be the Unit on the selected Tile
+                unitMenus.HandleUnitByGameObject(selectedTile._unit);
+            }
+
+            _cursorTimer = 0;
+        }
+
     }
 }
 
