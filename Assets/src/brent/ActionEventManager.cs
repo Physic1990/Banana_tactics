@@ -5,8 +5,27 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.Events;
 
+public class battleCalculator
+{
+   public int muiltplier()
+   {
+      return(200);
+   }
+}
+
+public class specialBattleCalculator : battleCalculator
+{
+   public  int muiltplier()
+   {
+      return(100);
+   }
+}
+
 public class ActionEventManager : MonoBehaviour
 {
+   public battleCalculator test;
+
+   
    // observer pattern triggers
    public static event Action onDeath;
    public static event Action onEnemyDeath;
@@ -46,6 +65,9 @@ public class ActionEventManager : MonoBehaviour
    // creating only 1 instance
    void Awake()
    {
+      test = new specialBattleCalculator();
+      Debug.Log("calculation: " + test.muiltplier());
+
       // locking mechanism for singleton pattern
       lock (padlock)
       {

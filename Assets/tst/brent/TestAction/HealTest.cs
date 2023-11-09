@@ -12,7 +12,7 @@ public class HealEventTest
     {
       var test1 = new GameObject().AddComponent<UnitAttributes>();
       double [] attributes = test1.GetAttackOneStats();
-      Assert.IsNotNull(attributes[5]);
+      Assert.IsNotNull(attributes[4]);
       
     }
     [Test]
@@ -20,6 +20,6 @@ public class HealEventTest
     {
       var test2 = new GameObject().AddComponent<UnitAttributes>();
       double [] attributes = test2.GetAttackOneStats();
-      Assert.IsTrue(attributes[5]>=0 , "heal attribute is greater than 0");
+      Assert.IsTrue((attributes[4]>=0) , "heal attribute is greater than 0");
     }
 }
