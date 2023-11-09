@@ -105,8 +105,8 @@
 }
 
 .hp-bar-background {
-    height: 16px;
-    width: 100%;
+    height: 22px;
+    width: 120px;
     align-items: flex-start;
     justify-content: center;
     padding-left: 0;
@@ -115,13 +115,21 @@
     padding-bottom: 0;
     -unity-background-scale-mode: stretch-to-fill;
     flex-direction: column;
-    background-color: rgb(149, 149, 149);
+    background-color: rgb(43, 43, 43);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
     overflow: hidden;
     flex-grow: 1;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
 }
 
 .hp-bar-progress {

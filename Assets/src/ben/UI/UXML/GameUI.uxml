@@ -5,7 +5,7 @@
     <Style src="project://database/Assets/src/ben/UI/USS/GameUIStyles.uss?fileID=7433441132597879392&amp;guid=c58db1c7bcea77e458cca63e3ce601eb&amp;type=3#GameUIStyles" />
     <Style src="project://database/Assets/src/ben/UI/USS/GameMenuStyles.uss?fileID=7433441132597879392&amp;guid=77742b6f6e5ba4f4b9afeecce09ae67e&amp;type=3#GameMenuStyles" />
     <ui:VisualElement name="UnitMenus" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
-        <ui:VisualElement name="EnemyUnitMenu" style="flex-grow: 0; width: 40%; height: auto; background-color: rgba(255, 0, 0, 0); -unity-background-image-tint-color: rgba(255, 255, 255, 0); flex-shrink: 1; min-width: auto; flex-direction: row; flex-basis: auto; justify-content: space-between; align-items: flex-end; align-self: flex-end; -unity-background-scale-mode: stretch-to-fill; position: relative; padding-top: 0; top: auto; bottom: 24px; margin-right: 0; right: auto; left: 24px; display: flex; visibility: visible; opacity: 1;">
+        <ui:VisualElement name="EnemyUnitMenu" style="flex-grow: 0; width: 45%; height: auto; background-color: rgba(255, 0, 0, 0); -unity-background-image-tint-color: rgba(255, 255, 255, 0); flex-shrink: 1; min-width: auto; flex-direction: row; flex-basis: auto; justify-content: space-between; align-items: flex-end; align-self: flex-end; -unity-background-scale-mode: stretch-to-fill; position: relative; padding-top: 0; top: auto; bottom: 24px; margin-right: 0; right: auto; left: 24px; display: flex; visibility: visible; opacity: 1;">
             <ui:VisualElement name="UnitInfo" style="flex-grow: 1; flex-basis: auto; width: auto; height: 100%; padding-top: 16px; background-color: rgba(255, 255, 255, 0); margin-top: 0; justify-content: flex-end; margin-right: 0; padding-right: 0; border-bottom-left-radius: 0; overflow: hidden; margin-left: 80px; border-bottom-right-radius: 8px;">
                 <ui:VisualElement name="Info" class="unit-info" style="flex-grow: 0; margin-bottom: 0; margin-top: 0; margin-right: 0; padding-bottom: 16px; padding-top: 16px; padding-right: 0; padding-left: 88px; border-top-right-radius: 8px;">
                     <ui:VisualElement name="EnemyUnitName" style="flex-grow: 0; flex-direction: row-reverse; justify-content: flex-end; align-items: center; padding-top: 0; padding-right: 0; padding-bottom: 16px;">
@@ -23,9 +23,9 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="EnemyUnitHP" style="flex-grow: 1; height: auto; flex-direction: row; align-items: center; width: auto;">
-                            <ui:Label tabindex="-1" text="100/100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="EnemyUnitHPText" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 4px; margin-bottom: 0; margin-left: 0; font-size: 16px; color: rgb(232, 230, 228);" />
-                            <ui:VisualElement name="EnemyUnitHPBarBackground" class="hp-bar-background">
+                            <ui:VisualElement name="EnemyUnitHPBarBackground" class="hp-bar-background" style="width: 100%;">
                                 <ui:VisualElement name="EnemyUnitHPBarProgress" class="hp-bar-progress" style="flex-grow: 1;" />
+                                <ui:Label tabindex="-1" text="100/100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="EnemyUnitHPText" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 4px; margin-bottom: 0; margin-left: 0; font-size: 16px; color: rgb(232, 230, 228); position: absolute; right: auto; left: 40px; flex-grow: 1; -unity-font-style: bold; top: -1px;" />
                             </ui:VisualElement>
                         </ui:VisualElement>
                     </ui:VisualElement>
@@ -35,7 +35,7 @@
                 <ui:VisualElement name="EnemyUnitIconImage" class="unit-icon-tint-red" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/src/ben/UI/Art/Units/normal-monkey.png?fileID=2800000&amp;guid=3a12370b91e1dc347ba23a1c0a3d5abb&amp;type=3#normal-monkey&apos;); width: 125%; height: auto; min-height: 150%; position: absolute; right: -30%; left: auto; bottom: auto; top: -20%;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="UnitMenu" picking-mode="Ignore" style="flex-grow: 0; width: 40%; height: auto; background-color: rgba(255, 0, 0, 0); -unity-background-image-tint-color: rgba(255, 255, 255, 0); flex-shrink: 1; min-width: auto; flex-direction: row; flex-basis: auto; justify-content: space-between; align-items: flex-end; align-self: flex-end; -unity-background-scale-mode: stretch-to-fill; position: relative; padding-top: 0; top: auto; bottom: 24px; margin-right: 0; right: 24px; display: flex;">
+        <ui:VisualElement name="UnitMenu" picking-mode="Ignore" style="flex-grow: 0; width: 45%; height: auto; background-color: rgba(255, 0, 0, 0); -unity-background-image-tint-color: rgba(255, 255, 255, 0); flex-shrink: 1; min-width: auto; flex-direction: row; flex-basis: auto; justify-content: space-between; align-items: flex-end; align-self: flex-end; -unity-background-scale-mode: stretch-to-fill; position: relative; padding-top: 0; top: auto; bottom: 24px; margin-right: 0; right: 24px; display: flex;">
             <ui:VisualElement name="UnitInfo" style="flex-grow: 0; flex-basis: auto; width: auto; height: 100%; padding-top: 16px; background-color: rgba(255, 255, 255, 0); margin-top: 0; justify-content: flex-end; margin-right: 80px; padding-right: 0; border-bottom-left-radius: 0; overflow: hidden; border-top-left-radius: 0;">
                 <ui:VisualElement name="Actions" style="flex-grow: 1; flex-direction: row; padding-right: 88px; justify-content: flex-end; overflow: visible;">
                     <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitAttackButton" tooltip="Attack" class="unit-action-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(255, 255, 255);">
@@ -66,10 +66,10 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="UnitHP" style="flex-grow: 1; height: auto; flex-direction: row; align-items: center; width: auto;">
-                            <ui:VisualElement name="UnitHPBarBackground" class="hp-bar-background">
+                            <ui:VisualElement name="UnitHPBarBackground" class="hp-bar-background" style="width: 100%;">
                                 <ui:VisualElement name="UnitHPBarProgress" class="hp-bar-progress" style="flex-grow: 1;" />
+                                <ui:Label tabindex="-1" text="100/100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitHPText" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 4px; margin-bottom: 0; margin-left: 0; font-size: 16px; color: rgb(232, 230, 228); position: absolute; right: auto; left: 40px; flex-grow: 1; -unity-font-style: bold; top: -1px;" />
                             </ui:VisualElement>
-                            <ui:Label tabindex="-1" text="100/100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitHPText" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 4px; font-size: 16px; color: rgb(232, 230, 228);" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
