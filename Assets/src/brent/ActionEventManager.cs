@@ -284,7 +284,6 @@ public class ActionEventManager : MonoBehaviour
          // critical hit 
          if (Random.Range(0, 100) < (enemy.attackCritChance))
          {
-            Debug.Log("enemy hit critical");
             _unitAttributes.DealDamage(enemy.attackDamageCrit);
          }
       }
@@ -296,23 +295,13 @@ public class ActionEventManager : MonoBehaviour
          if (Random.Range(0, 100) < (player.attackCritChance))
          {
             _enemyUnitAttributes.DealDamage(player.attackDamageCrit);
-            Debug.Log("player hit critical");
          }
       }
-      Debug.Log("Player: After Battle");
-      Debug.Log(_unitAttributes.GetHealth());
-      //Debug.Log("Enemy: After Battle");
-      //Debug.Log(enemyUnitAttributes.GetHealth());
-      //Debug.Log("Enemy attack chance and crit chance");
-      //Debug.Log(enemy.attackHitChance);
-      //Debug.Log(enemy.attackCritChance);
 
       // player unit has died
       if (_unitAttributes.GetHealth() < 1)
       {
-         // obsrever signal
-         //onHealth?.Invoke();
-
+         // 
          if (Equals(unit.name, "player warrior 1") == true)
          {
             onP1?.Invoke();
@@ -447,13 +436,8 @@ public class ActionEventManager : MonoBehaviour
    // hurtUnit - is the unit that needs to be healed
    public void healSelf(GameObject unit)
    {
-      Debug.Log(unit);
       // get players data
       _unitAttributes = unit.GetComponent<UnitAttributes>();
-      Debug.Log(_unitAttributes);
-      // get unit's attributes
-      // double[] playerAtt = _unitAttributes.GetAttackOneStats();
-      // dummy variable for healling 
       player.healIncrease = 5;
       // heal ally
       _unitAttributes.GainHealth(player.healIncrease);
@@ -526,7 +510,7 @@ public class ActionEventManager : MonoBehaviour
    public void doNothingTurn(GameObject unit)
    {
       // temporay terrain damage
-      int terrain = 15;
+      int terrain = 1;
       //get unit's data
       _unitAttributes = unit.GetComponent<UnitAttributes>();
       _deathAnimationUnit = unit.GetComponent<DeathAnimation>();
@@ -535,9 +519,6 @@ public class ActionEventManager : MonoBehaviour
       {
          _unitAttributes.DealDamage(terrain);
       }
-      // testing
-      Debug.Log("Move");
-      Debug.Log(_unitAttributes.GetHealth());
       // animate death when health is less than 1
       if (_unitAttributes.GetHealth() <= 0)
       {
