@@ -7,23 +7,23 @@ using UnityEngine.Events;
 
 public class battleCalculator
 {
-   public int muiltplier()
+   public virtual int muiltplier()
    {
-      return(200);
+      return(1);
    }
 }
 
 public class specialBattleCalculator : battleCalculator
 {
-   public  int muiltplier()
+   public override int muiltplier()
    {
-      return(100);
+      return(5);
    }
 }
 
 public class ActionEventManager : MonoBehaviour
 {
-   public battleCalculator test;
+   public battleCalculator bonus;
 
    
    // observer pattern triggers
@@ -65,8 +65,8 @@ public class ActionEventManager : MonoBehaviour
    // creating only 1 instance
    void Awake()
    {
-      test = new specialBattleCalculator();
-      Debug.Log("calculation: " + test.muiltplier());
+      bonus = new specialBattleCalculator();
+      Debug.Log("Health Muiltiplier: " + bonus.muiltplier());
 
       // locking mechanism for singleton pattern
       lock (padlock)
@@ -281,20 +281,24 @@ public class ActionEventManager : MonoBehaviour
       if (Random.Range(0, 100) < enemy.attackHitChance)
       {
          _unitAttributes.DealDamage(enemy.attackDamage);
+         Debug.Log("Player Hit: " + enemy.attackDamage);
          // critical hit 
          if (Random.Range(0, 100) < (enemy.attackCritChance))
          {
             _unitAttributes.DealDamage(enemy.attackDamageCrit);
+            Debug.Log("Player Critical Hit: " + enemy.attackDamageCrit);
          }
       }
       // enemy was hit
       if (Random.Range(0, 100) < player.attackHitChance)
       {
          _enemyUnitAttributes.DealDamage(player.attackDamage);
+         Debug.Log("Player Hit: " + player.attackDamage);
          // critical hit
          if (Random.Range(0, 100) < (player.attackCritChance))
          {
             _enemyUnitAttributes.DealDamage(player.attackDamageCrit);
+            Debug.Log("Player Critical Hit: " + player.attackDamageCrit);
          }
       }
 
@@ -366,6 +370,7 @@ public class ActionEventManager : MonoBehaviour
       // enemy unit has died
       if (_enemyUnitAttributes.GetHealth() < 1)
       {
+         onEnemyDeath?.Invoke();
          if (Equals(unit.name, "player warrior 1") == true)
          {
             onP1?.Invoke();
@@ -438,9 +443,10 @@ public class ActionEventManager : MonoBehaviour
    {
       // get players data
       _unitAttributes = unit.GetComponent<UnitAttributes>();
-      player.healIncrease = 5;
+      player.healIncrease = 5*bonus.muiltplier();
       // heal ally
       _unitAttributes.GainHealth(player.healIncrease);
+      Debug.Log("Player Healed: " + player.healIncrease);
       // observation signal
       if (Equals(unit.name, "player warrior 1") == true)
       {
