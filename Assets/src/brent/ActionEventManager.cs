@@ -13,6 +13,59 @@ public class battleCalculator
    }
 }
 
+/*
+// Interface
+interface IDamage
+{
+   int GetTotalDamage();
+}
+
+// Concrete Implementaion
+public class Damage : IDamage
+{
+   public int damageCount;
+   public Damage()
+   {
+      damageCount=10;
+   }
+
+   public int GetTotalDamage()
+   {
+      return damageCount;
+   }
+}
+
+// Wrapper
+public class DamageDecorator : IDamage
+{
+   public IDamage _damage;
+   public DamageDecorator(IDamage damage)
+   {
+      _damage = damage;
+   }
+   public virtual int GetTotalDamage()
+   {
+      return _damage.GetTotalDamage();
+   }
+}
+
+// Concrete Decorator
+public class DoubleDamage : DamageDecorator
+{
+   public DoubleDamage(IDamage damage) : base(damage)
+   {}
+
+   public override int GetTotalDamage()
+   {
+      damageCount = base.GetTotalDamage();
+      damageCount += 10;
+      return damageCount;
+   }
+}
+*/
+
+
+
 public class specialBattleCalculator : battleCalculator
 {
    public override int muiltplier()
@@ -24,6 +77,7 @@ public class specialBattleCalculator : battleCalculator
 public class ActionEventManager : MonoBehaviour
 {
    public battleCalculator bonus;
+   
 
    
    // observer pattern triggers
@@ -62,10 +116,20 @@ public class ActionEventManager : MonoBehaviour
       get { return instance; }
    }
 
+   //DoubleDamage doubleHitAttack;
+   //Damage hitAttack;
+   
    // creating only 1 instance
    void Awake()
    {
+      // var testBase = new Damage();
+      // var testDecorator = new DoubleDamage();
+
       bonus = new specialBattleCalculator();
+      
+      //Debug.Log("SingleAttack: " + testBase.GetTotalDamage());
+      //Debug.Log("Health Muiltiplier: " + testDecorator.GetTotalDamage());
+      
       Debug.Log("Health Muiltiplier: " + bonus.muiltplier());
 
       // locking mechanism for singleton pattern
@@ -78,6 +142,7 @@ public class ActionEventManager : MonoBehaviour
          }
       }
    }
+
 
    // event running status
    private bool status;
@@ -623,3 +688,7 @@ public class ActionEventManager : MonoBehaviour
       enemy.health = hp;
    }
 }
+
+
+
+
