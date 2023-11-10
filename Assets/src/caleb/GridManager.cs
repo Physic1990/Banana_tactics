@@ -135,6 +135,8 @@ public class GridManager : MonoBehaviour
         //The grid is created
         GenerateGrid();
         LevelSetup.Instance.GenerateUnits();
+        //Makes sure there's the right number of enemy and player units
+        Debug.Log($"Player Unit Count:  {_playerUnits.Count}  Enemy Unit Count:  { _enemyUnits.Count}");
         //The default position of the cursor is always set to the bottom left
         _cursorTile = GetTileAtPosition(new Vector2(0, 0));
         _cursorTile.TurnOnHighlight();
@@ -207,7 +209,7 @@ public class GridManager : MonoBehaviour
         _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
     }
 
-    //PATTERN: Builder
+    //PATTERN: Factory
     public Tile CreateTile(Vector2 position)
     {
         var spawnedTile = Instantiate(_tilePrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);

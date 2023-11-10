@@ -8,23 +8,42 @@ public class LevelSetup : MonoBehaviour
     public static LevelSetup Instance { get; private set; }
 
     // Prefabs For Units:
-    [SerializeField] private GameObject warriorPrefab;
-    [SerializeField] private GameObject lancerPrefab;
-    [SerializeField] private GameObject gunslingerPrefab;
-    [SerializeField] private GameObject roguePrefab;
-    [SerializeField] private GameObject heroPrefab;
-    [SerializeField] private GameObject enemyWarriorPrefab;
-    [SerializeField] private GameObject enemyLancerPrefab;
-    [SerializeField] private GameObject enemyGunslingerPrefab;
-    [SerializeField] private GameObject enemyRoguePrefab;
-    [SerializeField] private GameObject enemyHeroPrefab;
-    [SerializeField] private TextAsset textAsset;
+    [SerializeField] public GameObject warriorPrefab;
+    [SerializeField] public GameObject lancerPrefab;
+    [SerializeField] public GameObject gunslingerPrefab;
+    [SerializeField] public GameObject roguePrefab;
+    [SerializeField] public GameObject heroPrefab;
+    [SerializeField] public GameObject enemyWarriorPrefab;
+    [SerializeField] public GameObject enemyLancerPrefab;
+    [SerializeField] public GameObject enemyGunslingerPrefab;
+    [SerializeField] public GameObject enemyRoguePrefab;
+    [SerializeField] public GameObject enemyHeroPrefab;
+    //Text file that is read from for spawning units
+    [SerializeField] public TextAsset textAsset;
+    //References to gridmanager
     GridManager grid;
     private int height;
     private int width;
+    //Designated player and enemy tags
+    private string playerTag = "Player";
+    private string enemyTag = "Enemy";
 
+    // Property for playerTag
+    public string PlayerTag
+    {
+        get { return playerTag; }
+    }
+
+    // Property for enemyTag
+    public string EnemyTag
+    {
+        get { return enemyTag; }
+    }
+
+    //Pattern: Singleton
     private void Awake()
     {
+        //Make sure there's only one instance of level setup
         if (Instance != null && Instance != this)
         {
             Destroy(this.gameObject);
@@ -32,6 +51,7 @@ public class LevelSetup : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
+        //finds grid manager's script
         grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
         height = grid.Height;
         width = grid.Width;
@@ -40,10 +60,16 @@ public class LevelSetup : MonoBehaviour
     /*************************************************************************
       Generates Units on Grid (do not grade)
     ************************************************************************/
+
+    //Generates units by reading information from a .txt related to the unit: Affiliation Class X-Coordinate Y-Coordinate ID
+    //Example for generating a Player Warrior at (0,0) with id 1
+    // Player | Warrior | 0 | 0 | 1
+    //PATTERN: Builder (Reader)
     public void GenerateUnits()
     {
         if (textAsset != null)
         {
+            //Reads input from designated .txt asset
             string[] lines = textAsset.text.Split('\n');
             foreach (string line in lines)
             {
@@ -56,6 +82,7 @@ public class LevelSetup : MonoBehaviour
                     int x, y, id;
                     if (int.TryParse(parts[2].Trim(), out x) && int.TryParse(parts[3].Trim(), out y) && int.TryParse(parts[4].Trim(), out id))
                     {
+                        //Checks that position is in bounds (otherwise sets it to be in bounds)
                         if (x >= width)
                         {
                             x = width - 1;
@@ -83,25 +110,34 @@ public class LevelSetup : MonoBehaviour
         }
     }
 
+    //PATTERN: Builder (Converter)
+    // Reader <> -----> Converter
     public void SpawnUnitAt(string tag, string className, int x, int y, int id)
     {
         Tile tile = grid.GetTileAtPosition(new Vector2(x, y));
-        GameObject prefab = FetchPrefab(tag, className);
-        if (tag == "player" && tile != null && !tile._occupied)
+        UnitPrefab BuildUnit = null;
+        if (tag == playerTag)
         {
-            var unit = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-            tile.AssignUnit(unit);
-            grid._playerUnits.Add(unit);
-            unit.name = $"{tag} {className} {id}";
+            BuildUnit = new UnitPrefab();
         }
-        else if (tag == "enemy" && tile != null && !tile._occupied)
+        else if (tag == enemyTag)
         {
-            var unit = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-            tile.AssignUnit(unit);
-            grid._enemyUnits.Add(unit);
-            unit.name = $"{tag} {className} {id}";
+            BuildUnit = new EnemyPrefab();
         }
-        else if(tile == null)
+        else
+        {
+            Debug.LogWarning("Invalid Unit Tag");
+        }
+        BuildUnit.SetPrefab(className);
+        //if the tile exists and does not contain an object, then assign it.
+        if (tile != null && !tile._occupied)
+        {
+            var unit = Instantiate(BuildUnit.prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            tile.AssignUnit(unit);
+            unit.name = $"{tag} {className} {id}";
+            BuildUnit.AssignToList(unit);
+        }
+        else if (tile == null)
         {
             Debug.LogWarning($"Out of Bounds Tile: {x} , {y}");
         }
@@ -111,63 +147,75 @@ public class LevelSetup : MonoBehaviour
         }
     }
 
-   
-
-    public GameObject FetchPrefab(string tag, string className)
+    //Dynamic and Static Bindings
+    public class UnitPrefab
     {
-        GameObject prefab = null;
-        if (tag == "player")
+        public GameObject prefab = null;
+
+        public virtual void SetPrefab(string className)
         {
             switch (className)
             {
                 case "warrior":
-                    prefab = warriorPrefab;
+                    prefab = LevelSetup.Instance.warriorPrefab;
                     break;
                 case "lancer":
-                    prefab = lancerPrefab;
+                    prefab = LevelSetup.Instance.lancerPrefab;
                     break;
                 case "gunslinger":
-                    prefab = gunslingerPrefab;
+                    prefab = LevelSetup.Instance.gunslingerPrefab;
                     break;
                 case "rogue":
-                    prefab = roguePrefab;
+                    prefab = LevelSetup.Instance.roguePrefab;
                     break;
                 case "hero":
-                    prefab = heroPrefab;
+                    prefab = LevelSetup.Instance.heroPrefab;
                     break;
                 default:
                     Debug.LogWarning($"Prefab not found for Player class: {className}");
                     break;
             }
         }
-        else if (tag == "enemy")
+        public virtual void AssignToList(GameObject unit)
+        {
+            LevelSetup.Instance.grid._playerUnits.Add(unit);
+            Debug.Log("Added to player list");
+        }
+    }
+
+    public class EnemyPrefab : UnitPrefab
+    {
+        
+        public override void SetPrefab(string className)
         {
             switch (className)
             {
                 case "warrior":
-                    prefab = enemyWarriorPrefab;
+                    prefab = LevelSetup.Instance.enemyWarriorPrefab;
                     break;
                 case "lancer":
-                    prefab = enemyLancerPrefab;
+                    prefab = LevelSetup.Instance.enemyLancerPrefab;
                     break;
                 case "gunslinger":
-                    prefab = enemyGunslingerPrefab;
+                    prefab = LevelSetup.Instance.enemyGunslingerPrefab;
                     break;
                 case "rogue":
-                    prefab = enemyRoguePrefab;
+                    prefab = LevelSetup.Instance.enemyRoguePrefab;
                     break;
                 case "hero":
-                    prefab = enemyHeroPrefab;
+                    prefab = LevelSetup.Instance.enemyHeroPrefab;
                     break;
                 default:
                     Debug.LogWarning($"Prefab not found for enemy class: {className}");
                     break;
             }
         }
-        else
+        public override void AssignToList(GameObject unit)
         {
-            Debug.LogWarning($"Invalid affiliation: {className}");
+            LevelSetup.Instance.grid._enemyUnits.Add(unit);
+            Debug.Log("Added to enemy list");
         }
-        return prefab;
+
     }
 }
+

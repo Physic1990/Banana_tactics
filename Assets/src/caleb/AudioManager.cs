@@ -58,6 +58,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void PlayMusic(AudioClip clip)
+    {
+        musicSource.clip = clip;
+        musicSource.Play();
+    }
+
 
     // Update is called once per frame
     void Update()

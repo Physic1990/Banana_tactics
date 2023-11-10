@@ -1,13 +1,14 @@
+//Generates Units for Sample Level. (Be sure Tag is either "Player" or "Enemy")
 Tag      Class     X   Y   ID
 
-player | warrior | 0 | 0 | 1
-player | gunslinger | 1 | 0 | 2
-player | rogue | 2 | 0 | 3
-player | hero | 3 | 0 | 4
-player | lancer | 4 | 0 | 5
+Player | warrior | 0 | 0 | 1
+Player | gunslinger | 1 | 0 | 2
+Player | rogue | 2 | 0 | 3
+Player | hero | 3 | 0 | 4
+Player | lancer | 4 | 0 | 5
 
-enemy | warrior | 5 | 5 | 10
-enemy | warrior | 6 | 5 | 11
-enemy | warrior | 7 | 5 | 12
-enemy | warrior | 8 | 5 | 13
-enemy | warrior | 9 | 5 | 14
+Enemy | warrior | 5 | 5 | 10
+Enemy | warrior | 6 | 5 | 11
+Enemy | warrior | 7 | 5 | 12
+Enemy | warrior | 8 | 5 | 13
+Enemy | warrior | 9 | 5 | 14
