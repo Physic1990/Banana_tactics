@@ -305,8 +305,8 @@ public class UnitMenus : GameScreen
 
             PlayerUnitIconImage.style.width = Length.Percent(150);
             PlayerUnitIconImage.style.minHeight = Length.Percent(150);
-            PlayerUnitIconImage.style.top = -20f;
-            PlayerUnitIconImage.style.right = -30f;
+            PlayerUnitIconImage.style.top = Length.Percent(-15);
+            PlayerUnitIconImage.style.right = Length.Percent(-25);
         }
         else if (unit.whatClass == "Rogue")
         {
@@ -314,8 +314,8 @@ public class UnitMenus : GameScreen
 
             PlayerUnitIconImage.style.width = Length.Percent(140);
             PlayerUnitIconImage.style.minHeight = Length.Percent(140);
-            PlayerUnitIconImage.style.top = -5f;
-            PlayerUnitIconImage.style.right = -25f;
+            PlayerUnitIconImage.style.top = Length.Percent(-5);
+            PlayerUnitIconImage.style.right = Length.Percent(-25);
         }
         else
         {
@@ -323,8 +323,8 @@ public class UnitMenus : GameScreen
 
             PlayerUnitIconImage.style.width = Length.Percent(125);
             PlayerUnitIconImage.style.minHeight = Length.Percent(150);
-            PlayerUnitIconImage.style.top = -25f;
-            PlayerUnitIconImage.style.right = -40f;
+            PlayerUnitIconImage.style.top = Length.Percent(-20);
+            PlayerUnitIconImage.style.right = Length.Percent(-30);
         }
 
 
@@ -504,8 +504,8 @@ public class UnitMenus : GameScreen
 
             EnemyUnitIconImage.style.width = Length.Percent(150);
             EnemyUnitIconImage.style.minHeight = Length.Percent(150);
-            EnemyUnitIconImage.style.top = -20;
-            EnemyUnitIconImage.style.right = -30;
+            EnemyUnitIconImage.style.top = Length.Percent(-15);
+            EnemyUnitIconImage.style.right = Length.Percent(-25);
         }
         else if (unit.whatClass == "Rogue")
         {
@@ -513,8 +513,8 @@ public class UnitMenus : GameScreen
 
             EnemyUnitIconImage.style.width = Length.Percent(140);
             EnemyUnitIconImage.style.minHeight = Length.Percent(140);
-            EnemyUnitIconImage.style.top = -5f;
-            EnemyUnitIconImage.style.right = -25f;
+            EnemyUnitIconImage.style.top = Length.Percent(-5);
+            EnemyUnitIconImage.style.right = Length.Percent(-25);
         }
         else
         {
@@ -522,8 +522,9 @@ public class UnitMenus : GameScreen
 
             EnemyUnitIconImage.style.width = Length.Percent(125);
             EnemyUnitIconImage.style.minHeight = Length.Percent(150);
-            EnemyUnitIconImage.style.top = -25;
-            EnemyUnitIconImage.style.right = -40;
+            EnemyUnitIconImage.style.top = Length.Percent(-20);
+            EnemyUnitIconImage.style.right = Length.Percent(-30);
+
         }
 
         EnemyUnitIconImage.AddToClassList("unit-icon-tint-red");
