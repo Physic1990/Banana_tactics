@@ -28,6 +28,8 @@ public class GridManager : MonoBehaviour
     CursorController cursor;
     UnitMenus unitMenus;
     PauseMenu pauseMenu;
+    WinMenu winMenu;
+    GameOverMenu gameOverMenu;
 
     /*************************************************************************
                              Dictionarys & Lists
@@ -119,6 +121,8 @@ public class GridManager : MonoBehaviour
         cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorController>();
         unitMenus = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<UnitMenus>();
         pauseMenu = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<PauseMenu>();
+        winMenu = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<WinMenu>();
+        gameOverMenu = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<GameOverMenu>();
 
         //Varaibles are initilized to their default values
         playerTurnOver = false;
@@ -136,7 +140,7 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
         LevelSetup.Instance.GenerateUnits();
         //Makes sure there's the right number of enemy and player units
-        Debug.Log($"Player Unit Count:  {_playerUnits.Count}  Enemy Unit Count:  { _enemyUnits.Count}");
+        Debug.Log($"Player Unit Count:  {_playerUnits.Count}  Enemy Unit Count:  {_enemyUnits.Count}");
         //The default position of the cursor is always set to the bottom left
         _cursorTile = GetTileAtPosition(new Vector2(0, 0));
         _cursorTile.TurnOnHighlight();
@@ -152,6 +156,19 @@ public class GridManager : MonoBehaviour
         bool isPrevEnemyTurn = playerTurnOver;
         //Function that removes dead units from the grid
         RemoveDeadUnits();
+
+        // BEN ADDED THIS
+        // If all enemy units have been defeated, the player wins.
+        if (_enemyUnits.Count <= 0)
+        {
+            winMenu.WinGame(true);
+        }
+        // If ann player units have been defeated, the player loses.
+        else if (_playerUnits.Count <= 0)
+        {
+            gameOverMenu.GameOver(true);
+        }
+
         //checks if player turn has ended
         playerTurnOver = CheckPlayerTurn();
         // BEN ADDED THIS
@@ -354,7 +371,7 @@ public class GridManager : MonoBehaviour
     {
         // BEN ADDED THIS
         // This is needed because the Input System still registers inputs when the Timescale is 0
-        if (pauseMenu.isGamePaused) return _cursorTile.transform.position;
+        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver()) return _cursorTile.transform.position;
 
         //New x y coordinates of the cursor
         float x = _cursorTile.transform.position.x;
@@ -425,7 +442,7 @@ public class GridManager : MonoBehaviour
     private void SelectUnit()
     {
         // This is needed because the Input System still registers inputs when the Timescale is 0
-        if (pauseMenu.isGamePaused) return;
+        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver()) return;
 
         //If something hasn't been selected yet, and there is an object occupying the space the cursor is at, we mark that object as selected
         if (!_selectionMode && _cursorTile._occupied)
@@ -470,7 +487,7 @@ public class GridManager : MonoBehaviour
     private void UnselectUnit()
     {
         // This is needed because the Input System still registers inputs when the Timescale is 0
-        if (pauseMenu.isGamePaused) return;
+        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver()) return;
 
         _selectedTile.TurnOffHighlight();
         _selectionMode = false;
@@ -639,7 +656,7 @@ public class GridManager : MonoBehaviour
     {
         // The 'isGamePaused' is needed because the Input System still registers inputs when the Timescale is 0, and this
         // function shouldn't be used if the selected Unit isn't in Combat Prediction mode.
-        if (pauseMenu.isGamePaused || !unitMenus.GetIsInCombatPrediction()) return;
+        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver() || !unitMenus.GetIsInCombatPrediction()) return;
 
         _cursorTimer++;
         if (_cursorTimer > _cursorDelay)

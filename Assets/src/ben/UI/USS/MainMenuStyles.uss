@@ -2,24 +2,37 @@ VisualElement {
 }
 
 .main-menu-button {
-    background-color: rgb(219, 219, 219);
-    font-size: 18px;
+    background-color: rgb(64, 46, 32);
+    font-size: 32px;
     -unity-font-style: bold;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
     margin-left: 0;
-    padding-top: 16px;
+    padding-top: 24px;
     padding-right: 0;
-    padding-bottom: 16px;
+    padding-bottom: 24px;
     padding-left: 0;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
+    color: rgb(232, 230, 228);
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-left-width: 8px;
+    border-left-color: rgb(250, 222, 190);
+    border-right-color: rgb(250, 222, 190);
+    border-top-color: rgb(250, 222, 190);
+    border-bottom-color: rgb(250, 222, 190);
 }
 
 .main-menu-selected-button {
     -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-color: rgb(73, 255, 77);
+    background-color: rgb(38, 27, 19);
+}
+
+.main-menu-button:hover {
+    background-color: rgb(38, 27, 19);
 }

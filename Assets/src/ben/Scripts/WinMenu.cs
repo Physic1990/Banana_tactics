@@ -66,10 +66,8 @@ public class WinMenu : GameScreen
     ************************************************************************/
     private void ClickNextLevelButton(ClickEvent evt)
     {
+        WinGame(false);
         uiManager.Restart();
-
-        // Resumes playing the game
-        gameUI.SetIsGameOver(false);
     }
 
     /*************************************************************************
@@ -77,6 +75,7 @@ public class WinMenu : GameScreen
     ************************************************************************/
     public override void CloseAllGameMenus()
     {
+        Debug.Log("Calling");
         base.CloseAllGameMenus();
         SetUIElementVisibility(WinMenuEl, false);
     }

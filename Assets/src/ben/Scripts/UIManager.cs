@@ -3,22 +3,34 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
 
+    private GameScreen gameScreen;
+
+    private void Awake()
+    {
+        gameScreen = GameObject.FindGameObjectWithTag("UIManager").GetComponent<GameScreen>();
+    }
+
     public void PlayGame(string sceneName)
     {
 #if UNITY_EDITOR
-            if (Application.isPlaying)
+        if (Application.isPlaying)
 #endif
-        SceneManager.LoadSceneAsync(sceneName);
+            SceneManager.LoadSceneAsync(sceneName);
     }
 
     //Restart level
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        // closeAllMenus();
+#if UNITY_EDITOR
+        if (Application.isPlaying)
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadSceneAsync(scene.name);
+        }
+#endif
     }
 
-    
+
 
     public void Quit()
     {

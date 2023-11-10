@@ -2,25 +2,30 @@
     flex-grow: 0;
     min-width: auto;
     min-height: auto;
-    padding-top: 16px;
+    padding-top: 24px;
     padding-right: 0;
-    padding-bottom: 16px;
+    padding-bottom: 24px;
     padding-left: 0;
-    background-color: rgb(152, 152, 152);
+    background-color: rgb(89, 64, 45);
+    width: 45%;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    -unity-font-style: bold;
+    color: rgb(232, 230, 228);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
-    width: 45%;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    -unity-font-style: bold;
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
 }
 
 .game-menu {
     flex-grow: 0;
-    background-color: rgb(46, 46, 46);
+    background-color: rgb(38, 27, 19);
     max-width: none;
     max-height: none;
     position: relative;
@@ -31,18 +36,26 @@
     margin-right: 0;
     margin-left: 0;
     -unity-text-outline-color: rgba(111, 111, 111, 0);
-    width: 640px;
+    width: 1024px;
     left: auto;
     right: auto;
     top: auto;
-    padding-top: 72px;
-    padding-bottom: 72px;
+    padding-top: 112px;
+    padding-bottom: 112px;
     padding-right: 48px;
     padding-left: 48px;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     border-bottom-left-radius: 16px;
+    border-top-width: 12px;
+    border-right-width: 12px;
+    border-bottom-width: 12px;
+    border-left-width: 12px;
+    border-left-color: rgb(190, 150, 113);
+    border-right-color: rgb(190, 150, 113);
+    border-top-color: rgb(190, 150, 113);
+    border-bottom-color: rgb(190, 150, 113);
 }
 
 .game-menu-header-text {
@@ -54,12 +67,16 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    font-size: 64px;
+    font-size: 112px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
-    color: rgb(202, 202, 202);
+    color: rgb(232, 230, 228);
 }
 
 .game-menu-selected-button {
-    background-color: rgb(77, 255, 59);
+    background-color: rgb(64, 46, 32);
+}
+
+.game-menu-button:hover {
+    background-color: rgb(64, 46, 32);
 }
