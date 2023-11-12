@@ -1,14 +1,62 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="CustomSlider" src="project://database/Assets/src/ben/UI/UXML/CustomSlider.uxml?fileID=9197481963319205126&amp;guid=4c60c25332c14d246aaf8c31e83dfbbe&amp;type=3#CustomSlider" />
     <Style src="project://database/Assets/src/ben/UI/USS/MainMenuStyles.uss?fileID=7433441132597879392&amp;guid=64e50ecd9c1638b4ca1e2dbf968592fd&amp;type=3#MainMenuStyles" />
-    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgb(51, 135, 48); align-items: center; justify-content: center; height: auto; padding-top: 72px; padding-bottom: 72px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
-        <ui:VisualElement name="Header" style="flex-grow: 0; height: auto; width: 50%; align-items: center; justify-content: center; padding-bottom: 24px;">
-            <ui:Label tabindex="-1" text="BANANA TACTICS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TitleText" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 188px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-center; height: auto; width: auto; color: rgb(232, 230, 228); -unity-font: initial;" />
+    <Style src="project://database/Assets/src/ben/UI/USS/SliderStyles.uss?fileID=7433441132597879392&amp;guid=55d710486570e7e46a556c81039a3eb9&amp;type=3#SliderStyles" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgb(51, 135, 48); align-items: center; justify-content: center; height: auto; padding-top: 72px; padding-bottom: 72px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; background-image: url(&apos;project://database/Assets/src/ben/UI/Art/MainMenu.jpg?fileID=2800000&amp;guid=cafcd163a3663804bb6a004b47cdcd47&amp;type=3#MainMenu&apos;);">
+        <ui:VisualElement name="Main" style="flex-grow: 1; min-height: auto; min-width: auto; width: 100%; align-items: center; justify-content: center; display: none;">
+            <ui:VisualElement name="MainHeader" style="flex-grow: 0; height: auto; width: 50%; align-items: center; justify-content: center; padding-bottom: 24px;">
+                <ui:Label tabindex="-1" text="BANANA TACTICS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MainTitleText" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 188px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-center; height: auto; width: auto; color: rgb(255, 230, 100); -unity-font: initial; -unity-text-outline-width: 6px; -unity-text-outline-color: rgb(48, 41, 10);" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Buttons" style="flex-grow: 1; align-items: stretch; justify-content: space-between; width: 33%;">
+                <ui:Button text="Play" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayButton" class="main-menu-button" />
+                <ui:Button text="Help" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HelpButton" class="main-menu-button" />
+                <ui:Button text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsButton" class="main-menu-button" />
+                <ui:Button text="Quit" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" class="main-menu-button" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="Buttons" style="flex-grow: 1; align-items: stretch; justify-content: space-between; width: 33%;">
-            <ui:Button text="Play" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayButton" class="main-menu-button" />
-            <ui:Button text="Help" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HelpButton" class="main-menu-button" />
-            <ui:Button text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsButton" class="main-menu-button" />
-            <ui:Button text="Quit" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" class="main-menu-button" />
+        <ui:VisualElement name="Settings" style="flex-grow: 1; min-height: auto; min-width: auto; width: 100%; align-items: center; justify-content: flex-start; display: none;">
+            <ui:VisualElement name="SettingsHeader" style="flex-grow: 0; height: auto; width: auto; align-items: center; justify-content: center; padding-bottom: 48px;">
+                <ui:Label tabindex="-1" text="SETTINGS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsTitleText" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 172px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-center; height: auto; width: auto; color: rgb(255, 230, 100); -unity-font: initial; -unity-text-outline-width: 6px; -unity-text-outline-color: rgb(48, 41, 10);" />
+            </ui:VisualElement>
+            <ui:VisualElement name="SettingsInput" style="flex-grow: 1; width: 50%;">
+                <ui:VisualElement name="MusicVolumeContainer" style="flex-grow: 1; align-items: center;">
+                    <ui:Label tabindex="-1" text="Music Volume" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MusicVolumeTitle" style="font-size: 48px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(232, 230, 228); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0);" />
+                    <ui:Instance template="CustomSlider" name="MusicSlider" style="width: 100%;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="SFXVolumeContainer" style="flex-grow: 1; align-items: center;">
+                    <ui:Label tabindex="-1" text="SFX Volume" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SFXVolumeTitle" style="font-size: 48px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(232, 230, 228); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0);" />
+                    <ui:Instance template="CustomSlider" name="SFXSlider" style="width: 100%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Buttons" style="flex-grow: 0; width: 33%;">
+                <ui:Button text="Back to Main Menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsBackButton" class="main-menu-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Help" style="flex-grow: 1; min-height: auto; min-width: auto; width: 100%; align-items: center; justify-content: flex-start; display: flex;">
+            <ui:VisualElement name="HelpHeader" style="flex-grow: 0; height: auto; width: auto; align-items: center; justify-content: center; padding-bottom: 48px;">
+                <ui:Label tabindex="-1" text="HELP" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HelpTitleText" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 172px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-center; height: auto; width: auto; color: rgb(255, 230, 100); -unity-font: initial; -unity-text-outline-width: 6px; -unity-text-outline-color: rgb(48, 41, 10);" />
+            </ui:VisualElement>
+            <ui:VisualElement name="HelpBody" style="flex-grow: 1; height: auto; justify-content: space-between;">
+                <ui:VisualElement name="MoveControlsContainer" class="help-controls-container">
+                    <ui:Label tabindex="-1" text="Move:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MoveControlsTitle" class="help-controls-title" />
+                    <ui:Label tabindex="-1" text="Arrow keys" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MoveControls" class="help-controls" />
+                </ui:VisualElement>
+                <ui:VisualElement name="SelectUnitControlsContainer" class="help-controls-container">
+                    <ui:Label tabindex="-1" text="Pick Up/Place Unit:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SelectUnitControlsTitle" class="help-controls-title" />
+                    <ui:Label tabindex="-1" text="F" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SelectUnitControls" class="help-controls" />
+                </ui:VisualElement>
+                <ui:VisualElement name="CancelMoveUnitControlsContainer" class="help-controls-container">
+                    <ui:Label tabindex="-1" text="Cancel Moving Unit:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CancelMoveUnitControlsTitle" class="help-controls-title" />
+                    <ui:Label tabindex="-1" text="V" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CancelMoveUnitControls" class="help-controls" />
+                </ui:VisualElement>
+                <ui:VisualElement name="UnitActionControlsContainer" class="help-controls-container">
+                    <ui:Label tabindex="-1" text="Unit Action:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitActionControlsTitle" class="help-controls-title" />
+                    <ui:Label tabindex="-1" text="Left Mouse" parse-escape-sequences="true" display-tooltip-when-elided="true" name="UnitActionControls" class="help-controls" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Buttons" style="flex-grow: 0; width: 33%; flex-shrink: 0; margin-top: 48px;">
+                <ui:Button text="Back to Main Menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HelpBackButton" class="main-menu-button" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

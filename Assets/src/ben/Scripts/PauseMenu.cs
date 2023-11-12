@@ -188,7 +188,7 @@ public class PauseMenu : GameScreen
         }
         else if (selectedButton == PauseQuitButton)
         {
-            QuitGame();
+            QuitToMainMenu();
         }
     }
 

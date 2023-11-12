@@ -40,5 +40,10 @@ public class UIManager : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false; //Exits play mode (will only be executed in the editor)
 #endif
     }
+
+    public void QuitToMainMenu()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+    }
 }
 
