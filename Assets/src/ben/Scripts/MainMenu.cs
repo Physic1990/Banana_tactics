@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviour
 
     UIManager uiManager;
 
+    private VisualElement Main;
+
     const string playButtonName = "PlayButton";
     const string helpButtonName = "HelpButton";
     const string settingsButtonName = "SettingsButton";
@@ -55,6 +57,30 @@ public class MainMenu : MonoBehaviour
     }
 
     /*************************************************************************
+                                Settings Menu
+    ************************************************************************/
+    private VisualElement SettingsMenu;
+    private Button SettingsBackButton;
+
+    private VisualElement MusicSliderContainer;
+    private Slider MusicSlider;
+    private VisualElement MusicDragger;
+    private VisualElement MusicBar;
+    private VisualElement MusicNewDragger;
+
+    private VisualElement SFXSliderContainer;
+    private Slider SFXSlider;
+    private VisualElement SFXDragger;
+    private VisualElement SFXBar;
+    private VisualElement SFXNewDragger;
+
+    /*************************************************************************
+                                Help Menu
+    ************************************************************************/
+    private VisualElement HelpMenu;
+    private Button HelpBackButton;
+
+    /*************************************************************************
                                     Lifecycles
     ************************************************************************/
     private void Awake()
@@ -97,6 +123,8 @@ public class MainMenu : MonoBehaviour
 
         root = MainMenuDocument.rootVisualElement;
 
+        Main = root.Q<VisualElement>("Main");
+
         PlayButton = root.Q<Button>(playButtonName);
         HelpButton = root.Q<Button>(helpButtonName);
         SettingsButton = root.Q<Button>(settingsButtonName);
@@ -107,11 +135,68 @@ public class MainMenu : MonoBehaviour
         UpdateSelectedButton(PlayButton);
 
         PlayButton?.RegisterCallback<ClickEvent>(ClickPlayButton);
+        SettingsButton?.RegisterCallback<ClickEvent>(ClickSettingsButton);
+        HelpButton?.RegisterCallback<ClickEvent>(ClickHelpButton);
         QuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
+
+        // SETTINGS MENU
+        SettingsMenu = root.Q<VisualElement>("Settings");
+        SettingsBackButton = root.Q<Button>("SettingsBackButton");
+        SettingsBackButton?.RegisterCallback<ClickEvent>(ClickBackButton);
+
+        // MUSIC VOLUME SLIDER
+        MusicSliderContainer = root.Q<VisualElement>("MusicVolumeContainer");
+        MusicSlider = MusicSliderContainer.Q<Slider>("Slider");
+        MusicDragger = MusicSlider.Q<VisualElement>("unity-dragger");
+
+        MusicBar = new VisualElement();
+        MusicDragger.Add(MusicBar);
+        MusicBar.name = "SliderFullBar";
+        MusicBar.AddToClassList("bar");
+
+        MusicNewDragger = new VisualElement();
+        MusicSlider.Add(MusicNewDragger);
+        MusicNewDragger.name = "NewDragger";
+        MusicNewDragger.AddToClassList("new-dragger");
+        MusicNewDragger.pickingMode = PickingMode.Ignore;
+
+        MusicSlider?.RegisterValueChangedCallback(MusicSliderValueChanged);
+
+        MusicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+
+        // SFX VOLUME SLIDER
+        SFXSliderContainer = root.Q<VisualElement>("SFXVolumeContainer");
+        SFXSlider = SFXSliderContainer.Q<Slider>("Slider");
+        SFXDragger = SFXSlider.Q<VisualElement>("unity-dragger");
+
+        SFXBar = new VisualElement();
+        SFXDragger.Add(SFXBar);
+        SFXBar.name = "SliderFullBar";
+        SFXBar.AddToClassList("bar");
+
+        SFXNewDragger = new VisualElement();
+        SFXSlider.Add(SFXNewDragger);
+        SFXNewDragger.name = "NewDragger";
+        SFXNewDragger.AddToClassList("new-dragger");
+        SFXNewDragger.pickingMode = PickingMode.Ignore;
+
+        SFXSlider?.RegisterValueChangedCallback(SFXSliderValueChanged);
+
+        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+
+        // HELP MENU
+        HelpMenu = root.Q<VisualElement>("Help");
+        HelpBackButton = root.Q<Button>("HelpBackButton");
+        HelpBackButton?.RegisterCallback<ClickEvent>(ClickBackButton);
+
+        ChangeMenuScreen("Main");
     }
 
     private void Update()
     {
+        UpdateDraggerPosition(MusicDragger, MusicNewDragger);
+        UpdateDraggerPosition(SFXDragger, SFXNewDragger);
+
         keyInputTimer++;
 
         if (keyInputTimer > keyInputDelay)
@@ -167,6 +252,30 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+
+    // Changes the Main Menu screen to the passed menu
+    private void ChangeMenuScreen(string menu)
+    {
+        if (menu == "Main")
+        {
+            SetUIElementVisibility(SettingsMenu, false);
+            SetUIElementVisibility(HelpMenu, false);
+            SetUIElementVisibility(Main, true);
+        }
+        else if (menu == "Settings")
+        {
+            SetUIElementVisibility(Main, false);
+            SetUIElementVisibility(HelpMenu, false);
+            SetUIElementVisibility(SettingsMenu, true);
+        }
+        else if (menu == "Help")
+        {
+            SetUIElementVisibility(Main, false);
+            SetUIElementVisibility(SettingsMenu, false);
+            SetUIElementVisibility(HelpMenu, true);
+        }
+    }
+
     private void ClickPlayButton(ClickEvent evt)
     {
         PlayGame();
@@ -177,6 +286,16 @@ public class MainMenu : MonoBehaviour
         uiManager.PlayGame("SampleScene");
     }
 
+    private void ClickSettingsButton(ClickEvent evt)
+    {
+        ChangeMenuScreen("Settings");
+    }
+
+    private void ClickHelpButton(ClickEvent evt)
+    {
+        ChangeMenuScreen("Help");
+    }
+
     private void ClickQuitButton(ClickEvent evt)
     {
         QuitGame();
@@ -184,8 +303,12 @@ public class MainMenu : MonoBehaviour
 
     private void QuitGame()
     {
-
         uiManager.Quit();
+    }
+
+    private void ClickBackButton(ClickEvent evt)
+    {
+        ChangeMenuScreen("Main");
     }
 
     /*************************************************************************
@@ -214,6 +337,42 @@ public class MainMenu : MonoBehaviour
         {
             QuitGame();
         }
+    }
+
+    /*************************************************************************
+                                Settings Sliders
+    ************************************************************************/
+    private void MusicSliderValueChanged(ChangeEvent<float> value)
+    {
+        UpdateDraggerPosition(MusicDragger, MusicNewDragger);
+        PlayerPrefs.SetFloat("MusicVolume", value.newValue);
+    }
+
+    private void SFXSliderValueChanged(ChangeEvent<float> value)
+    {
+        UpdateDraggerPosition(SFXDragger, SFXNewDragger);
+        PlayerPrefs.SetFloat("SFXVolume", value.newValue);
+    }
+
+    private void UpdateDraggerPosition(VisualElement Dragger, VisualElement NewDragger)
+    {
+        Vector2 dist = new Vector2((NewDragger.layout.width - Dragger.layout.width) / 2, (NewDragger.layout.height - Dragger.layout.height) / 2);
+        Vector2 pos = Dragger.parent.LocalToWorld(Dragger.transform.position);
+
+        if (dist.x == float.NaN || pos.x == 0f) return;
+
+        NewDragger.transform.position = NewDragger.parent.WorldToLocal(pos - dist);
+    }
+
+    /*************************************************************************
+                                UI Element Visibility
+    ************************************************************************/
+    public void SetUIElementVisibility(VisualElement uiElement, bool isVisible)
+    {
+        if (uiElement == null)
+            return;
+
+        uiElement.style.display = (isVisible) ? DisplayStyle.Flex : DisplayStyle.None;
     }
 }
 

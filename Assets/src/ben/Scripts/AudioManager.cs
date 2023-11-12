@@ -42,6 +42,10 @@ public class AudioManager : MonoBehaviour
     {
         musicSource.clip = startMusic;
         musicSource.Play();
+
+        // Gets the stored volume settings from the player's preferences
+        musicSource.volume = PlayerPrefs.GetFloat("MusicVolume");
+        sfxSource.volume = PlayerPrefs.GetFloat("SFXVolume");
     }
 
     public void PlaySFX(AudioClip clip)
@@ -85,6 +89,12 @@ public class AudioManager : MonoBehaviour
     public bool SFXisPlaying()
     {
         return sfxSource.isPlaying;
+    }
+
+    public void ChangeMusicVolume(float volume)
+    {
+        musicSource.volume = volume;
+        Debug.Log(musicSource.volume);
     }
 }
 

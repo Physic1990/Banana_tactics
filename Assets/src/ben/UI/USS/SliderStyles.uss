@@ -1,0 +1,63 @@
+Slider Label {
+    display: none;
+}
+
+Slider #unity-drag-container {
+    height: 32px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    margin-right: 24px;
+    margin-left: 24px;
+    overflow: hidden;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+Slider #unity-tracker {
+    position: relative;
+    top: 0;
+    flex-grow: 1;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgb(250, 222, 190);
+}
+
+Slider #unity-dragger {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    width: 40px;
+    height: 100%;
+    top: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.bar {
+    background-color: rgb(64, 46, 32);
+    align-self: flex-end;
+    width: 2000px;
+    height: 100%;
+}
+
+.new-dragger {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background-color: rgb(232, 230, 228);
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+    border-bottom-right-radius: 9999px;
+    border-bottom-left-radius: 9999px;
+}
