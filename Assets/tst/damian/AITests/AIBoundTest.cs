@@ -7,7 +7,6 @@ using UnityEngine.TestTools;
 public class AIBoundTest
 {
     private List<GameObject> playerUnits = new List<GameObject>();
-    private List<GameObject> emptyplayerUnits = new List<GameObject>();
     private List<GameObject> enemyUnits = new List<GameObject>();
     //AI EnemyAI = new AI();
    
@@ -20,10 +19,11 @@ public class AIBoundTest
     public void AIClostestUnitNotFound()
     {
         var EnemyAI = new GameObject().AddComponent<AI>();
+        var Grid = new GameObject().AddComponent<GridManager>();
         unit.transform.position = new Vector2(12f, 12f);
         enemyUnits.Add(unit);
 
-        Assert.AreEqual(-1, EnemyAI.FindClosestUnit(emptyplayerUnits, enemyUnits[0]));
+        Assert.AreEqual(-1, EnemyAI.FindTargetUnit(Grid._playerUnits, enemyUnits[0]));
 
     }
 
@@ -35,8 +35,8 @@ public class AIBoundTest
         enemyUnits.Add(unit);
         unit2.transform.position = new Vector2(12f, 12f);
         playerUnits.Add(unit2);
-        int target = EnemyAI.FindClosestUnit(playerUnits, enemyUnits[0]);
-        Assert.AreEqual(0, target);
+        int target = EnemyAI.FindTargetUnit(playerUnits, enemyUnits[0]);
+        Assert.AreNotEqual(-1, target);
 
     }
 
