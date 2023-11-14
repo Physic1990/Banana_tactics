@@ -371,7 +371,7 @@ public class GridManager : MonoBehaviour
     {
         // BEN ADDED THIS
         // This is needed because the Input System still registers inputs when the Timescale is 0
-        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver()) return _cursorTile.transform.position;
+        if (pauseMenu.GetIsGamePaused() || winMenu.GetIsGameOver()) return _cursorTile.transform.position;
 
         //New x y coordinates of the cursor
         float x = _cursorTile.transform.position.x;
@@ -442,7 +442,7 @@ public class GridManager : MonoBehaviour
     private void SelectUnit()
     {
         // This is needed because the Input System still registers inputs when the Timescale is 0
-        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver()) return;
+        if (pauseMenu.GetIsGamePaused() || winMenu.GetIsGameOver()) return;
 
         //If something hasn't been selected yet, and there is an object occupying the space the cursor is at, we mark that object as selected
         if (!_selectionMode && _cursorTile._occupied)
@@ -487,7 +487,7 @@ public class GridManager : MonoBehaviour
     private void UnselectUnit()
     {
         // This is needed because the Input System still registers inputs when the Timescale is 0
-        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver()) return;
+        if (pauseMenu.GetIsGamePaused() || winMenu.GetIsGameOver()) return;
 
         _selectedTile.TurnOffHighlight();
         _selectionMode = false;
@@ -656,7 +656,7 @@ public class GridManager : MonoBehaviour
     {
         // The 'isGamePaused' is needed because the Input System still registers inputs when the Timescale is 0, and this
         // function shouldn't be used if the selected Unit isn't in Combat Prediction mode.
-        if (pauseMenu.isGamePaused || winMenu.GetIsGameOver() || !unitMenus.GetIsInCombatPrediction()) return;
+        if (pauseMenu.GetIsGamePaused() || winMenu.GetIsGameOver() || !unitMenus.GetIsInCombatPrediction()) return;
 
         _cursorTimer++;
         if (_cursorTimer > _cursorDelay)

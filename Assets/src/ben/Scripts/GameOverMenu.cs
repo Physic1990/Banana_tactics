@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class GameOverMenu : GameScreen
 {
     GameScreen gameUI;
+    PauseMenu pauseMenu;
     WinMenu winMenu;
 
     /*************************************************************************
@@ -34,7 +35,8 @@ public class GameOverMenu : GameScreen
 
         // Needed to access the 'isGameOver' variable
         gameUI = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<GameScreen>();
-
+        // Needed to access the 'isGamePaused' variable
+        pauseMenu = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<PauseMenu>();
         // Needed to close Win Menu
         winMenu = GameObject.FindGameObjectWithTag("GameUIDocument").GetComponent<WinMenu>();
 
@@ -95,6 +97,9 @@ public class GameOverMenu : GameScreen
     ************************************************************************/
     public void GameOver(bool status)
     {
+        // Don't open the game over menu if the game is currently paused
+        if (status && pauseMenu.GetIsGamePaused()) return;
+
         // Sets whether the game is over or not
         gameUI.SetIsGameOver(status);
 

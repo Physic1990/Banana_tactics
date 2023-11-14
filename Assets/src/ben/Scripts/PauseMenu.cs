@@ -9,8 +9,21 @@ public class PauseMenu : GameScreen
 {
     GameScreen gameUI;
 
+    /*************************************************************************
+                                Game Paused Status
+    ************************************************************************/
+
     // Needed because the Input System still registers Inputs when the Timescale is set to 0.
-    public bool isGamePaused = false;
+    private bool isGamePaused;
+    public void SetIsGamePaused(bool status)
+    {
+        isGamePaused = status;
+    }
+
+    public bool GetIsGamePaused()
+    {
+        return isGamePaused;
+    }
 
 
     /*************************************************************************
@@ -111,7 +124,7 @@ public class PauseMenu : GameScreen
     {
         keyInputTimer++;
 
-        if (keyInputTimer > keyInputDelay && isGamePaused)
+        if (keyInputTimer > keyInputDelay && GetIsGamePaused())
         {
             // If navigating up
             if (navigationInput.y == 1.0f)
@@ -195,6 +208,11 @@ public class PauseMenu : GameScreen
     // Toggles the Pause Menu so long as the game isn't over
     private void ClickToggleButton()
     {
+        TogglePausedGame();
+    }
+
+    public void TogglePausedGame()
+    {
         if (gameUI.GetIsGameOver()) return;
 
         PauseGame(!GetIsUIElementVisible(PauseMenuEl));
@@ -241,14 +259,14 @@ public class PauseMenu : GameScreen
             UpdateSelectedButton(PauseResumeButton);
 
             // Manually asserts that the game is paused
-            isGamePaused = true;
+            SetIsGamePaused(true);
         }
         else
         {
             Time.timeScale = 1;
 
             // Manually asserts that the game is unpaused
-            isGamePaused = false;
+            SetIsGamePaused(false);
         }
     }
 }
