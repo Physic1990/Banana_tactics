@@ -57,7 +57,7 @@ public class AI : MonoBehaviour
             for (int i = 0; i < enemyUnits.Count; i++)
             {
 
-                int _targetIndex = FindClosestUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
+                int _targetIndex = FindTargetUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
 
                 //Debug.Log(_targetIndex);
                 MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
@@ -81,7 +81,7 @@ public class AI : MonoBehaviour
     }
     
     //Finds the closest unit to the current controlled unit
-    public int FindClosestUnit(List<GameObject> playerUnits, GameObject enemyUnit) 
+    virtual public int FindTargetUnit(List<GameObject> playerUnits, GameObject enemyUnit) 
     {
         int j = 0;
         float _mindistance = Mathf.Infinity;
