@@ -72,7 +72,7 @@ public class GameOverMenu : GameScreen
     private void ClickRetryButton(ClickEvent evt)
     {
         GameOver(false);
-        uiManager.Restart();
+        UIManager.Instance.Restart();
     }
 
     /*************************************************************************

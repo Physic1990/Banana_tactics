@@ -1,13 +1,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 public class UIManager : MonoBehaviour
 {
-
-    private GameScreen gameScreen;
-
+    // Singleton Section
+    public static UIManager Instance { get; private set; }
     private void Awake()
     {
-        gameScreen = GameObject.FindGameObjectWithTag("UIManager").GetComponent<GameScreen>();
+        // Make sure there's only one instance of UI Manager
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void PlayGame(string sceneName)
@@ -30,8 +37,6 @@ public class UIManager : MonoBehaviour
 #endif
     }
 
-
-
     public void Quit()
     {
         Application.Quit(); //Quits the game (only works in build)
@@ -44,6 +49,18 @@ public class UIManager : MonoBehaviour
     public void QuitToMainMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
+        AudioManager.Instance.PauseMusic();
+    }
+
+    /*************************************************************************
+                                UI Element Visibility
+    ************************************************************************/
+    public void SetUIElementVisibility(VisualElement uiElement, bool isVisible)
+    {
+        if (uiElement == null)
+            return;
+
+        uiElement.style.display = (isVisible) ? DisplayStyle.Flex : DisplayStyle.None;
     }
 }
 

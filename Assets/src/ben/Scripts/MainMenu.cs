@@ -6,10 +6,8 @@ using UnityEngine.InputSystem;
 
 public class MainMenu : MonoBehaviour
 {
-    UIDocument MainMenuDocument;
+    UIDocument UIDocument;
     protected VisualElement root;
-
-    UIManager uiManager;
 
     private VisualElement Main;
 
@@ -107,11 +105,9 @@ public class MainMenu : MonoBehaviour
     }
     private void Start()
     {
-        uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        UIDocument = GetComponent<UIDocument>();
 
-        MainMenuDocument = GetComponent<UIDocument>();
-
-        if (MainMenuDocument == null)
+        if (UIDocument == null)
         {
             Debug.LogError("Main Menu UI Document is null");
             return;
@@ -121,7 +117,7 @@ public class MainMenu : MonoBehaviour
             Debug.Log("Main menu detected!");
         }
 
-        root = MainMenuDocument.rootVisualElement;
+        root = UIDocument.rootVisualElement;
 
         Main = root.Q<VisualElement>("Main");
 
@@ -258,23 +254,24 @@ public class MainMenu : MonoBehaviour
     {
         if (menu == "Main")
         {
-            SetUIElementVisibility(SettingsMenu, false);
-            SetUIElementVisibility(HelpMenu, false);
-            SetUIElementVisibility(Main, true);
+            UIManager.Instance.SetUIElementVisibility(SettingsMenu, false);
+            UIManager.Instance.SetUIElementVisibility(HelpMenu, false);
+            UIManager.Instance.SetUIElementVisibility(Main, true);
         }
         else if (menu == "Settings")
         {
-            SetUIElementVisibility(Main, false);
-            SetUIElementVisibility(HelpMenu, false);
-            SetUIElementVisibility(SettingsMenu, true);
+            UIManager.Instance.SetUIElementVisibility(Main, false);
+            UIManager.Instance.SetUIElementVisibility(HelpMenu, false);
+            UIManager.Instance.SetUIElementVisibility(SettingsMenu, true);
         }
         else if (menu == "Help")
         {
-            SetUIElementVisibility(Main, false);
-            SetUIElementVisibility(SettingsMenu, false);
-            SetUIElementVisibility(HelpMenu, true);
+            UIManager.Instance.SetUIElementVisibility(Main, false);
+            UIManager.Instance.SetUIElementVisibility(SettingsMenu, false);
+            UIManager.Instance.SetUIElementVisibility(HelpMenu, true);
         }
     }
+
 
     private void ClickPlayButton(ClickEvent evt)
     {
@@ -283,7 +280,7 @@ public class MainMenu : MonoBehaviour
 
     private void PlayGame()
     {
-        uiManager.PlayGame("SampleScene");
+        UIManager.Instance.PlayGame("SampleScene");
     }
 
     private void ClickSettingsButton(ClickEvent evt)
@@ -303,7 +300,7 @@ public class MainMenu : MonoBehaviour
 
     private void QuitGame()
     {
-        uiManager.Quit();
+        UIManager.Instance.Quit();
     }
 
     private void ClickBackButton(ClickEvent evt)
@@ -364,15 +361,6 @@ public class MainMenu : MonoBehaviour
         NewDragger.transform.position = NewDragger.parent.WorldToLocal(pos - dist);
     }
 
-    /*************************************************************************
-                                UI Element Visibility
-    ************************************************************************/
-    public void SetUIElementVisibility(VisualElement uiElement, bool isVisible)
-    {
-        if (uiElement == null)
-            return;
 
-        uiElement.style.display = (isVisible) ? DisplayStyle.Flex : DisplayStyle.None;
-    }
 }
 

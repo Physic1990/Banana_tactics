@@ -268,7 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b6e57f00a8fd54ab4fc580a0a11ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGamePaused: 0
 --- !u!4 &270555206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3767398586620748002, guid: c311f5b34f2153746a371d8ce6d9e4e4, type: 3}
@@ -2653,7 +2652,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b6e57f00a8fd54ab4fc580a0a11ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGamePaused: 0
 --- !u!114 &2054968482
 MonoBehaviour:
   m_ObjectHideFlags: 0

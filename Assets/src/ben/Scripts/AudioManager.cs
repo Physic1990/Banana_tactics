@@ -43,9 +43,10 @@ public class AudioManager : MonoBehaviour
         musicSource.clip = startMusic;
         musicSource.Play();
 
+        // BEN ADDED THIS
         // Gets the stored volume settings from the player's preferences
-        musicSource.volume = PlayerPrefs.GetFloat("MusicVolume");
-        sfxSource.volume = PlayerPrefs.GetFloat("SFXVolume");
+        ChangeMusicVolume(PlayerPrefs.GetFloat("MusicVolume") / 100f);
+        ChangeSFXVolume(PlayerPrefs.GetFloat("SFXVolume") / 100f);
     }
 
     public void PlaySFX(AudioClip clip)
@@ -68,14 +69,20 @@ public class AudioManager : MonoBehaviour
         musicSource.Play();
     }
 
+    // BEN ADDED THIS
+    public void PauseMusic()
+    {
+        musicSource.Pause();
+        pauseMusic = true;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (!sfxSource.isPlaying)
-        {
-            pauseMusic = false;
-        }
+        // if (!sfxSource.isPlaying)
+        // {
+        //     pauseMusic = false;
+        // }
         if (!musicSource.isPlaying && !pauseMusic)
         {
             // Switch to the second song
@@ -91,10 +98,16 @@ public class AudioManager : MonoBehaviour
         return sfxSource.isPlaying;
     }
 
+    // BEN ADDED THIS
     public void ChangeMusicVolume(float volume)
     {
         musicSource.volume = volume;
-        Debug.Log(musicSource.volume);
+    }
+
+    // BEN ADDED THIS
+    public void ChangeSFXVolume(float volume)
+    {
+        sfxSource.volume = volume;
     }
 }
 

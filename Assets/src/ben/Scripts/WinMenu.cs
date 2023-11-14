@@ -70,7 +70,7 @@ public class WinMenu : GameScreen
     private void ClickNextLevelButton(ClickEvent evt)
     {
         WinGame(false);
-        uiManager.Restart();
+        UIManager.Instance.Restart();
     }
 
     /*************************************************************************

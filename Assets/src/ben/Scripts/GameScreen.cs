@@ -6,10 +6,8 @@ using UnityEngine.UIElements;
 
 public class GameScreen : MonoBehaviour
 {
-    protected UIDocument MainMenuDocument;
+    protected UIDocument UIDocument;
     protected VisualElement root;
-
-    protected UIManager uiManager;
     protected ActionEventManager actionEvent;
 
     /*************************************************************************
@@ -31,18 +29,17 @@ public class GameScreen : MonoBehaviour
     ************************************************************************/
     protected virtual void Awake()
     {
-        uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
         actionEvent = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
 
-        MainMenuDocument = GetComponent<UIDocument>();
+        UIDocument = GetComponent<UIDocument>();
 
-        if (MainMenuDocument == null)
+        if (UIDocument == null)
         {
             Debug.LogError("Main Menu UI Document is null");
             return;
         }
 
-        root = MainMenuDocument.rootVisualElement;
+        root = UIDocument.rootVisualElement;
 
         CloseAllMenus();
     }
@@ -58,20 +55,16 @@ public class GameScreen : MonoBehaviour
 
     protected void QuitToMainMenu()
     {
-        uiManager.QuitToMainMenu();
-
+        UIManager.Instance.QuitToMainMenu();
     }
 
 
     /*************************************************************************
                                 UI Element Visibility
     ************************************************************************/
-    public void SetUIElementVisibility(VisualElement uiElement, bool isVisible)
+    public void SetUIElementVisibility(VisualElement uiElement, bool visibility)
     {
-        if (uiElement == null)
-            return;
-
-        uiElement.style.display = (isVisible) ? DisplayStyle.Flex : DisplayStyle.None;
+        UIManager.Instance.SetUIElementVisibility(uiElement, visibility);
     }
 
     public bool GetIsUIElementVisible(VisualElement uiElement)
