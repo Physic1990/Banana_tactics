@@ -23,7 +23,7 @@ public class AIBoundTest
         unit.transform.position = new Vector2(12f, 12f);
         enemyUnits.Add(unit);
 
-        Assert.AreEqual(-1, EnemyAI.FindTargetUnit(Grid._playerUnits, enemyUnits[0]));
+        Assert.AreEqual(0, EnemyAI.FindTargetUnit(Grid._playerUnits, enemyUnits[0]));
 
     }
 
@@ -36,7 +36,7 @@ public class AIBoundTest
         unit2.transform.position = new Vector2(12f, 12f);
         playerUnits.Add(unit2);
         int target = EnemyAI.FindTargetUnit(playerUnits, enemyUnits[0]);
-        Assert.AreNotEqual(-1, target);
+        Assert.AreEqual(0, target);
 
     }
 

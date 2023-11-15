@@ -7,19 +7,24 @@ public class AI : MonoBehaviour
 {
     //Singleton Section
     private static AI instance;
+    private static readonly object lockObject = new object();
+
 
     public static AI Instance
     {
         get
         {
-            if (instance == null)
+            lock (lockObject) //ensures that only one thread can enter the critical section of code at a time.
             {
-                instance = FindObjectOfType<AI>();
-
                 if (instance == null)
                 {
-                    GameObject singletonAI = new GameObject(typeof(AI).Name);
-                    instance = singletonAI.AddComponent<AI>();
+                    instance = FindObjectOfType<AI>();
+
+                    if (instance == null)
+                    {
+                        GameObject singletonAI = new GameObject(typeof(AI).Name);
+                        instance = singletonAI.AddComponent<AI>();
+                    }
                 }
             }
             return instance;
@@ -28,6 +33,7 @@ public class AI : MonoBehaviour
     
 
     ActionEventManager Event;
+    GunslingerAI gunslinger;
 
     private void Awake()
     {
@@ -42,12 +48,14 @@ public class AI : MonoBehaviour
         }
 
         Event = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
+        gunslinger = GameObject.FindGameObjectWithTag("Ai").GetComponent<GunslingerAI>();
     }
     
     private List<Tile> openList;
     private List<Tile> closedList;
+
     
-    
+
     public void AITurn(List<GameObject> playerUnits, List<GameObject> enemyUnits, Dictionary<Vector2, Tile> tiles)
     {
 
@@ -57,10 +65,25 @@ public class AI : MonoBehaviour
             for (int i = 0; i < enemyUnits.Count; i++)
             {
 
-                int _targetIndex = FindTargetUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
+                int _targetIndex = 0;
+                if (enemyUnits[i].GetComponent<UnitAttributes>().whatClass == "Gunslinger")
+                {
+                    _targetIndex = gunslinger.FindTargetUnit(playerUnits, enemyUnits[i]);
+                    MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
+                }
+                /*else if(enemyUnits[i].GetComponent<UnitAttributes>().whatClass == "Rogue")
+                {
+                    _targetIndex = rogue.FindTargetUnit(playerUnits, enemyUnits[i]);
+                    rogue.MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
+                }*/
+                else
+                {
+                    _targetIndex = FindTargetUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
+                    MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
+
+                }
 
                 //Debug.Log(_targetIndex);
-                MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
 
                 attackPlayer(enemyUnits[i], playerUnits[_targetIndex]); //swing
 
@@ -87,7 +110,7 @@ public class AI : MonoBehaviour
         float _mindistance = Mathf.Infinity;
         float _distance = 0f;
         //Debug.Log(playerUnits.Count);
-        int _closestUnit = -1;
+        int _closestUnit = 0;
         for (j = 0; j < playerUnits.Count; j++)
         {
             // |x1-x2| + |y1-y2| distance formula
@@ -102,7 +125,7 @@ public class AI : MonoBehaviour
     }
 
 
-    void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
+    virtual public void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
     {
 
         float _targetX = targetUnit.transform.position.x;
@@ -135,9 +158,9 @@ public class AI : MonoBehaviour
 
         if ((_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0) && (!tiles[new Vector2(_targetX, _targetY)]._occupied))
         {
-            Debug.Log("Finding path");
+            //Debug.Log("Finding path");
             _bestPath = FindPath(controlledUnit.transform.position.x, controlledUnit.transform.position.y, _targetX, _targetY, tiles);
-            Debug.Log("path found");
+            //Debug.Log("path found");
         }
 
         //Debug.Log("the best is is this long " + _bestPath.Count);
@@ -162,7 +185,7 @@ public class AI : MonoBehaviour
     }
 
 
-    private List<Tile> FindPath(float startX, float startY, float endX, float endY, Dictionary<Vector2, Tile> tiles) //find best path with A*
+    protected List<Tile> FindPath(float startX, float startY, float endX, float endY, Dictionary<Vector2, Tile> tiles) //find best path with A*
     {
         Tile _startTile = tiles[new Vector2(startX, startY)];
         Tile _endTile = tiles[new Vector2(endX, endY)];
@@ -339,7 +362,7 @@ public class AI : MonoBehaviour
     }
 
 
-    private int FindHeightOfGrid(Dictionary<Vector2, Tile> tiles) //find height of grid
+    protected int FindHeightOfGrid(Dictionary<Vector2, Tile> tiles) //find height of grid
     {
         int _height = 0;
         while(tiles.ContainsKey(new Vector2(0,_height))) 
@@ -350,7 +373,7 @@ public class AI : MonoBehaviour
         return _height;
     }
 
-    private int FindWidthOfGrid(Dictionary<Vector2, Tile> tiles) //find width of grid
+    protected int FindWidthOfGrid(Dictionary<Vector2, Tile> tiles) //find width of grid
     {
         int _width = 0;
         while (tiles.ContainsKey(new Vector2(_width, 0)))

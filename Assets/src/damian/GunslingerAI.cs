@@ -10,8 +10,7 @@ public class GunslingerAI : AI
         int j = 0;
         float _minHealth = Mathf.Infinity;
         float _health = 0f;
-        //Debug.Log(playerUnits.Count);
-        int _targetUnit = -1;
+        int _targetUnit = 0;
         for (j = 0; j < playerUnits.Count; j++)
         {
             _health = playerUnits[j].GetComponent<UnitAttributes>().GetHealth();
