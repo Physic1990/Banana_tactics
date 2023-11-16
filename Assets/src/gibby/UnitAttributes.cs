@@ -272,7 +272,7 @@ public class UnitAttributes : MonoBehaviour
     }
 
     //sets the healt values to a value between 0 and 100
-    public void SetHealth(dynamic changeHealthAmount)
+    public void SetHealth(int changeHealthAmount)
     {
         if (changeHealthAmount is int)
         {
@@ -307,7 +307,7 @@ public class UnitAttributes : MonoBehaviour
     }
 
     //subtracts a value from health
-    public void DealDamage(dynamic changeHealthAmount)
+    public void DealDamage(int changeHealthAmount)
     {
         if (changeHealthAmount is int) 
         { 
@@ -340,7 +340,7 @@ public class UnitAttributes : MonoBehaviour
     }
 
     //adds value to health
-    public void GainHealth(dynamic changeHealthAmount)
+    public void GainHealth(int changeHealthAmount)
     {
         if (changeHealthAmount is int)
         {
