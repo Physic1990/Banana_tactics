@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    private static Tile instance;     // Singleton instance
     [SerializeField] private Color _baseColor, _offsetColor;  // Serialized fields for base and offset colors
     [SerializeField] private GameObject _highlight;  // Serialized field for a highlight GameObject
     [SerializeField] public GameObject _unit;  // Serialized field for a game unit GameObject
@@ -20,12 +21,43 @@ public class Tile : MonoBehaviour
     public bool isHighlighted = false;  // Flag indicating if the tile is currently highlighted
     public bool isOccupied = false;  // Flag indicating if the tile is occupied (possibly redundant)
 
+    // Private constructor to prevent external instantiation
+    private Tile()
+    {
+    }
+
+        // Public static method for access to the single instance
+    public static Tile Instance
+    {
+        get
+        {
+            // Lazy initialization: create the instance if it doesn't exist
+            if (instance == null)
+            {
+                // Find the existing instance or create a new one in the scene
+                instance = FindObjectOfType<Tile>();
+
+                // If no instance exists in the scene, create a new one
+                if (instance == null)
+                {
+                    GameObject singletonObject = new GameObject("TileSingleton");
+                    instance = singletonObject.AddComponent<Tile>();
+                }
+            }
+            return instance;
+        }
+    }
+    
+    //Awake() method is automatically called by Unity when the script instance is being loaded. 
+    //It initializes the _renderer variable by getting the SpriteRenderer component of the current GameObject.
     private void Awake()
     {
         // Automatically find and assign the SpriteRenderer component
         _renderer = GetComponent<SpriteRenderer>();
     }
 
+    //Init()method is called to initialize the tile's color based on whether it's an offset tile or not.
+    //It sets the color of the SpriteRenderer component based on the value of the isOffset parameter.
     public void Init(bool isOffset)
     {
         // Initialize the tile's color based on whether it's an offset tile or not
@@ -39,6 +71,8 @@ public class Tile : MonoBehaviour
         }
     }
 
+    //AssignUnit(GameObject passedUnit) method is called to assign a game unit to the tile, mark it as occupied, and position it at the tile's position.
+    //It sets the _occupied flag to true, assigns the unit to the _unit variable, and positions the unit at the tile's position.
     public void AssignUnit(GameObject passedUnit)
     {
         // Assign a game unit to the tile, mark it as occupied, and position it at the tile's position
@@ -47,6 +81,8 @@ public class Tile : MonoBehaviour
         _unit.transform.position = new Vector2(transform.position.x, transform.position.y);
     }
 
+    //RemoveUnit() method is called to remove the game unit from the tile, mark it as unoccupied, and return the removed unit.
+    //It sets the _occupied flag to false, temporarily stores the _unit, sets _unit to null, and then returns the stored unit.
     public GameObject RemoveUnit()
     {
         // Remove the game unit from the tile, mark it as unoccupied, and return the removed unit
@@ -56,6 +92,8 @@ public class Tile : MonoBehaviour
         return temp;
     }
 
+    //SpawnUnit method is called to spawn a game unit with the specified tag on the tile, mark it as occupied, and position it at the tile's position.
+    //It sets the _occupied flag to true, finds the GameObject with the specified tag, activates it, and positions it at the tile's position. If the tag is "Player," it also adds the unit to the unitLog list.
     public void SpawnUnit(string tag, List<GameObject> unitLog)
     {
         // Spawn a game unit with the specified tag on the tile, mark it as occupied, and position it at the tile's position
@@ -90,8 +128,7 @@ public class Tile : MonoBehaviour
         _highlight?.SetActive(false);
         isHighlighted = false;
     }
-
-    // Example of a method using dynamic binding
+    //PerformAction() Method demonstrates dynamic binding by checking the type of the component attached to the _unit GameObject.
     public void PerformAction()
     {
         if (_unit != null)
