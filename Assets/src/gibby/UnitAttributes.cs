@@ -261,6 +261,43 @@ public class UnitAttributes : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
+    //cahnges the sprite to player or enemy one
+    private void ChangeUnitSprite()
+    {
+        // Get the SpriteRenderer component of the GameObject
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        //set path to player sprite
+        string spritePathPlayer = "Assets/Artwork/playerMonkey.png";
+        Sprite playerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathPlayer);
+
+        //set path to enemy sprite
+        string spritePathEnemy = "Assets/Artwork/alt_enemySprite.png";
+        Sprite enemySprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathEnemy);
+
+        if (spriteRenderer != null)
+        {
+            // Change the sprite based on the unit type
+            if (IsPlayer == true && playerSprite != null)
+            {
+                spriteRenderer.sprite = playerSprite;
+            }
+            else if (IsEnemy == true && enemySprite != null)
+            {
+                spriteRenderer.sprite = enemySprite;
+            }
+            else
+            {
+                Debug.LogWarning("Sprite not assigned for the unit type.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SpriteRenderer component not found.");
+        }
+    }
+
+
     /// <summary>
     /// START OF PUBLIC FUNCTION
     /// </summary>
@@ -272,7 +309,7 @@ public class UnitAttributes : MonoBehaviour
     }
 
     //sets the healt values to a value between 0 and 100
-    public void SetHealth(int changeHealthAmount)
+    public virtual void SetHealth(int changeHealthAmount)
     {
         if (changeHealthAmount is int)
         {
@@ -304,6 +341,13 @@ public class UnitAttributes : MonoBehaviour
         {
             Debug.Log("Not A Valid Input For Set Health");
         }
+    }
+
+    public virtual void SetHealth(float changeHealthAmount)
+    {
+        //changes float to an int
+        int roundedValue = (int)changeHealthAmount;
+        SetHealth(roundedValue);
     }
 
     //subtracts a value from health
@@ -477,42 +521,7 @@ public class UnitAttributes : MonoBehaviour
         return instanceIDScript;
     }
 
-    //cahnges teh sprite to player or enemy one
-    void ChangeUnitSprite()
-    {
-        // Get the SpriteRenderer component of the GameObject
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
-        //set path to player sprite
-        string spritePathPlayer = "Assets/Artwork/playerMonkey.png";
-        Sprite playerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathPlayer);
-
-        //set path to enemy sprite
-        string spritePathEnemy = "Assets/Artwork/alt_enemySprite.png";
-        Sprite enemySprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathEnemy);
-
-        if (spriteRenderer != null)
-        {
-            // Change the sprite based on the unit type
-            if (IsPlayer == true && playerSprite != null)
-            {
-                spriteRenderer.sprite = playerSprite;
-            }
-            else if (IsEnemy == true && enemySprite != null)
-            {
-                spriteRenderer.sprite = enemySprite;
-            }
-            else
-            {
-                Debug.LogWarning("Sprite not assigned for the unit type.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("SpriteRenderer component not found.");
-        }
-    }
-
+    
     /// <summary>
     /// Intilization
     /// </summary>
