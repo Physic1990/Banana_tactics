@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject _highlight;  // Serialized field for a highlight GameObject
     [SerializeField] public GameObject _unit;  // Serialized field for a game unit GameObject
     
-    //Variables for A*Pathfinding
+    // Variables for A*Pathfinding
     public float gCost = 0;
     public float hCost = 0;
     public float fCost = 0;
@@ -44,7 +44,7 @@ public class Tile : MonoBehaviour
         // Assign a game unit to the tile, mark it as occupied, and position it at the tile's position
         _occupied = true;
         _unit = passedUnit;
-        _unit.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+        _unit.transform.position = new Vector2(transform.position.x, transform.position.y);
     }
 
     public GameObject RemoveUnit()
@@ -62,11 +62,11 @@ public class Tile : MonoBehaviour
         _occupied = true;
         _unit = GameObject.FindWithTag(tag);
         _unit.SetActive(true);
-        _unit.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
-        
+        _unit.transform.position = new Vector2(transform.position.x, transform.position.y);
+
         if (tag == "Player")
         {
-            unitLog.Add(_unit);  // If the unit belongs to the player, add it to the unit log (assuming it's a list).
+            unitLog.Add(_unit);
         }
     }
 
@@ -79,7 +79,7 @@ public class Tile : MonoBehaviour
 
     public void HighlightNoCursor()
     {
-        // Similar to TurnOnHighlight, but doesn't mention a cursor (possibly a minor variation).
+        // Similar to TurnOnHighlight, but doesn't mention a cursor (possibly a minor variation)
         _highlight.SetActive(true);
         isHighlighted = true;
     }
@@ -87,7 +87,49 @@ public class Tile : MonoBehaviour
     public void TurnOffHighlight()
     {
         // Turn off the tile's highlight if it exists, and mark it as not highlighted
-        _highlight?.SetActive(false);  // The ?. operator ensures null safety
+        _highlight?.SetActive(false);
         isHighlighted = false;
+    }
+
+    // Example of a method using dynamic binding
+    public void PerformAction()
+    {
+        if (_unit != null)
+        {
+            // Get the MonoBehaviour component attached to the _unit GameObject
+            MonoBehaviour unitComponent = _unit.GetComponent<MonoBehaviour>();
+
+            // Check the type of the component and perform an action accordingly
+            if (unitComponent is PlayerUnit)
+            {
+                // Dynamic binding based on the type of the component
+                PlayerUnit playerUnit = (PlayerUnit)unitComponent;
+                playerUnit.PerformPlayerAction();
+            }
+            else if (unitComponent is EnemyUnit)
+            {
+                // Dynamic binding based on the type of the component
+                EnemyUnit enemyUnit = (EnemyUnit)unitComponent;
+                enemyUnit.PerformEnemyAction();
+            }
+        }
+    }
+}
+
+// PlayerUnit class
+public class PlayerUnit : MonoBehaviour
+{
+    public void PerformPlayerAction()
+    {
+        Debug.Log("Player unit action!");
+    }
+}
+
+//EnemyUnit class
+public class EnemyUnit : MonoBehaviour
+{
+    public void PerformEnemyAction()
+    {
+        Debug.Log("Enemy unit action!");
     }
 }
