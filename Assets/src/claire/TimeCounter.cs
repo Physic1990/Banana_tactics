@@ -12,6 +12,7 @@ public class TimeCounter : MonoBehaviour
     public float currentTime; 
     public Text currentTimeText;
 
+
     void Start()
     {
         // Starts the time when the game opens. 
