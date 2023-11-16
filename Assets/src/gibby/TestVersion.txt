@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class UnitAttributes : MonoBehaviour
 {
+    private UnitData unitData = new UnitData();
+
     public string whatClass;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
@@ -16,7 +18,7 @@ public class UnitAttributes : MonoBehaviour
 
     private bool modeBC = false;
 
-    private int health;
+    //private int health;
     private int minHealth = 0;
     private int maxHealth = 100;
     private int movement;
@@ -35,11 +37,16 @@ public class UnitAttributes : MonoBehaviour
     private double[] attackValuesTwo = new double[5];
     private string[] attackNames = new string[2];
 
-    /// <summary>
-    /// Start Of Data Set Functions
-    /// </summary>
+    internal class UnitData
+    {
+        public int health;
+    }
 
-    private void SetClassStats()
+        /// <summary>
+        /// Start Of Data Set Functions
+        /// </summary>
+
+        private void SetClassStats()
     {
         //checks what class unit has been set too
         if (whatClass == "Warrior")
@@ -72,8 +79,8 @@ public class UnitAttributes : MonoBehaviour
     //sets specific varibalies
     private void SetWarrior()
     {
-        health = 100;
-        maxHealth = health;
+        unitData.health = 100;
+        maxHealth = unitData.health;
         movement = 2;
         attack1 = "Banana Slam";
         attack2 = "Banana Punch";
@@ -81,19 +88,19 @@ public class UnitAttributes : MonoBehaviour
 
         if (modeBC == true && IsEnemy == true)
         {
-            health = 1;
+            unitData.health = 1;
         }
         else if (modeBC == true && IsPlayer == true)
         {
-            health = 999;
+            unitData.health = 999;
         }
     }
 
     //sets specific varibalies
     private void SetGunSlinger()
     {
-        health = 100;
-        maxHealth = health;
+        unitData.health = 100;
+        maxHealth = unitData.health;
         movement = 1;
         attack1 = "Shoot";
         attack2 = "Banana Punch";
@@ -101,18 +108,18 @@ public class UnitAttributes : MonoBehaviour
 
         if (modeBC == true && IsEnemy == true)
         {
-            health = 1;
+            unitData.health = 1;
         }
         else if (modeBC == true && IsPlayer == true)
         {
-            health = 999;
+            unitData.health = 999;
         }
     }
 
     private void SetLancer()
     {
-        health = 100;
-        maxHealth = health;
+        unitData.health = 100;
+        maxHealth = unitData.health;
         movement = 3;
         attack1 = "Banana Thrust";
         attack2 = "Banana Punch";
@@ -120,18 +127,18 @@ public class UnitAttributes : MonoBehaviour
 
         if (modeBC == true && IsEnemy == true)
         {
-            health = 1;
+            unitData.health = 1;
         }
         else if (modeBC == true && IsPlayer == true)
         {
-            health = 999;
+            unitData.health = 999;
         }
     }
 
     private void SetRogue()
     {
-        health = 100;
-        maxHealth = health;
+        unitData.health = 100;
+        maxHealth = unitData.health;
         movement = 2;
         attack1 = "Banana Backstab";
         attack2 = "Banana Punch";
@@ -139,18 +146,18 @@ public class UnitAttributes : MonoBehaviour
 
         if (modeBC == true && IsEnemy == true)
         {
-            health = 1;
+            unitData.health = 1;
         }
         else if (modeBC == true && IsPlayer == true)
         {
-            health = 999;
+            unitData.health = 999;
         }
     }
 
     private void SetHero()
     {
-        health = 100;
-        maxHealth = health;
+        unitData.health = 100;
+        maxHealth = unitData.health;
         movement = 1;
         attack1 = "Banana Ultimate Punch";
         attack2 = "Banana Punch";
@@ -158,11 +165,11 @@ public class UnitAttributes : MonoBehaviour
 
         if (modeBC == true && IsEnemy == true)
         {
-            health = 1;
+            unitData.health = 1;
         }
         else if (modeBC == true && IsPlayer == true)
         {
-            health = 999;
+            unitData.health = 999;
         }
     }
 
@@ -272,103 +279,82 @@ public class UnitAttributes : MonoBehaviour
     }
 
     //sets the healt values to a value between 0 and 100
-    public void SetHealth(dynamic changeHealthAmount)
+    public void SetHealth(int changeHealthAmount)
     {
-        if (changeHealthAmount is int)
+        //changes health to new health value
+        if (changeHealthAmount < 0)
         {
-            //changes health to new health value
-            if (changeHealthAmount < 0)
-            {
-                changeHealthAmount = minHealth;
-            }
-            else if (changeHealthAmount > 0)
-            {
-                changeHealthAmount = maxHealth;
-            }
-
-            health = changeHealthAmount;
-
-            if (modeBC == true)
-            {
-                if (IsPlayer == true)
-                {
-                    changeHealthAmount = 999;
-                }
-                else if (IsEnemy == true)
-                {
-                    changeHealthAmount = 1;
-                }
-            }
-        } 
-        else
+            changeHealthAmount = minHealth;
+        }
+        else if (changeHealthAmount > 0)
         {
-            Debug.Log("Not A Valid Input For Set Health");
+            changeHealthAmount = maxHealth;
+        }
+
+        unitData.health = changeHealthAmount;
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
         }
     }
 
     //subtracts a value from health
-    public void DealDamage(dynamic changeHealthAmount)
+    public void DealDamage(int changeHealthAmount)
     {
-        if (changeHealthAmount is int) 
-        { 
         //subtract value from health making sure it cant go below min health
-            if ((health -= changeHealthAmount) < minHealth)
-            {
-                health = minHealth;
-            }
-            else
-            {
-                health -= changeHealthAmount;
-            }
-
-            if (modeBC == true)
-            {
-                if (IsPlayer == true)
-                {
-                    changeHealthAmount = 999;
-                }
-                else if (IsEnemy == true)
-                {
-                    changeHealthAmount = 1;
-                }
-            }
-        } 
+        if ((unitData.health -= changeHealthAmount) < minHealth)
+        {
+            unitData.health = minHealth;
+        }
         else
         {
-            Debug.Log("Not A Valid Input For Deal Damage");
+            unitData.health -= changeHealthAmount;
+        }
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
         }
     }
 
     //adds value to health
-    public void GainHealth(dynamic changeHealthAmount)
+    public void GainHealth(int changeHealthAmount)
     {
-        if (changeHealthAmount is int)
+        //add value to health making sure it cant go ove rthe max health
+        if ((unitData.health += changeHealthAmount) > maxHealth)
         {
-            //add value to health making sure it cant go ove rthe max health
-            if ((health += changeHealthAmount) > maxHealth)
-            {
-                health = maxHealth;
-            }
-            else
-            {
-                health += changeHealthAmount;
-            }
-
-            if (modeBC == true)
-            {
-                if (IsPlayer == true)
-                {
-                    changeHealthAmount = 999;
-                }
-                else if (IsEnemy == true)
-                {
-                    changeHealthAmount = 1;
-                }
-            }
-        } 
+            unitData.health = maxHealth;
+        }
         else
         {
-            Debug.Log("Not A Valid Input For Gain Health");
+            unitData.health += changeHealthAmount;
+        }
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
         }
     }
 
@@ -376,7 +362,7 @@ public class UnitAttributes : MonoBehaviour
     public int GetHealth()
     {
         //current health 
-        return health;
+        return unitData.health;
     }
 
     //returns maximum health value

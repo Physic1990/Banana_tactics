@@ -13,7 +13,7 @@ public class UnitAttributes : MonoBehaviour
     [SerializeField] bool IsPlayer = true;
     [SerializeField] bool IsEnemy = false;
     [SerializeField] bool hasActed = false;
-
+    
     private bool modeBC = false;
 
     private int health;
@@ -109,7 +109,7 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
-    private void SetLancer()
+   private  void SetLancer()
     {
         health = 100;
         maxHealth = health;
@@ -272,103 +272,82 @@ public class UnitAttributes : MonoBehaviour
     }
 
     //sets the healt values to a value between 0 and 100
-    public void SetHealth(dynamic changeHealthAmount)
+    public void SetHealth(int changeHealthAmount)
     {
-        if (changeHealthAmount is int)
+        //changes health to new health value
+        if (changeHealthAmount < 0)
         {
-            //changes health to new health value
-            if (changeHealthAmount < 0)
-            {
-                changeHealthAmount = minHealth;
-            }
-            else if (changeHealthAmount > 0)
-            {
-                changeHealthAmount = maxHealth;
-            }
-
-            health = changeHealthAmount;
-
-            if (modeBC == true)
-            {
-                if (IsPlayer == true)
-                {
-                    changeHealthAmount = 999;
-                }
-                else if (IsEnemy == true)
-                {
-                    changeHealthAmount = 1;
-                }
-            }
-        } 
-        else
+            changeHealthAmount = minHealth;
+        }
+        else if (changeHealthAmount > 0)
         {
-            Debug.Log("Not A Valid Input For Set Health");
+            changeHealthAmount = maxHealth;
+        }
+
+        health = changeHealthAmount;
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
         }
     }
 
     //subtracts a value from health
-    public void DealDamage(dynamic changeHealthAmount)
+    public void DealDamage(int changeHealthAmount)
     {
-        if (changeHealthAmount is int) 
-        { 
         //subtract value from health making sure it cant go below min health
-            if ((health -= changeHealthAmount) < minHealth)
-            {
-                health = minHealth;
-            }
-            else
-            {
-                health -= changeHealthAmount;
-            }
-
-            if (modeBC == true)
-            {
-                if (IsPlayer == true)
-                {
-                    changeHealthAmount = 999;
-                }
-                else if (IsEnemy == true)
-                {
-                    changeHealthAmount = 1;
-                }
-            }
-        } 
+        if ((health -= changeHealthAmount) < minHealth)
+        {
+            health = minHealth;
+        }
         else
         {
-            Debug.Log("Not A Valid Input For Deal Damage");
+            health -= changeHealthAmount;
+        }
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
         }
     }
 
     //adds value to health
-    public void GainHealth(dynamic changeHealthAmount)
+    public void GainHealth(int changeHealthAmount)
     {
-        if (changeHealthAmount is int)
+        //add value to health making sure it cant go ove rthe max health
+        if ((health += changeHealthAmount) > maxHealth)
         {
-            //add value to health making sure it cant go ove rthe max health
-            if ((health += changeHealthAmount) > maxHealth)
-            {
-                health = maxHealth;
-            }
-            else
-            {
-                health += changeHealthAmount;
-            }
-
-            if (modeBC == true)
-            {
-                if (IsPlayer == true)
-                {
-                    changeHealthAmount = 999;
-                }
-                else if (IsEnemy == true)
-                {
-                    changeHealthAmount = 1;
-                }
-            }
-        } 
+            health = maxHealth;
+        }
         else
         {
-            Debug.Log("Not A Valid Input For Gain Health");
+            health += changeHealthAmount;
+        }
+
+        if (modeBC == true)
+        {
+            if (IsPlayer == true)
+            {
+                changeHealthAmount = 999;
+            }
+            else if (IsEnemy == true)
+            {
+                changeHealthAmount = 1;
+            }
         }
     }
 
