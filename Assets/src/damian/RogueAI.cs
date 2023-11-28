@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class RogueAI : AI
+public class RogueAI : MonoBehaviour
 {
-    static private bool run = false;
-    public override int FindTargetUnit(List<GameObject> playerUnits, GameObject enemyUnit)
+    /*static private bool run = false;
+    public int RogueFindTargetUnit(List<GameObject> playerUnits, GameObject enemyUnit)
     {
         int _targetUnit = 0;
         int j = 0;
@@ -51,7 +51,7 @@ public class RogueAI : AI
     }
 
 
-    public override void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
+    public void RogueMoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
     {
 
         float _targetX = targetUnit.transform.position.x;
@@ -135,4 +135,5 @@ public class RogueAI : AI
         //Debug.Log(_targetY);
         //Debug.Log(_targetX);
     }
+    */
 }

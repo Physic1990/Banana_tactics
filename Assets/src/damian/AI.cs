@@ -33,7 +33,6 @@ public class AI : MonoBehaviour
     
 
     ActionEventManager Event;
-    GunslingerAI gunslinger;
 
     private void Awake()
     {
@@ -48,7 +47,6 @@ public class AI : MonoBehaviour
         }
 
         Event = GameObject.FindGameObjectWithTag("ActionEvent").GetComponent<ActionEventManager>();
-        gunslinger = GameObject.FindGameObjectWithTag("Ai").GetComponent<GunslingerAI>();
     }
     
     private List<Tile> openList;
@@ -64,24 +62,10 @@ public class AI : MonoBehaviour
         {
             for (int i = 0; i < enemyUnits.Count; i++)
             {
+                
+                int _targetIndex = FindTargetUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
+                MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
 
-                int _targetIndex = 0;
-                if (enemyUnits[i].GetComponent<UnitAttributes>().whatClass == "Gunslinger")
-                {
-                    _targetIndex = gunslinger.FindTargetUnit(playerUnits, enemyUnits[i]);
-                    MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
-                }
-                /*else if(enemyUnits[i].GetComponent<UnitAttributes>().whatClass == "Rogue")
-                {
-                    _targetIndex = rogue.FindTargetUnit(playerUnits, enemyUnits[i]);
-                    rogue.MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
-                }*/
-                else
-                {
-                    _targetIndex = FindTargetUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
-                    MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
-
-                }
 
                 //Debug.Log(_targetIndex);
 
@@ -125,7 +109,7 @@ public class AI : MonoBehaviour
     }
 
 
-    virtual public void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
+    public void MoveUnitToTarget(GameObject controlledUnit, GameObject targetUnit, Dictionary<Vector2, Tile> tiles) //function to move target to unit
     {
 
         float _targetX = targetUnit.transform.position.x;
@@ -164,10 +148,10 @@ public class AI : MonoBehaviour
         }
 
         //Debug.Log("the best is is this long " + _bestPath.Count);
-        if (_bestPath.Count > 1 && (_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0))
+        if (_bestPath.Count > 2 && (_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0))
         {
-            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.x;
-            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement() - 1].transform.position.y;
+            _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.x;
+            _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.y;
 
 
 
@@ -185,7 +169,7 @@ public class AI : MonoBehaviour
     }
 
 
-    protected List<Tile> FindPath(float startX, float startY, float endX, float endY, Dictionary<Vector2, Tile> tiles) //find best path with A*
+    public List<Tile> FindPath(float startX, float startY, float endX, float endY, Dictionary<Vector2, Tile> tiles) //find best path with A*
     {
         Tile _startTile = tiles[new Vector2(startX, startY)];
         Tile _endTile = tiles[new Vector2(endX, endY)];
@@ -362,7 +346,7 @@ public class AI : MonoBehaviour
     }
 
 
-    protected int FindHeightOfGrid(Dictionary<Vector2, Tile> tiles) //find height of grid
+    private int FindHeightOfGrid(Dictionary<Vector2, Tile> tiles) //find height of grid
     {
         int _height = 0;
         while(tiles.ContainsKey(new Vector2(0,_height))) 
@@ -373,7 +357,7 @@ public class AI : MonoBehaviour
         return _height;
     }
 
-    protected int FindWidthOfGrid(Dictionary<Vector2, Tile> tiles) //find width of grid
+    private int FindWidthOfGrid(Dictionary<Vector2, Tile> tiles) //find width of grid
     {
         int _width = 0;
         while (tiles.ContainsKey(new Vector2(_width, 0)))

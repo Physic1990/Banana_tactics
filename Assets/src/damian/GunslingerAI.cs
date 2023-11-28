@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class GunslingerAI : AI
+public class GunslingerAI : MonoBehaviour
 {
-    public override int FindTargetUnit(List<GameObject> playerUnits, GameObject enemyUnit)
+    public int GunslingerFindTargetUnit(List<GameObject> playerUnits, GameObject enemyUnit)
     {
         int j = 0;
         float _minHealth = Mathf.Infinity;
