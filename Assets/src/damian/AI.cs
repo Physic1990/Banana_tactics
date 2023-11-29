@@ -51,32 +51,30 @@ public class AI : MonoBehaviour
     
     private List<Tile> openList;
     private List<Tile> closedList;
+    public bool enemyTurnEnded = false;
 
-    
-
-    public void AITurn(List<GameObject> playerUnits, List<GameObject> enemyUnits, Dictionary<Vector2, Tile> tiles)
+    public IEnumerator AITurn(List<GameObject> playerUnits, List<GameObject> enemyUnits, Dictionary<Vector2, Tile> tiles)
     {
-
-        //Debug.Log(enemyUnits.Count);
+        enemyTurnEnded = false;
         if (playerUnits.Count > 0)
         {
             for (int i = 0; i < enemyUnits.Count; i++)
             {
-                
+
                 int _targetIndex = FindTargetUnit(playerUnits, enemyUnits[i]); //target spotted....GET HIM
                 MoveUnitToTarget(enemyUnits[i], playerUnits[_targetIndex], tiles); //approach
 
+                yield return new WaitForSeconds(0.3f);
 
                 //Debug.Log(_targetIndex);
 
                 attackPlayer(enemyUnits[i], playerUnits[_targetIndex]); //swing
-
-                //attack or heal
-
+                yield return new WaitForSeconds(0.3f);
             }
+            //yield return new WaitForSeconds(1);
         }
+        enemyTurnEnded = true;
     }
-    
 
     private void attackPlayer(GameObject enemyUnit, GameObject playerUnit) //attack player he stole your bananas or something and now you're angry (-n-)
     {
@@ -341,7 +339,7 @@ public class AI : MonoBehaviour
         float _xDist = Mathf.Abs(a.transform.position.x - b.transform.position.x);
         float _yDist = Mathf.Abs(a.transform.position.y - b.transform.position.y);
         float _remaining = MathF.Abs(_xDist - _yDist);
-        return(14 * Mathf.Min(_xDist, _yDist) + 10 * _remaining);
+        return(20 * Mathf.Min(_xDist, _yDist) + 10 * _remaining);
 
     }
 

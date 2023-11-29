@@ -71,6 +71,7 @@ public class GridManager : MonoBehaviour
     //Tracks whose turn it is between the player and the CPU
     private bool playerTurnOver;
 
+
     /*************************************************************************
                              Player Movement
     ************************************************************************/
@@ -539,11 +540,11 @@ public class GridManager : MonoBehaviour
     {
         if (_Delay == 400)
         {
-            aiManager.AITurn(_playerUnits, _enemyUnits, _tiles);
+            StartCoroutine(aiManager.AITurn(_playerUnits, _enemyUnits, _tiles));
         }
         _Delay--;
         //Once enemy turn has ended, start player turn again
-        if (_Delay < 0)
+        if (_Delay < 0 && aiManager.enemyTurnEnded)
         {
             _Delay = 400;
             ReactivatePlayerUnits();
