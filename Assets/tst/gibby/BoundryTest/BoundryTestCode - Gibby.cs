@@ -15,7 +15,7 @@ public class BoundryTestCode
     {
         unitAttributes = Unit.AddComponent<UnitAttributes>();
 
-        unitAttributes.SetHealth(101);
+        unitAttributes.GainHealth(101);
         Assert.AreEqual(100, unitAttributes.GetHealth());
     }
 
