@@ -14,6 +14,8 @@ public class UnitAttributes : MonoBehaviour
     [SerializeField] bool IsEnemy = false;
     [SerializeField] bool hasActed = false;
 
+    public bool hasTeleported = false;
+
     private bool modeBC = false;
 
     private int health;

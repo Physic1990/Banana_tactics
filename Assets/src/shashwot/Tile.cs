@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     private static Tile instance;     // Singleton instance
-    [SerializeField] private Color _baseColor, _offsetColor;  // Serialized fields for base and offset colors
+    [SerializeField] private Color _baseColor, _offsetColor, _teleportRed, _teleportBlue;  // Serialized fields for base and offset colors
     [SerializeField] private GameObject _highlight;  // Serialized field for a highlight GameObject
     [SerializeField] public GameObject _unit;  // Serialized field for a game unit GameObject
     
@@ -20,6 +20,11 @@ public class Tile : MonoBehaviour
 
     public bool isHighlighted = false;  // Flag indicating if the tile is currently highlighted
     public bool isOccupied = false;  // Flag indicating if the tile is occupied (possibly redundant)
+
+    //Teleport tile var
+    public int teleportTile = 0;
+
+
 
     // Private constructor to prevent external instantiation
     private Tile()
@@ -68,6 +73,20 @@ public class Tile : MonoBehaviour
         else
         {
             _renderer.color = _baseColor;
+        }
+    }
+
+    public void SetTeleportTile(string color)
+    {
+        if(color == "Red"){
+            _renderer.color = _teleportRed;
+            teleportTile = 2;
+        }
+        else if(color == "Blue"){
+            _renderer.color = _teleportBlue;
+            teleportTile = 1;
+        }else{
+            teleportTile = 0;
         }
     }
 
