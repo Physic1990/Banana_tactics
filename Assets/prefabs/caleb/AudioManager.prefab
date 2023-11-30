@@ -44,8 +44,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0
-  m_Pitch: 1
+  m_Volume: 0.25
+  m_Pitch: 0.9
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -265,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4616103705443455635}
-  - component: {fileID: 6857664067173907532}
+  - component: {fileID: 7231330337380209674}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Audio
@@ -290,7 +290,7 @@ Transform:
   - {fileID: 7500800693700809464}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6857664067173907532
+--- !u!114 &7231330337380209674
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4485868672709152301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0745a304e795cc146b677e449ecd2d49, type: 3}
+  m_Script: {fileID: 11500000, guid: 6248f61e5fbc8be4c8c1541161a52b99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 2315174676929091694}

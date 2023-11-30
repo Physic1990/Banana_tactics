@@ -437,8 +437,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 362.5, y: 0}
+  m_SizeDelta: {x: 117, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &386455175
 MonoBehaviour:
@@ -552,8 +552,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 245.5, y: 0}
+  m_SizeDelta: {x: 363, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &387164975
 MonoBehaviour:
@@ -1462,8 +1462,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 221.5, y: 0}
+  m_SizeDelta: {x: 443, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1166870850
 MonoBehaviour:
@@ -1727,6 +1727,10 @@ MonoBehaviour:
   enemyRoguePrefab: {fileID: 2598069042711576200, guid: 620de756d7b161e4a9077c098592344e, type: 3}
   enemyHeroPrefab: {fileID: 2598069042711576200, guid: 43d6f1b4c60e9ec49a8acfdc5523cb88, type: 3}
   textAsset: {fileID: 4900000, guid: 32c83d46eea2d724ba0e1e1ba5bc5e8f, type: 3}
+  BlueOne: {fileID: 0}
+  BlueTwo: {fileID: 0}
+  RedOne: {fileID: 0}
+  RedTwo: {fileID: 0}
 --- !u!4 &1199090415
 Transform:
   m_ObjectHideFlags: 0
@@ -3300,6 +3304,38 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportRed.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportRed.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportRed.g
+      value: 0.04938253
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportRed.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportBlue.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportBlue.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportBlue.g
+      value: 0.25932264
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
+      propertyPath: _teleportBlue.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
       propertyPath: animationComponent
       value: 
       objectReference: {fileID: 0}
@@ -3489,14 +3525,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2315174676929091694, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
-      propertyPath: m_Pitch
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2315174676929091694, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
-      propertyPath: m_Volume
-      value: 0.25
-      objectReference: {fileID: 0}
     - target: {fileID: 4485868672709152301, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
       propertyPath: m_Name
       value: AudioManager
@@ -3541,52 +3569,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6857664067173907532, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
+    - target: {fileID: 7231330337380209674, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
+      propertyPath: warp
+      value: 
+      objectReference: {fileID: 8300000, guid: 15a9b8e3c6af21b4a87cbc0d0b4efcc4, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4485868672709152301, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7991907986371676101}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
---- !u!1 &7991907986371676098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4485868672709152301, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
-  m_PrefabInstance: {fileID: 7991907986371676097}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &7991907986371676099 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 4313329358100422672, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
-  m_PrefabInstance: {fileID: 7991907986371676097}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &7991907986371676100 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 2315174676929091694, guid: 8a34aa54c6e739c4582cc38d6b5daa0c, type: 3}
-  m_PrefabInstance: {fileID: 7991907986371676097}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7991907986371676101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7991907986371676098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6248f61e5fbc8be4c8c1541161a52b99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSource: {fileID: 7991907986371676100}
-  sfxSource: {fileID: 7991907986371676099}
-  startMusic: {fileID: 8300000, guid: 0f5a591fc0621ba4881a50bf62206b77, type: 3}
-  loopedMusic: {fileID: 8300000, guid: 0f5a591fc0621ba4881a50bf62206b77, type: 3}
-  cursorMove: {fileID: 8300000, guid: b204afd3148017d47ad9120894044b7c, type: 3}
-  select: {fileID: 8300000, guid: 0789acae171ff884eb3051181cc4f537, type: 3}
-  back: {fileID: 8300000, guid: 15c96a15d262f564c96f6b94f1cad427, type: 3}
-  placed: {fileID: 8300000, guid: ecb19c1e3397c5349b1b382afdeb1c6b, type: 3}
-  death: {fileID: 0}
-  error: {fileID: 8300000, guid: 88ee2d49f9ad6d74aa2e281205e91772, type: 3}
 --- !u!1001 &8411103588032449910
 PrefabInstance:
   m_ObjectHideFlags: 0

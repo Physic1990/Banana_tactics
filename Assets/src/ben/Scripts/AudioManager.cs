@@ -22,6 +22,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip placed;
     public AudioClip death;
     public AudioClip error;
+    public AudioClip warp;
 
     private bool pauseMusic = false;
 

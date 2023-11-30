@@ -27,6 +27,11 @@ public class LevelSetup : MonoBehaviour
     //Designated player and enemy tags
     private string playerTag = "Player";
     private string enemyTag = "Enemy";
+    //Teleport Tile Colors
+    public Tile BlueOne;
+    public Tile BlueTwo;
+    public Tile RedOne;
+    public Tile RedTwo;
 
     // Property for playerTag
     public string PlayerTag
@@ -95,11 +100,37 @@ public class LevelSetup : MonoBehaviour
                         {
                             y = height - 1;
                         }
-                        else if (y < height)
+                        else if (y < 0)
                         {
                             y = 0;
                         }
                         SpawnUnitAt(tag, classType, x, y, id);
+                    }
+                }
+                if(parts.Length == 3)
+                {
+                    string color = parts[0].Trim();
+                    int x, y;
+                    if (int.TryParse(parts[1].Trim(), out x) && int.TryParse(parts[2].Trim(), out y))
+                    {
+                        //Checks that position is in bounds (otherwise sets it to be in bounds)
+                        if (x >= width)
+                        {
+                            x = width - 1;
+                        }
+                        else if (x < 0)
+                        {
+                            x = 0;
+                        }
+                        else if (y >= height)
+                        {
+                            y = height - 1;
+                        }
+                        else if (y < 0)
+                        {
+                            y = 0;
+                        }
+                        SpawnTeleportTile(color, x, y);
                     }
                 }
             }
@@ -108,6 +139,7 @@ public class LevelSetup : MonoBehaviour
         {
             Debug.LogError("TextAsset is not assigned. Assign a TextAsset in the Inspector.");
         }
+        SetTeleportTiles();
     }
 
     //PATTERN: Builder (Converter)
@@ -144,6 +176,53 @@ public class LevelSetup : MonoBehaviour
         else
         {
             Debug.LogWarning($"Prefab not found for class: {className}");
+        }
+    }
+
+    public void SpawnTeleportTile(string color, int x, int y)
+    {
+        Tile tile = grid.GetTileAtPosition(new Vector2(x, y));
+        //if the tile exists and does not contain an object, then assign it.
+        if (tile != null)
+        {
+            if(color == "Blue" && BlueOne == null)
+            {
+                BlueOne = tile;
+            }
+            else if(color == "Blue" && BlueOne != tile)
+            {
+                BlueTwo = tile;
+            }
+            else if (color == "Red" && RedOne == null)
+            {
+                RedOne = tile;
+            }
+            else if (color == "Red" && RedOne != tile)
+            {
+                RedTwo = tile;
+            }
+        }
+        else if (tile == null)
+        {
+            Debug.LogWarning($"Out of Bounds Tile: {x} , {y}");
+        }
+        else
+        {
+            Debug.LogWarning($"Color not found for tile: {color}");
+        }
+    }
+
+    public void SetTeleportTiles()
+    {
+        if(BlueOne != null && BlueTwo != null)
+        {
+            BlueOne.MakeTeleport("Blue", 1);
+            BlueTwo.MakeTeleport("Blue", 2);
+        }
+        if (RedOne != null && RedTwo != null)
+        {
+            RedOne.MakeTeleport("Red", 3);
+            RedTwo.MakeTeleport("Red", 4);
         }
     }
 

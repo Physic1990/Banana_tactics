@@ -568,6 +568,7 @@ public class GridManager : MonoBehaviour
         if (unitA != null)
         {
             unitA.SetActed(acted); // Set to true or false for if they've acted or not
+            unitA.hasTeleported = false;
         }
     }
 
@@ -592,6 +593,34 @@ public class GridManager : MonoBehaviour
             Tile tile = kvp.Value;
             if (tile._occupied)
             {
+                if(!tile._unit.GetComponent<UnitAttributes>().hasTeleported && tile._unit.GetComponent<UnitAttributes>().HasActed() && tile.teleportTile > 0)
+                {
+                    Tile teleportTo = null;
+                    if(tile.teleportTile == 1) //teleport tile is blue 1
+                    {
+                        teleportTo = LevelSetup.Instance.BlueTwo;
+                    }
+                    if (tile.teleportTile == 2) //teleport tile is blue 2
+                    {
+                        teleportTo = LevelSetup.Instance.BlueOne;
+                    }
+                    if (tile.teleportTile == 3) //teleport tile is red 1
+                    {
+                        teleportTo = LevelSetup.Instance.RedTwo;
+                    }
+                    if (tile.teleportTile == 4) //teleport tile is red 2
+                    {
+                        teleportTo = LevelSetup.Instance.RedOne;
+                    }
+                    tile._unit.GetComponent<UnitAttributes>().hasTeleported = true;
+                    if (teleportTo != null && !teleportTo._occupied)
+                    {
+                        teleportTo.AssignUnit(tile._unit);
+                        tile.RemoveUnit();
+                        AudioManager.Instance.PlaySFX(AudioManager.Instance.warp);
+                    }
+
+                }
                 if (tile._unit.GetComponent<UnitAttributes>().GetHealth() <= 0)
                 {
                     Debug.Log("Removing Dead Unit");

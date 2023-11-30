@@ -76,16 +76,17 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void SetTeleportTile(string color)
+    public void MakeTeleport(string color, int id)
     {
         if(color == "Red"){
             _renderer.color = _teleportRed;
-            teleportTile = 2;
+            teleportTile = id;
         }
         else if(color == "Blue"){
             _renderer.color = _teleportBlue;
-            teleportTile = 1;
-        }else{
+            teleportTile = id;
+        }
+        else{
             teleportTile = 0;
         }
     }

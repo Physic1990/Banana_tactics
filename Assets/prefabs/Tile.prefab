@@ -186,6 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseColor: {r: 0.26216224, g: 0.5377358, b: 0.25567815, a: 1}
   _offsetColor: {r: 0.3269565, g: 0.6603774, b: 0.32022074, a: 1}
+  _teleportRed: {r: 1, g: 0, b: 0.21176471, a: 1}
+  _teleportBlue: {r: 0, g: 0.4392157, b: 1, a: 1}
   _highlight: {fileID: 1734481025046549229}
   _unit: {fileID: 0}
   gCost: 0
@@ -195,6 +197,7 @@ MonoBehaviour:
   _occupied: 0
   isHighlighted: 0
   isOccupied: 0
+  teleportTile: 0
 --- !u!61 &6462455909922243419
 BoxCollider2D:
   m_ObjectHideFlags: 0
