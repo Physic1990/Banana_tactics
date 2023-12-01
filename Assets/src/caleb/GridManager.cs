@@ -18,6 +18,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Transform _cam;
     //The minimum number of frames that need to pass before a player's next input is read
     [SerializeField] private int _cursorDelay;
+    [SerializeField] public bool _demoMode;
 
     /*************************************************************************
                               Imported Scripts
@@ -188,8 +189,11 @@ public class GridManager : MonoBehaviour
         }
         else
         {
-            // If there isn't a Unit in Combat Prediction mode, handle moving the cursor as normal
-            if (!unitMenus.GetIsInCombatPrediction())
+            if (_demoMode)
+            {
+                DemoMode();
+            }
+            else if (!unitMenus.GetIsInCombatPrediction())// If there isn't a Unit in Combat Prediction mode, handle moving the cursor as normal
             {
                 //check for player input
                 CursorControl();
@@ -548,6 +552,27 @@ public class GridManager : MonoBehaviour
         {
             _Delay = 400;
             ReactivatePlayerUnits();
+        }
+    }
+
+    private void DemoMode()
+    {
+        if (_Delay == 400)
+        {
+            StartCoroutine(aiManager.AITurn(_enemyUnits, _playerUnits, _tiles));
+        }
+        _Delay--;
+        //Once enemy turn has ended, start player turn again
+        if (_Delay < 0 && aiManager.enemyTurnEnded)
+        {
+            StartCoroutine(aiManager.AITurn(_playerUnits, _enemyUnits, _tiles));
+            if (aiManager.enemyTurnEnded)
+            {
+                _Delay = 400;
+            }
+            
+            ReactivatePlayerUnits();
+
         }
     }
 
