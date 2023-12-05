@@ -148,10 +148,22 @@ public class AI : MonoBehaviour
         }
 
         //Debug.Log("the best is is this long " + _bestPath.Count);
-        if (_bestPath.Count > 2 && (_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0))
+        if (_bestPath.Count > controlledUnit.GetComponent<UnitAttributes>().GetMovement() && (_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0))
         {
             _targetX = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.x;
             _targetY = _bestPath[controlledUnit.GetComponent<UnitAttributes>().GetMovement()].transform.position.y;
+
+
+
+            controlledUnit.transform.position = new Vector3(_targetX, _targetY, 0);
+            _controlledTile.RemoveUnit();
+            _controlledTile = tiles[new Vector2(_targetX, _targetY)];
+            _controlledTile.AssignUnit(controlledUnit);
+        }
+        else if (_bestPath.Count == 2 && (_targetX <= _width) && (_targetY <= _height) && (_targetX >= 0) && (_targetY >= 0))
+        {
+            _targetX = _bestPath[1].transform.position.x;
+            _targetY = _bestPath[1].transform.position.y;
 
 
 
