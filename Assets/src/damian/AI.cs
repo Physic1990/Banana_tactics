@@ -56,6 +56,7 @@ public class AI : MonoBehaviour
     public IEnumerator AITurn(List<GameObject> playerUnits, List<GameObject> enemyUnits, Dictionary<Vector2, Tile> tiles)
     {
         enemyTurnEnded = false;
+        //Debug.Log("enemy is taking turn");
         if (playerUnits.Count > 0)
         {
             for (int i = 0; i < enemyUnits.Count; i++)
@@ -67,8 +68,9 @@ public class AI : MonoBehaviour
                 yield return new WaitForSeconds(0.3f);
 
                 //Debug.Log(_targetIndex);
-
+ 
                 attackPlayer(enemyUnits[i], playerUnits[_targetIndex]); //swing
+
                 yield return new WaitForSeconds(0.3f);
             }
             //yield return new WaitForSeconds(1);

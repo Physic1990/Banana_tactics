@@ -1322,7 +1322,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 4740208007068137352, guid: 02b583dc057c42f458bd5de1105d8950, type: 3}
   _cam: {fileID: 519420032}
   _cursorDelay: 45
-  _demoMode: 0
+  _demoMode: 1
   _playerUnits: []
   _enemyUnits: []
   _cursorTile: {fileID: 0}
