@@ -563,7 +563,7 @@ public class UnitAttributes : MonoBehaviour
             if (bcModeTriggerScript != null)
             {
                 // Access the BCMode variable from BCModeTrigger script
-                bool isBCMode = bcModeTriggerScript.BCMode;
+                bool BCMode = bcModeTriggerScript.BCMode;
 
                 if (BCMode == true)
                 {
