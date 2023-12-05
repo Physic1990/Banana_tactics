@@ -565,7 +565,7 @@ public class UnitAttributes : MonoBehaviour
                 // Access the BCMode variable from BCModeTrigger script
                 bool isBCMode = bcModeTriggerScript.BCMode;
 
-                if (isBCMode)
+                if (BCMode == true)
                 {
                     modeBC = true;
                     Debug.Log("BCMode is true!");
