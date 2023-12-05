@@ -299,7 +299,6 @@ public class UnitAttributes : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// START OF PUBLIC FUNCTION
     /// </summary>
@@ -313,7 +312,7 @@ public class UnitAttributes : MonoBehaviour
     //sets the healt values to a value between 0 and 100
     public virtual void SetHealth(int changeHealthAmount)
     {
-        if (changeHealthAmount is int)
+        if (changeHealthAmount != 0)
         {
             //changes health to new health value
             if (changeHealthAmount < 0)
@@ -338,7 +337,7 @@ public class UnitAttributes : MonoBehaviour
                     changeHealthAmount = 1;
                 }
             }
-        } 
+        }
         else
         {
             Debug.Log("Not A Valid Input For Set Health");
@@ -355,9 +354,9 @@ public class UnitAttributes : MonoBehaviour
     //subtracts a value from health
     public void DealDamage(int changeHealthAmount)
     {
-        if (changeHealthAmount is int) 
-        { 
-        //subtract value from health making sure it cant go below min health
+        if (changeHealthAmount != 0)
+        {
+            //subtract value from health making sure it cant go below min health
             if ((health -= changeHealthAmount) < minHealth)
             {
                 health = minHealth;
@@ -378,7 +377,7 @@ public class UnitAttributes : MonoBehaviour
                     changeHealthAmount = 1;
                 }
             }
-        } 
+        }
         else
         {
             Debug.Log("Not A Valid Input For Deal Damage");
@@ -388,7 +387,7 @@ public class UnitAttributes : MonoBehaviour
     //adds value to health
     public void GainHealth(int changeHealthAmount)
     {
-        if (changeHealthAmount is int)
+        if (changeHealthAmount != 0)
         {
             //add value to health making sure it cant go ove rthe max health
             if ((health += changeHealthAmount) > maxHealth)
@@ -411,7 +410,7 @@ public class UnitAttributes : MonoBehaviour
                     changeHealthAmount = 1;
                 }
             }
-        } 
+        }
         else
         {
             Debug.Log("Not A Valid Input For Gain Health");
@@ -523,7 +522,7 @@ public class UnitAttributes : MonoBehaviour
         return instanceIDScript;
     }
 
-    
+
     /// <summary>
     /// Intilization
     /// </summary>
@@ -533,22 +532,58 @@ public class UnitAttributes : MonoBehaviour
         SetClassStats();
         instanceIDObject = gameObject.GetInstanceID();
         instanceIDScript = GetHashCode();
-        //Debug.Log(health);
-        //Debug.Log(movement);
-        //Debug.Log(attackRange);
-        //Debug.Log(attackCritChance);
-        //Debug.Log(attackHitChance);
-        //Debug.Log(attackDamage);
-        //Debug.Log(attackDamageCrit);
+
+        // Debug.Log statements for testing
+        // Debug.Log(health);
+        // Debug.Log(movement);
+        // Debug.Log(attackRange);
+        // Debug.Log(attackCritChance);
+        // Debug.Log(attackHitChance);
+        // Debug.Log(attackDamage);
+        // Debug.Log(attackDamageCrit);
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
 
-        //you have to manually toggle enemy so if its true then its supposed to be an enemy unit
+        // You have to manually toggle enemy so if it's true then it's supposed to be an enemy unit
         if (IsEnemy == true && IsPlayer == true)
         {
             IsPlayer = false;
         }
+
         ChangeUnitSprite();
+
+        GameObject bcModeTriggerObject = GameObject.Find("BCModeManager");
+
+        if (bcModeTriggerObject != null)
+        {
+            // Get the BCModeTrigger script from the GameObject
+            BCModeTrigger bcModeTriggerScript = bcModeTriggerObject.GetComponent<BCModeTrigger>();
+
+            if (bcModeTriggerScript != null)
+            {
+                // Access the BCMode variable from BCModeTrigger script
+                bool isBCMode = bcModeTriggerScript.BCMode;
+
+                if (isBCMode)
+                {
+                    modeBC = true;
+                    Debug.Log("BCMode is true!");
+                }
+                else
+                {
+                    modeBC = false;
+                    Debug.Log("BCMode is false!");
+                }
+            }
+            else
+            {
+                Debug.LogError("BCModeTrigger script not found on the GameObject.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject with BCModeTrigger script not found.");
+        }
     }
 }
