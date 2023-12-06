@@ -331,7 +331,7 @@ public class UnitAttributes : MonoBehaviour
             {
                 changeHealthAmount = minHealth;
             }
-            else if (changeHealthAmount > 0)
+            else if (changeHealthAmount > maxHealth)
             {
                 changeHealthAmount = maxHealth;
             }
@@ -397,7 +397,7 @@ public class UnitAttributes : MonoBehaviour
                 }
                 else if (IsEnemy == true)
                 {
-                    changeHealthAmount = 1;
+                    changeHealthAmount = 0;
                 }
             }
 
