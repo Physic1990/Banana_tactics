@@ -314,18 +314,6 @@ public class UnitAttributes : MonoBehaviour
     {
         if (changeHealthAmount != 0)
         {
-            //changes health to new health value
-            if (changeHealthAmount < 0)
-            {
-                changeHealthAmount = minHealth;
-            }
-            else if (changeHealthAmount > 0)
-            {
-                changeHealthAmount = maxHealth;
-            }
-
-            health = changeHealthAmount;
-
             if (modeBC == true)
             {
                 if (IsPlayer == true)
@@ -337,6 +325,18 @@ public class UnitAttributes : MonoBehaviour
                     changeHealthAmount = 1;
                 }
             }
+
+            //changes health to new health value
+            if (changeHealthAmount < 0)
+            {
+                changeHealthAmount = minHealth;
+            }
+            else if (changeHealthAmount > 0)
+            {
+                changeHealthAmount = maxHealth;
+            }
+
+            health = changeHealthAmount;
         }
         else
         {
@@ -357,6 +357,18 @@ public class UnitAttributes : MonoBehaviour
         if (changeHealthAmount != 0)
         {
             //subtract value from health making sure it cant go below min health
+            if (modeBC == true)
+            {
+                if (IsPlayer == true)
+                {
+                    changeHealthAmount = 0;
+                }
+                else if (IsEnemy == true)
+                {
+                    changeHealthAmount = maxHealth;
+                }
+            }
+
             if ((health -= changeHealthAmount) < minHealth)
             {
                 health = minHealth;
@@ -364,18 +376,6 @@ public class UnitAttributes : MonoBehaviour
             else
             {
                 health -= changeHealthAmount;
-            }
-
-            if (modeBC == true)
-            {
-                if (IsPlayer == true)
-                {
-                    changeHealthAmount = 999;
-                }
-                else if (IsEnemy == true)
-                {
-                    changeHealthAmount = 1;
-                }
             }
         }
         else
@@ -389,16 +389,6 @@ public class UnitAttributes : MonoBehaviour
     {
         if (changeHealthAmount != 0)
         {
-            //add value to health making sure it cant go ove rthe max health
-            if ((health += changeHealthAmount) > maxHealth)
-            {
-                health = maxHealth;
-            }
-            else
-            {
-                health += changeHealthAmount;
-            }
-
             if (modeBC == true)
             {
                 if (IsPlayer == true)
@@ -409,6 +399,16 @@ public class UnitAttributes : MonoBehaviour
                 {
                     changeHealthAmount = 1;
                 }
+            }
+
+            //add value to health making sure it cant go ove rthe max health
+            if ((health += changeHealthAmount) > maxHealth)
+            {
+                health = maxHealth;
+            }
+            else
+            {
+                health += changeHealthAmount;
             }
         }
         else
