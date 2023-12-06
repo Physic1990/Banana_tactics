@@ -6,16 +6,20 @@ using UnityEngine.InputSystem;
 
 public class MainMenu : MonoBehaviour
 {
+    BCModeTrigger bcModeTrigger;
+
     UIDocument UIDocument;
     protected VisualElement root;
 
     private VisualElement Main;
 
     const string playButtonName = "PlayButton";
+    const string playAutoDemoButtonName = "PlayAutoDemoButton";
     const string helpButtonName = "HelpButton";
     const string settingsButtonName = "SettingsButton";
     const string quitButtonName = "QuitButton";
     Button PlayButton;
+    Button PlayAutoDemoButton;
     Button HelpButton;
     Button SettingsButton;
     Button QuitButton;
@@ -60,6 +64,9 @@ public class MainMenu : MonoBehaviour
     private VisualElement SettingsMenu;
     private Button SettingsBackButton;
 
+    private VisualElement DrBCModeContainer;
+    private Toggle DrBCModeToggle;
+
     private VisualElement MusicSliderContainer;
     private Slider MusicSlider;
     private VisualElement MusicDragger;
@@ -84,6 +91,8 @@ public class MainMenu : MonoBehaviour
     private void Awake()
     {
         input = new PlayerControls();
+
+        bcModeTrigger = GameObject.Find("BCModeManager").GetComponent<BCModeTrigger>();
     }
 
     private void OnEnable()
@@ -122,15 +131,17 @@ public class MainMenu : MonoBehaviour
         Main = root.Q<VisualElement>("Main");
 
         PlayButton = root.Q<Button>(playButtonName);
+        PlayAutoDemoButton = root.Q<Button>(playAutoDemoButtonName);
         HelpButton = root.Q<Button>(helpButtonName);
         SettingsButton = root.Q<Button>(settingsButtonName);
         QuitButton = root.Q<Button>(quitButtonName);
 
         // Assigns the Menu Buttons in order and sets the selected button
-        buttonsInOrder = new Button[4] { PlayButton, HelpButton, SettingsButton, QuitButton };
+        buttonsInOrder = new Button[5] { PlayButton, PlayAutoDemoButton, HelpButton, SettingsButton, QuitButton };
         UpdateSelectedButton(PlayButton);
 
         PlayButton?.RegisterCallback<ClickEvent>(ClickPlayButton);
+        PlayAutoDemoButton?.RegisterCallback<ClickEvent>(ClickPlayAutoDemoButton);
         SettingsButton?.RegisterCallback<ClickEvent>(ClickSettingsButton);
         HelpButton?.RegisterCallback<ClickEvent>(ClickHelpButton);
         QuitButton?.RegisterCallback<ClickEvent>(ClickQuitButton);
@@ -139,6 +150,13 @@ public class MainMenu : MonoBehaviour
         SettingsMenu = root.Q<VisualElement>("Settings");
         SettingsBackButton = root.Q<Button>("SettingsBackButton");
         SettingsBackButton?.RegisterCallback<ClickEvent>(ClickBackButton);
+
+        // DR. BC MODE TOGGLE
+        DrBCModeContainer = root.Q<VisualElement>("DrBCModeContainer");
+        DrBCModeToggle = DrBCModeContainer.Q<Toggle>("Toggle");
+        DrBCModeToggle.value = PlayerPrefs.GetInt("DrBCMode") == 1 ? true : false;
+
+        DrBCModeToggle?.RegisterValueChangedCallback(DrBCModeToggleChanged);
 
         // MUSIC VOLUME SLIDER
         MusicSliderContainer = root.Q<VisualElement>("MusicVolumeContainer");
@@ -283,6 +301,16 @@ public class MainMenu : MonoBehaviour
         UIManager.Instance.PlayGame("SampleScene");
     }
 
+    private void ClickPlayAutoDemoButton(ClickEvent evt)
+    {
+        PlayAutoDemo();
+    }
+
+    private void PlayAutoDemo()
+    {
+        UIManager.Instance.PlayGame("DemoScene");
+    }
+
     private void ClickSettingsButton(ClickEvent evt)
     {
         ChangeMenuScreen("Settings");
@@ -330,6 +358,10 @@ public class MainMenu : MonoBehaviour
         {
             PlayGame();
         }
+        else if (selectedButton == PlayAutoDemoButton)
+        {
+            PlayAutoDemo();
+        }
         else if (selectedButton == QuitButton)
         {
             QuitGame();
@@ -339,6 +371,12 @@ public class MainMenu : MonoBehaviour
     /*************************************************************************
                                 Settings Sliders
     ************************************************************************/
+    private void DrBCModeToggleChanged(ChangeEvent<bool> value)
+    {
+        bcModeTrigger.SwitchMode();
+        PlayerPrefs.SetInt("DrBCMode", value.newValue ? 1 : 0);
+    }
+
     private void MusicSliderValueChanged(ChangeEvent<float> value)
     {
         UpdateDraggerPosition(MusicDragger, MusicNewDragger);

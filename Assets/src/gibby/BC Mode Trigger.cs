@@ -7,12 +7,17 @@ public class BCModeTrigger : MonoBehaviour
 {
     [SerializeField] public bool BCMode = false;
 
+    void Start()
+    {
+        BCMode = PlayerPrefs.GetInt("DrBCMode") == 1 ? true : false;
+    }
+
     public void SwitchMode()
     {
-        if(BCMode == false)
+        if (BCMode == false)
         {
             BCMode = true;
-        } 
+        }
         else
         {
             BCMode = false;
