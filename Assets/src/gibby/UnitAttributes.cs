@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using System.IO;
 
 public class UnitAttributes : MonoBehaviour
 {
@@ -271,11 +271,11 @@ public class UnitAttributes : MonoBehaviour
 
         //set path to player sprite
         string spritePathPlayer = "Assets/Artwork/playerMonkey.png";
-        Sprite playerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathPlayer);
+        Sprite playerSprite = Resources.Load<Sprite>(spritePathPlayer);
 
         //set path to enemy sprite
         string spritePathEnemy = "Assets/Artwork/alt_enemySprite.png";
-        Sprite enemySprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePathEnemy);
+        Sprite enemySprite = Resources.Load<Sprite>(spritePathEnemy);
 
         if (spriteRenderer != null)
         {
