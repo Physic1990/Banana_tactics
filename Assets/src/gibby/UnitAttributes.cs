@@ -401,7 +401,7 @@ public class UnitAttributes : MonoBehaviour
                 }
             }
 
-            //add value to health making sure it cant go ove rthe max health
+            //add value to health making sure it cant go over the max health
             if ((health += changeHealthAmount) > maxHealth)
             {
                 health = maxHealth;

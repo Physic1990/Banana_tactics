@@ -7,7 +7,7 @@ public class BCModeTrigger : MonoBehaviour
 {
     [SerializeField] public bool BCMode = false;
 
-    void Start()
+    void Awake()
     {
         BCMode = PlayerPrefs.GetInt("DrBCMode") == 1 ? true : false;
     }
